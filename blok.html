@@ -162,6 +162,10 @@ body{
         <div id="apiEntry" style="display:none;">
           <input id="apiKeyInput" type="password" placeholder="OpenAI API anahtarı (sk-...)" style="width:100%;margin-bottom:6px;box-sizing:border-box;">
           <button class="primary" id="apiSaveBtn" type="button">API Doğrula ve Kaydet</button>
+
+          <!-- ✅ YENİ: API SİL/DEĞİŞTİR BUTONU -->
+          <button class="secondary" id="apiClearBtn" type="button">API Anahtarını Sil / Değiştir</button>
+
           <div id="apiSaveStatus" style="font-size:11px;margin-top:6px;"></div>
 
           <div style="font-size:11px;margin-top:6px;">
@@ -254,25 +258,24 @@ body{
 /* ========= GENEL: 429 + JSON PARSE ÇÖZÜM HELPER ========= */
 function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
 
-async function fetchJsonOrThrow(url, options, retries=2, onRetryMsg){
+async function fetchJsonOrThrow(url, options, retries=5, onRetryMsg){
   let attempt = 0;
-  let lastErr = null;
+  let last429msg = null;
 
   while(attempt <= retries){
     const res = await fetch(url, options);
     const raw = await res.text(); // önce text al
 
     if(res.status === 429){
-      const wait = Math.min(1500 * Math.pow(2, attempt), 8000); // 1.5s, 3s, 6s...
-      lastErr = new Error(`429 - Rate limit/kota aşıldı. ${Math.round(wait/1000)} sn bekleniyor...`);
-      if(typeof onRetryMsg === "function") onRetryMsg(lastErr.message);
+      const wait = Math.min(2000 * Math.pow(2, attempt), 20000); // 2s,4s,8s,16s,20s...
+      last429msg = `429 - Rate limit/kota aşıldı. ${Math.round(wait/1000)} sn bekleniyor... (Deneme ${attempt+1}/${retries+1})`;
+      if(typeof onRetryMsg === "function") onRetryMsg(last429msg);
       await sleep(wait);
       attempt++;
       continue;
     }
 
     if(!res.ok){
-      // Hata gövdesini de gösterelim
       throw new Error(`HTTP ${res.status} ${res.statusText}\n${(raw||"").slice(0, 300)}`);
     }
 
@@ -283,12 +286,13 @@ async function fetchJsonOrThrow(url, options, retries=2, onRetryMsg){
     try{
       return JSON.parse(raw);
     }catch(e){
-      // Unexpected end of JSON input burada çözülür: artık raw'ı görüyoruz
       throw new Error("JSON parse edilemedi. İlk 300 karakter:\n" + raw.slice(0, 300));
     }
   }
 
-  throw lastErr || new Error("İstek başarısız.");
+  throw new Error(
+    "429 - Rate limit/kota hâlâ aşılıyor. Lütfen 1-5 dakika bekleyip tekrar deneyin."
+  );
 }
 
 /* ========= API ANAHTARI DURUMU ========= */
@@ -302,16 +306,14 @@ const apiStatusLine = document.getElementById("apiStatusLine");
 const apiEntry      = document.getElementById("apiEntry");
 const apiKeyInput   = document.getElementById("apiKeyInput");
 const apiSaveBtn    = document.getElementById("apiSaveBtn");
+const apiClearBtn   = document.getElementById("apiClearBtn");   // ✅ yeni
 const apiSaveStatus = document.getElementById("apiSaveStatus");
 
 async function verifyApiKey(key){
-  // /v1/models endpoint'i (429 + JSON güvenli)
   try{
-    // models endpoint json döner; ama burada sadece ok kontrolü yeter
     const res = await fetch("https://api.openai.com/v1/models", {
       headers: { "Authorization": "Bearer " + key }
     });
-
     if(res.status === 429) return "RATE_LIMIT";
     return res.ok ? true : false;
   }catch(e){
@@ -361,8 +363,21 @@ async function handleApiSave(){
   }
 }
 
+/* ✅ YENİ: API SİL/DEĞİŞTİR */
+function handleApiClear(){
+  localStorage.removeItem("USER_API_KEY");
+  if(apiKeyInput) apiKeyInput.value = "";
+  if(apiEntry) apiEntry.style.display = "block";
+  apiSaveStatus.textContent = "API anahtarı silindi. Yeni anahtar girebilirsiniz.";
+  apiSaveStatus.style.color = "orange";
+  updateApiStatusLine();
+}
+
 if(apiSaveBtn){
   apiSaveBtn.addEventListener("click", handleApiSave);
+}
+if(apiClearBtn){
+  apiClearBtn.addEventListener("click", handleApiClear);
 }
 
 function updateApiStatusLine(){
@@ -548,7 +563,6 @@ async function generateTextFromAPI(){
   quizStatsPanel.innerHTML = "Test sonucu yok.";
   generateStatus.innerText = "Metin oluşturuluyor...";
 
-  // quiz state reset
   quizPhase = "reading";
   questionsGenerated = false;
   currentQuestions = null;
@@ -576,7 +590,6 @@ En sonda kısa bir kapanış cümlesi yaz.
 `;
 
   try{
-    // ✅ 429 + JSON parse güvenli çağrı
     const data = await fetchJsonOrThrow(
       "https://api.openai.com/v1/chat/completions",
       {
@@ -592,23 +605,26 @@ En sonda kısa bir kapanış cümlesi yaz.
           temperature:0.8
         })
       },
-      2,
+      5,
       (msg)=>{ generateStatus.innerText = msg; }
     );
 
     let raw = data.choices?.[0]?.message?.content || "";
-
-    // Olası baştaki markdown başlık kalıntılarını temizle
     raw = raw.replace(/^#+\s*/gm,"");
 
     rawText = raw;
-
-    // ✅ Metni yükle ve ancak sonra "hazır" yaz
     loadText(rawText);
     calculateWordStats();
     generateStatus.innerText = "✅ Metin hazır.";
   }catch(err){
     console.error(err);
+
+    // ✅ 429 ise alert patlatma, altta mesaj ver
+    if(String(err.message||"").startsWith("429")){
+      generateStatus.innerText = err.message;
+      return;
+    }
+
     generateStatus.innerText = "Hata oluştu.";
     alert("Hata: " + err.message);
   }
@@ -798,21 +814,18 @@ function shuffleOptionsAndFixAnswer(q){
   if(!Array.isArray(q.options) || q.options.length !== 5) return;
 
   const packed = q.options.map((t, i) => ({ t, i }));
-
   for(let i = packed.length - 1; i > 0; i--){
     const j = Math.floor(Math.random() * (i + 1));
     [packed[i], packed[j]] = [packed[j], packed[i]];
   }
 
   q.options = packed.map(x => x.t);
-
   const newCorrectPos = packed.findIndex(x => x.i === correctIdx);
   q.answer = ANSWER_LETTERS[newCorrectPos];
 }
 /* ==================================================================== */
 
 function extractJsonObject(text){
-  // Model bazen JSON öncesi/sonrası metin ekleyebilir; ilk { ile son } arasını almaya çalış.
   const s = text.indexOf("{");
   const e = text.lastIndexOf("}");
   if(s === -1 || e === -1 || e <= s) return null;
@@ -870,7 +883,6 @@ JSON formatı tam olarak şöyle olsun:
 `;
 
   try{
-    // ✅ 429 + JSON güvenli: önce API yanıt JSON'u, sonra içindeki content'i işleyeceğiz
     const data = await fetchJsonOrThrow(
       "https://api.openai.com/v1/chat/completions",
       {
@@ -886,15 +898,13 @@ JSON formatı tam olarak şöyle olsun:
           temperature:0.7
         })
       },
-      2,
+      5,
       (msg)=>{ questionContainer.innerHTML = msg; }
     );
 
-    let content = data.choices?.[0]?.message?.content || "";
-    content = content.trim();
-
-    // content içinden JSON objeyi ayıkla (gerekirse)
+    let content = (data.choices?.[0]?.message?.content || "").trim();
     let jsonText = content;
+
     if(!(jsonText.startsWith("{") && jsonText.endsWith("}"))){
       const extracted = extractJsonObject(jsonText);
       if(extracted) jsonText = extracted;
@@ -904,14 +914,12 @@ JSON formatı tam olarak şöyle olsun:
     try{
       obj = JSON.parse(jsonText);
     }catch(e){
-      // Unexpected end of JSON input yerine anlaşılır hata:
       throw new Error("Sorular JSON olarak çözümlenemedi.\nİlk 300 karakter:\n" + jsonText.slice(0, 300));
     }
 
     currentQuestions = obj.questions || [];
     userAnswers = new Array(currentQuestions.length).fill(null);
 
-    // Şıkları A)/B) etiketlerinden temizle
     currentQuestions.forEach(q=>{
       if(Array.isArray(q.options)){
         q.options = q.options.map(t =>
@@ -920,11 +928,17 @@ JSON formatı tam olarak şöyle olsun:
       }
     });
 
-    // ✅ Şıkları karıştır ve doğru cevabı da yeni konuma göre güncelle
     currentQuestions.forEach(q => shuffleOptionsAndFixAnswer(q));
 
   }catch(err){
     console.error(err);
+
+    // ✅ 429 ise alert patlatma, sayfada göster
+    if(String(err.message||"").startsWith("429")){
+      questionContainer.innerHTML = err.message;
+      return;
+    }
+
     alert("Sorular oluşturulurken hata oluştu: " + err.message);
     questionContainer.innerHTML = "Sorular yüklenemedi.";
   }
