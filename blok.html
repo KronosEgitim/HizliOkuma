@@ -586,20 +586,37 @@ En sonda kısa bir kapanış cümlesi yaz.
       })
     });
 
+    // ✅ JSON'u her durumda oku
     const data = await res.json();
-    let raw = data.choices?.[0]?.message?.content || "";
 
-    // Olası baştaki markdown başlık kalıntılarını temizle
-    raw = raw.replace(/^#+\s*/gm,"");
+    // ✅ API hata döndürdüyse yakala (401/429 vb.)
+    if(!res.ok){
+      const msg = data?.error?.message || ("HTTP " + res.status);
+      throw new Error(msg);
+    }
+
+    // ✅ choices yoksa / boşsa yakala
+    let raw = data?.choices?.[0]?.message?.content ?? "";
+    raw = String(raw).replace(/^#+\s*/gm,"").trim();
+
+    if(!raw){
+      throw new Error("API yanıtı boş döndü (metin üretilemedi).");
+    }
 
     rawText = raw;
     loadText(rawText);
+
+    // ✅ words gerçekten doldu mu?
+    if(!words || words.length === 0){
+      throw new Error("Metin işlendi ama kelimeler oluşturulamadı (loadText sonucu boş).");
+    }
+
     calculateWordStats();
     generateStatus.innerText = "✅ Metin hazır.";
   }catch(err){
     console.error(err);
-    alert("Hata: " + err.message);
-    generateStatus.innerText = "Hata oluştu.";
+    generateStatus.innerText = "❌ Metin oluşturulamadı.";
+    alert("Metin üretilemedi:\n" + (err?.message || err));
   }
 }
 
