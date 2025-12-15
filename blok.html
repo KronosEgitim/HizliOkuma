@@ -164,18 +164,18 @@ body{
           <button class="primary" id="apiSaveBtn" type="button">API Doğrula ve Kaydet</button>
           <div id="apiSaveStatus" style="font-size:11px;margin-top:6px;"></div>
 
-    <div style="font-size:11px;margin-top:6px;">
-    API kodu almak için:
-    <a href="https://platform.openai.com/api-keys"
-       target="_blank"
-       rel="noopener noreferrer">
-       Link
-    </a>
-  </div>
-        
+          <div style="font-size:11px;margin-top:6px;">
+            API kodu almak için:
+            <a href="https://platform.openai.com/api-keys"
+              target="_blank"
+              rel="noopener noreferrer">
+              Link
+            </a>
+          </div>
+
         </div>
       </div>
-      
+
       <div class="section">
         <h3>2) Metin</h3>
         <label>Yaş Aralığı</label>
@@ -246,11 +246,50 @@ body{
 (function ensureUserCode(){
   const code = localStorage.getItem("USER_CODE");
   if(!code || !code.trim()){
-    // Doğrudan link ile gelindiyse, ana sayfaya yönlendir
     alert("Önce kullanıcı kodu ile giriş yapmalısınız.");
     window.location.href = "AnaSayfa.html";
   }
 })();
+
+/* ========= GENEL: 429 + JSON PARSE ÇÖZÜM HELPER ========= */
+function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
+async function fetchJsonOrThrow(url, options, retries=2, onRetryMsg){
+  let attempt = 0;
+  let lastErr = null;
+
+  while(attempt <= retries){
+    const res = await fetch(url, options);
+    const raw = await res.text(); // önce text al
+
+    if(res.status === 429){
+      const wait = Math.min(1500 * Math.pow(2, attempt), 8000); // 1.5s, 3s, 6s...
+      lastErr = new Error(`429 - Rate limit/kota aşıldı. ${Math.round(wait/1000)} sn bekleniyor...`);
+      if(typeof onRetryMsg === "function") onRetryMsg(lastErr.message);
+      await sleep(wait);
+      attempt++;
+      continue;
+    }
+
+    if(!res.ok){
+      // Hata gövdesini de gösterelim
+      throw new Error(`HTTP ${res.status} ${res.statusText}\n${(raw||"").slice(0, 300)}`);
+    }
+
+    if(!raw || !raw.trim()){
+      throw new Error("Boş yanıt döndü (empty body).");
+    }
+
+    try{
+      return JSON.parse(raw);
+    }catch(e){
+      // Unexpected end of JSON input burada çözülür: artık raw'ı görüyoruz
+      throw new Error("JSON parse edilemedi. İlk 300 karakter:\n" + raw.slice(0, 300));
+    }
+  }
+
+  throw lastErr || new Error("İstek başarısız.");
+}
 
 /* ========= API ANAHTARI DURUMU ========= */
 
@@ -266,11 +305,18 @@ const apiSaveBtn    = document.getElementById("apiSaveBtn");
 const apiSaveStatus = document.getElementById("apiSaveStatus");
 
 async function verifyApiKey(key){
-  // Basit doğrulama: /v1/models endpoint'i
-  const res = await fetch("https://api.openai.com/v1/models", {
-    headers: { "Authorization": "Bearer " + key }
-  });
-  return res.ok;
+  // /v1/models endpoint'i (429 + JSON güvenli)
+  try{
+    // models endpoint json döner; ama burada sadece ok kontrolü yeter
+    const res = await fetch("https://api.openai.com/v1/models", {
+      headers: { "Authorization": "Bearer " + key }
+    });
+
+    if(res.status === 429) return "RATE_LIMIT";
+    return res.ok ? true : false;
+  }catch(e){
+    throw e;
+  }
 }
 
 async function handleApiSave(){
@@ -288,7 +334,14 @@ async function handleApiSave(){
 
   try{
     const ok = await verifyApiKey(key);
-    if(ok){
+
+    if(ok === "RATE_LIMIT"){
+      apiSaveStatus.textContent = "⚠ 429 (limit/kota). Lütfen 1-2 dk bekleyip tekrar deneyin.";
+      apiSaveStatus.style.color = "orange";
+      return;
+    }
+
+    if(ok === true){
       localStorage.setItem("USER_API_KEY", key);
       apiSaveStatus.textContent = "✅ API geçerli ve kaydedildi.";
       apiSaveStatus.style.color = "green";
@@ -523,34 +576,41 @@ En sonda kısa bir kapanış cümlesi yaz.
 `;
 
   try{
-    const res = await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
+    // ✅ 429 + JSON parse güvenli çağrı
+    const data = await fetchJsonOrThrow(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + apiKey
+        },
+        body:JSON.stringify({
+          model:"gpt-4o-mini",
+          messages:[{role:"user",content:prompt}],
+          max_tokens:900,
+          temperature:0.8
+        })
       },
-      body:JSON.stringify({
-        model:"gpt-4o-mini",
-        messages:[{role:"user",content:prompt}],
-        max_tokens:900,
-        temperature:0.8
-      })
-    });
+      2,
+      (msg)=>{ generateStatus.innerText = msg; }
+    );
 
-    const data = await res.json();
     let raw = data.choices?.[0]?.message?.content || "";
 
     // Olası baştaki markdown başlık kalıntılarını temizle
     raw = raw.replace(/^#+\s*/gm,"");
 
     rawText = raw;
+
+    // ✅ Metni yükle ve ancak sonra "hazır" yaz
     loadText(rawText);
     calculateWordStats();
     generateStatus.innerText = "✅ Metin hazır.";
   }catch(err){
     console.error(err);
-    alert("Hata: " + err.message);
     generateStatus.innerText = "Hata oluştu.";
+    alert("Hata: " + err.message);
   }
 }
 
@@ -737,23 +797,27 @@ function shuffleOptionsAndFixAnswer(q){
   if(correctIdx < 0) return;
   if(!Array.isArray(q.options) || q.options.length !== 5) return;
 
-  // (metin + eski index)
   const packed = q.options.map((t, i) => ({ t, i }));
 
-  // Fisher–Yates shuffle
   for(let i = packed.length - 1; i > 0; i--){
     const j = Math.floor(Math.random() * (i + 1));
     [packed[i], packed[j]] = [packed[j], packed[i]];
   }
 
-  // yeni options
   q.options = packed.map(x => x.t);
 
-  // doğru cevabın yeni konumu
   const newCorrectPos = packed.findIndex(x => x.i === correctIdx);
   q.answer = ANSWER_LETTERS[newCorrectPos];
 }
 /* ==================================================================== */
+
+function extractJsonObject(text){
+  // Model bazen JSON öncesi/sonrası metin ekleyebilir; ilk { ile son } arasını almaya çalış.
+  const s = text.indexOf("{");
+  const e = text.lastIndexOf("}");
+  if(s === -1 || e === -1 || e <= s) return null;
+  return text.slice(s, e+1);
+}
 
 async function generateQuestionsForText(){
   const apiKey = getApiKey();
@@ -806,27 +870,44 @@ JSON formatı tam olarak şöyle olsun:
 `;
 
   try{
-    const res = await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
+    // ✅ 429 + JSON güvenli: önce API yanıt JSON'u, sonra içindeki content'i işleyeceğiz
+    const data = await fetchJsonOrThrow(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + apiKey
+        },
+        body:JSON.stringify({
+          model:"gpt-4o-mini",
+          messages:[{role:"user",content:prompt}],
+          max_tokens:1200,
+          temperature:0.7
+        })
       },
-      body:JSON.stringify({
-        model:"gpt-4o-mini",
-        messages:[{role:"user",content:prompt}],
-        max_tokens:1200,
-        temperature:0.7
-      })
-    });
+      2,
+      (msg)=>{ questionContainer.innerHTML = msg; }
+    );
 
-    const data = await res.json();
-    let text = data.choices?.[0]?.message?.content || "";
+    let content = data.choices?.[0]?.message?.content || "";
+    content = content.trim();
 
-    const idx = text.indexOf("{");
-    if(idx > 0) text = text.slice(idx);
+    // content içinden JSON objeyi ayıkla (gerekirse)
+    let jsonText = content;
+    if(!(jsonText.startsWith("{") && jsonText.endsWith("}"))){
+      const extracted = extractJsonObject(jsonText);
+      if(extracted) jsonText = extracted;
+    }
 
-    const obj = JSON.parse(text);
+    let obj;
+    try{
+      obj = JSON.parse(jsonText);
+    }catch(e){
+      // Unexpected end of JSON input yerine anlaşılır hata:
+      throw new Error("Sorular JSON olarak çözümlenemedi.\nİlk 300 karakter:\n" + jsonText.slice(0, 300));
+    }
+
     currentQuestions = obj.questions || [];
     userAnswers = new Array(currentQuestions.length).fill(null);
 
