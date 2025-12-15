@@ -159,7 +159,6 @@ body{
         <h3>1) API Durumu</h3>
         <div id="apiStatusLine" style="font-weight:bold;margin-bottom:6px;"></div>
 
-        <!-- ✅ API kayıtlıysa görünecek: API değiştir / iptal -->
         <button class="secondary" id="apiChangeBtn" type="button" style="display:none;">API değiştir</button>
         <button class="secondary" id="apiCancelChangeBtn" type="button" style="display:none;">İptal</button>
 
@@ -176,7 +175,6 @@ body{
                Link
             </a>
           </div>
-
         </div>
       </div>
       
@@ -199,6 +197,26 @@ body{
           <option value="orta">Orta</option>
           <option value="zor">Zor</option>
         </select>
+
+        <label>Metin Kaynağı</label>
+        <div style="display:flex;gap:6px;margin-bottom:6px;">
+          <label style="display:flex;align-items:center;gap:6px;width:auto;margin:0;">
+            <input type="radio" name="textSource" id="srcAI" value="ai" checked style="width:auto;margin:0;">
+            Yaş-zorluk-konuya göre oluştur
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;width:auto;margin:0;">
+            <input type="radio" name="textSource" id="srcReady" value="ready" style="width:auto;margin:0;">
+            Hazır metin seç
+          </label>
+        </div>
+
+        <div id="readyTextBox" style="display:none;margin-bottom:6px;">
+          <select id="readyTextSelect">
+            <option value="">Hazır metin seçiniz</option>
+          </select>
+          <button class="secondary" id="loadReadyBtn" type="button">Hazır Metni Yükle</button>
+          <div id="readyStatus" style="font-size:11px;margin-top:4px;"></div>
+        </div>
 
         <label>Konu</label>
         <input type="text" id="topicInput" placeholder="Örn: Güneş Sistemi">
@@ -269,7 +287,6 @@ const apiKeyInput   = document.getElementById("apiKeyInput");
 const apiSaveBtn    = document.getElementById("apiSaveBtn");
 const apiSaveStatus = document.getElementById("apiSaveStatus");
 
-// ✅ yeni butonlar
 const apiChangeBtn       = document.getElementById("apiChangeBtn");
 const apiCancelChangeBtn = document.getElementById("apiCancelChangeBtn");
 
@@ -324,7 +341,6 @@ if(apiSaveBtn){
   apiSaveBtn.addEventListener("click", handleApiSave);
 }
 
-// ✅ API değiştir / iptal davranışı
 if(apiChangeBtn){
   apiChangeBtn.addEventListener("click", ()=>{
     apiEditing = true;
@@ -352,7 +368,6 @@ function updateApiStatusLine(){
     apiStatusLine.textContent = "✅ API kayıtlı";
     apiStatusLine.style.color = "green";
 
-    // API kayıtlıyken: normalde giriş kapalı, sadece "API değiştir" açık
     if(apiEditing){
       if(apiEntry) apiEntry.style.display = "block";
       if(apiChangeBtn) apiChangeBtn.style.display = "none";
@@ -362,7 +377,6 @@ function updateApiStatusLine(){
       if(apiEntry) apiEntry.style.display = "none";
       if(apiChangeBtn) apiChangeBtn.style.display = "block";
       if(apiCancelChangeBtn) apiCancelChangeBtn.style.display = "none";
-      // güvenlik: kayıtlı anahtarı input'a yazma (type=password olsa da)
       if(apiKeyInput) apiKeyInput.value = "";
     }
   }else{
@@ -376,6 +390,220 @@ function updateApiStatusLine(){
 }
 
 updateApiStatusLine();
+
+/* ========= METİN KAYNAĞI (AI / HAZIR TXT) ========= */
+
+const srcAI = document.getElementById("srcAI");
+const srcReady = document.getElementById("srcReady");
+const readyTextBox = document.getElementById("readyTextBox");
+const readyTextSelect = document.getElementById("readyTextSelect");
+const loadReadyBtn = document.getElementById("loadReadyBtn");
+const readyStatus = document.getElementById("readyStatus");
+
+function updateTextSourceUI(){
+  const isReady = srcReady && srcReady.checked;
+  if(readyTextBox) readyTextBox.style.display = isReady ? "block" : "none";
+  const topicInputEl = document.getElementById("topicInput");
+  if(topicInputEl) topicInputEl.disabled = isReady ? true : false;
+}
+
+if(srcAI) srcAI.addEventListener("change", updateTextSourceUI);
+if(srcReady) srcReady.addEventListener("change", updateTextSourceUI);
+updateTextSourceUI();
+
+/* GitHub'da hazır metin/soru TXT dosyaları için önerilen yapı:
+   - Uygulamalar/metinler/list.json  (opsiyonel)
+   - Uygulamalar/metinler/xxx.txt
+
+   list.json örneği:
+   [
+     {"label":"7-9 / Kolay / 1","file":"metinler/ornek_7-9_kolay_1.txt"},
+     {"label":"10-12 / Orta / 1","file":"metinler/ornek_10-12_orta_1.txt"}
+   ]
+*/
+async function loadReadyList(){
+  if(!readyTextSelect) return;
+  try{
+    const res = await fetch("metinler/list.json", { cache:"no-store" });
+    if(!res.ok) throw new Error("list.json bulunamadı");
+    const arr = await res.json();
+    if(!Array.isArray(arr) || !arr.length) return;
+
+    while(readyTextSelect.options.length > 1) readyTextSelect.remove(1);
+
+    arr.forEach(item=>{
+      const opt = document.createElement("option");
+      opt.value = item.file || "";
+      opt.textContent = item.label || item.file || "Hazır metin";
+      readyTextSelect.appendChild(opt);
+    });
+  }catch(e){
+    // list.json yoksa sorun değil; kullanıcı sonra ekleyebilir
+    // Şimdilik birkaç örnek placeholder ekleyelim:
+    if(readyTextSelect.options.length === 1){
+      const o1 = document.createElement("option");
+      o1.value = "metinler/ornek_7-9_kolay_1.txt";
+      o1.textContent = "Örnek 7-9 / Kolay / 1";
+      readyTextSelect.appendChild(o1);
+
+      const o2 = document.createElement("option");
+      o2.value = "metinler/ornek_10-12_orta_1.txt";
+      o2.textContent = "Örnek 10-12 / Orta / 1";
+      readyTextSelect.appendChild(o2);
+    }
+  }
+}
+loadReadyList();
+
+/* TXT formatı:
+   (1) Metin kısmı
+   (2) Yeni satır
+   ===SORULAR===
+   (3) JSON: { "questions":[ ... ] }
+*/
+async function loadReadyTextFromTxt(url){
+  if(readyStatus){
+    readyStatus.textContent = "";
+    readyStatus.style.color = "black";
+  }
+
+  if(!url){
+    if(readyStatus){
+      readyStatus.textContent = "Lütfen bir hazır metin seçin.";
+      readyStatus.style.color = "red";
+    }
+    return;
+  }
+
+  if(readyStatus){
+    readyStatus.textContent = "Hazır metin yükleniyor...";
+    readyStatus.style.color = "blue";
+  }
+
+  try{
+    const res = await fetch(url, { cache:"no-store" });
+    if(!res.ok) throw new Error("TXT yüklenemedi. HTTP " + res.status);
+
+    const txt = await res.text();
+    const parts = txt.split(/\n===SORULAR===\n/);
+
+    const onlyText = (parts[0] || "").trim();
+    if(!onlyText) throw new Error("TXT içinde metin boş görünüyor.");
+
+    // state reset
+    stop();
+    textDisplay.innerHTML = "";
+    questionContainer.innerHTML = "";
+    quizStatsPanel.innerHTML = "Test sonucu yok.";
+    finishBtn.style.display = "none";
+    finishBtn.disabled = false;
+
+    quizPhase = "reading";
+    questionsGenerated = false;
+    currentQuestions = null;
+    userAnswers = [];
+
+    rawText = onlyText;
+    loadText(rawText);
+    calculateWordStats();
+    generateStatus.innerText = "✅ Metin hazır.";
+
+    // Sorular varsa yükle
+    if(parts.length > 1){
+      const jsonPart = (parts[1] || "").trim();
+      if(jsonPart){
+        const obj = JSON.parse(jsonPart);
+        currentQuestions = obj.questions || [];
+        userAnswers = new Array(currentQuestions.length).fill(null);
+
+        currentQuestions.forEach(q=>{
+          if(Array.isArray(q.options)){
+            q.options = q.options.map(t => t.replace(/^[A-E]\)\s*/i,"").trim());
+          }
+        });
+        currentQuestions.forEach(q => shuffleOptionsAndFixAnswer(q));
+
+        if(readyStatus){
+          readyStatus.textContent = "✅ Hazır metin ve sorular yüklendi.";
+          readyStatus.style.color = "green";
+        }
+      }else{
+        if(readyStatus){
+          readyStatus.textContent = "✅ Hazır metin yüklendi. (Sorular eklenmemiş)";
+          readyStatus.style.color = "green";
+        }
+      }
+    }else{
+      if(readyStatus){
+        readyStatus.textContent = "✅ Hazır metin yüklendi. (Sorular eklenmemiş)";
+        readyStatus.style.color = "green";
+      }
+    }
+  }catch(err){
+    console.error(err);
+    if(readyStatus){
+      readyStatus.textContent = "❌ " + (err.message || err);
+      readyStatus.style.color = "red";
+    }
+  }
+}
+
+if(loadReadyBtn){
+  loadReadyBtn.addEventListener("click", ()=>{
+    loadReadyTextFromTxt(readyTextSelect.value);
+  });
+}
+
+/* ========= RATE LIMIT / KİLİT / RETRY ========= */
+
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+function extractRetrySecondsFromMessage(msg){
+  const m = String(msg || "");
+  const hh = /(\d+)h/.exec(m);
+  const mm = /(\d+)m/.exec(m);
+  const ss = /(\d+)s/.exec(m);
+  const h = hh ? parseInt(hh[1],10) : 0;
+  const mi = mm ? parseInt(mm[1],10) : 0;
+  const s = ss ? parseInt(ss[1],10) : 0;
+  const total = h*3600 + mi*60 + s;
+  return total > 0 ? total : null;
+}
+
+async function openaiChatCompletionWithRetry(payload, apiKey, maxRetries){
+  let attempt = 0;
+  while(true){
+    attempt++;
+
+    const res = await fetch("https://api.openai.com/v1/chat/completions",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + apiKey
+      },
+      body:JSON.stringify(payload)
+    });
+
+    const data = await res.json().catch(()=> ({}));
+
+    if(res.ok) return data;
+
+    const msg = data?.error?.message || ("HTTP " + res.status);
+
+    if(res.status === 429 && attempt <= (maxRetries + 1)){
+      const retrySec = extractRetrySecondsFromMessage(msg);
+      if(retrySec && retrySec > 120){
+        // saatlik blok gibi; otomatik bekletmeyelim
+        throw new Error(msg);
+      }
+      const waitMs = retrySec ? retrySec*1000 : (15000 + (attempt-1)*10000);
+      await sleep(waitMs);
+      continue;
+    }
+
+    throw new Error(msg);
+  }
+}
 
 /* ========= YAŞ + ZORLUK İÇİN YARDIMCI KURALLAR ========= */
 
@@ -520,7 +748,16 @@ let currentQuestions = null;
 let userAnswers = [];
 let questionsGenerated = false;
 
+let isBusyGenerating = false;
+
 async function generateTextFromAPI(){
+  if(isBusyGenerating) return;
+
+  if(srcReady && srcReady.checked){
+    alert("Hazır metin modunda 'Hazır Metni Yükle' butonunu kullanın.");
+    return;
+  }
+
   const apiKey = getApiKey();
   updateApiStatusLine();
 
@@ -543,6 +780,12 @@ async function generateTextFromAPI(){
   questionContainer.innerHTML = "";
   quizStatsPanel.innerHTML = "Test sonucu yok.";
   generateStatus.innerText = "Metin oluşturuluyor...";
+
+  isBusyGenerating = true;
+  if(generateTextBtn){
+    generateTextBtn.disabled = true;
+    generateTextBtn.textContent = "Lütfen bekleyin...";
+  }
 
   // quiz state reset
   quizPhase = "reading";
@@ -572,32 +815,15 @@ En sonda kısa bir kapanış cümlesi yaz.
 `;
 
   try{
-    const res = await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
-      },
-      body:JSON.stringify({
-        model:"gpt-4o-mini",
-        messages:[{role:"user",content:prompt}],
-        max_tokens:900,
-        temperature:0.8
-      })
-    });
+    const data = await openaiChatCompletionWithRetry({
+      model:"gpt-4o-mini",
+      messages:[{role:"user",content:prompt}],
+      max_tokens:900,
+      temperature:0.8
+    }, apiKey, 2);
 
-    // ✅ JSON'u her durumda oku
-    const data = await res.json();
-
-    // ✅ API hata döndürdüyse yakala (401/429 vb.)
-    if(!res.ok){
-      const msg = data?.error?.message || ("HTTP " + res.status);
-      throw new Error(msg);
-    }
-
-    // ✅ choices yoksa / boşsa yakala
-    let raw = data?.choices?.[0]?.message?.content ?? "";
-    raw = String(raw).replace(/^#+\s*/gm,"").trim();
+    let raw = data?.choices?.[0]?.message?.content || "";
+    raw = raw.replace(/^#+\s*/gm,"").trim();
 
     if(!raw){
       throw new Error("API yanıtı boş döndü (metin üretilemedi).");
@@ -606,9 +832,8 @@ En sonda kısa bir kapanış cümlesi yaz.
     rawText = raw;
     loadText(rawText);
 
-    // ✅ words gerçekten doldu mu?
     if(!words || words.length === 0){
-      throw new Error("Metin işlendi ama kelimeler oluşturulamadı (loadText sonucu boş).");
+      throw new Error("Metin işlendi ama kelimeler oluşturulamadı.");
     }
 
     calculateWordStats();
@@ -617,6 +842,12 @@ En sonda kısa bir kapanış cümlesi yaz.
     console.error(err);
     generateStatus.innerText = "❌ Metin oluşturulamadı.";
     alert("Metin üretilemedi:\n" + (err?.message || err));
+  }finally{
+    isBusyGenerating = false;
+    if(generateTextBtn){
+      generateTextBtn.disabled = false;
+      generateTextBtn.textContent = "Metin Oluştur";
+    }
   }
 }
 
@@ -695,6 +926,12 @@ function showNextWord(){
       questionsGenerated = true;
       quizPhase = "questions";
       setTimeout(async ()=>{
+        if(currentQuestions && currentQuestions.length){
+          renderQuestions();
+          finishBtn.style.display = "inline-block";
+          finishBtn.disabled = false;
+          return;
+        }
         await generateQuestionsForText();
         renderQuestions();
         if(currentQuestions && currentQuestions.length){
@@ -821,7 +1058,11 @@ function shuffleOptionsAndFixAnswer(q){
 }
 /* ==================================================================== */
 
+let isBusyQuestions = false;
+
 async function generateQuestionsForText(){
+  if(isBusyQuestions) return;
+
   const apiKey = getApiKey();
   updateApiStatusLine();
 
@@ -836,6 +1077,11 @@ async function generateQuestionsForText(){
     return;
   }
 
+  if(currentQuestions && currentQuestions.length){
+    return;
+  }
+
+  isBusyQuestions = true;
   questionContainer.innerHTML = "Sorular hazırlanıyor...";
 
   const ageGroup = ageGroupInput.value;
@@ -872,23 +1118,14 @@ JSON formatı tam olarak şöyle olsun:
 `;
 
   try{
-    const res = await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
-      },
-      body:JSON.stringify({
-        model:"gpt-4o-mini",
-        messages:[{role:"user",content:prompt}],
-        max_tokens:1200,
-        temperature:0.7
-      })
-    });
+    const data = await openaiChatCompletionWithRetry({
+      model:"gpt-4o-mini",
+      messages:[{role:"user",content:prompt}],
+      max_tokens:1200,
+      temperature:0.7
+    }, apiKey, 2);
 
-    const data = await res.json();
-    let text = data.choices?.[0]?.message?.content || "";
-
+    let text = data?.choices?.[0]?.message?.content || "";
     const idx = text.indexOf("{");
     if(idx > 0) text = text.slice(idx);
 
@@ -910,8 +1147,10 @@ JSON formatı tam olarak şöyle olsun:
 
   }catch(err){
     console.error(err);
-    alert("Sorular oluşturulurken hata oluştu: " + err.message);
+    alert("Sorular oluşturulurken hata oluştu: " + (err?.message || err));
     questionContainer.innerHTML = "Sorular yüklenemedi.";
+  }finally{
+    isBusyQuestions = false;
   }
 }
 
