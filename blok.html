@@ -157,35 +157,29 @@ body{
       <!-- API BÖLÜMÜ (Bu sayfada sorgulansın) -->
       <div class="section">
         <h3>1) API Durumu</h3>
-        
-<div id="apiStatusLine" style="font-weight:bold;margin-bottom:6px;"></div>
+        <div id="apiStatusLine" style="font-weight:bold;margin-bottom:6px;"></div>
 
-<!-- ✅ Buton her zaman görünsün -->
-<button class="secondary" id="apiClearBtn" type="button">API Anahtarını Sil / Değiştir</button>
+        <!-- ✅ API kayıtlıysa görünecek: API değiştir / iptal -->
+        <button class="secondary" id="apiChangeBtn" type="button" style="display:none;">API değiştir</button>
+        <button class="secondary" id="apiCancelChangeBtn" type="button" style="display:none;">İptal</button>
 
-<div id="apiEntry" style="display:none;">
-  <input id="apiKeyInput" type="password" placeholder="OpenAI API anahtarı (sk-...)" style="width:100%;margin-bottom:6px;box-sizing:border-box;">
-  <button class="primary" id="apiSaveBtn" type="button">API Doğrula ve Kaydet</button>
-  <div id="apiSaveStatus" style="font-size:11px;margin-top:6px;"></div>
-
-  <div style="font-size:11px;margin-top:6px;">
-    API kodu almak için:
-    <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">Link</a>
-  </div>
-</div>
+        <div id="apiEntry" style="display:none;">
+          <input id="apiKeyInput" type="password" placeholder="OpenAI API anahtarı (sk-...)" style="width:100%;margin-bottom:6px;box-sizing:border-box;">
+          <button class="primary" id="apiSaveBtn" type="button">API Doğrula ve Kaydet</button>
+          <div id="apiSaveStatus" style="font-size:11px;margin-top:6px;"></div>
 
           <div style="font-size:11px;margin-top:6px;">
             API kodu almak için:
             <a href="https://platform.openai.com/api-keys"
-              target="_blank"
-              rel="noopener noreferrer">
-              Link
+               target="_blank"
+               rel="noopener noreferrer">
+               Link
             </a>
           </div>
 
         </div>
       </div>
-
+      
       <div class="section">
         <h3>2) Metin</h3>
         <label>Yaş Aralığı</label>
@@ -256,50 +250,11 @@ body{
 (function ensureUserCode(){
   const code = localStorage.getItem("USER_CODE");
   if(!code || !code.trim()){
+    // Doğrudan link ile gelindiyse, ana sayfaya yönlendir
     alert("Önce kullanıcı kodu ile giriş yapmalısınız.");
     window.location.href = "AnaSayfa.html";
   }
 })();
-
-/* ========= GENEL: 429 + JSON PARSE ÇÖZÜM HELPER ========= */
-function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
-
-async function fetchJsonOrThrow(url, options, retries=5, onRetryMsg){
-  let attempt = 0;
-  let last429msg = null;
-
-  while(attempt <= retries){
-    const res = await fetch(url, options);
-    const raw = await res.text(); // önce text al
-
-    if(res.status === 429){
-      const wait = Math.min(2000 * Math.pow(2, attempt), 20000); // 2s,4s,8s,16s,20s...
-      last429msg = `429 - Rate limit/kota aşıldı. ${Math.round(wait/1000)} sn bekleniyor... (Deneme ${attempt+1}/${retries+1})`;
-      if(typeof onRetryMsg === "function") onRetryMsg(last429msg);
-      await sleep(wait);
-      attempt++;
-      continue;
-    }
-
-    if(!res.ok){
-      throw new Error(`HTTP ${res.status} ${res.statusText}\n${(raw||"").slice(0, 300)}`);
-    }
-
-    if(!raw || !raw.trim()){
-      throw new Error("Boş yanıt döndü (empty body).");
-    }
-
-    try{
-      return JSON.parse(raw);
-    }catch(e){
-      throw new Error("JSON parse edilemedi. İlk 300 karakter:\n" + raw.slice(0, 300));
-    }
-  }
-
-  throw new Error(
-    "429 - Rate limit/kota hâlâ aşılıyor. Lütfen 1-5 dakika bekleyip tekrar deneyin."
-  );
-}
 
 /* ========= API ANAHTARI DURUMU ========= */
 
@@ -312,19 +267,20 @@ const apiStatusLine = document.getElementById("apiStatusLine");
 const apiEntry      = document.getElementById("apiEntry");
 const apiKeyInput   = document.getElementById("apiKeyInput");
 const apiSaveBtn    = document.getElementById("apiSaveBtn");
-const apiClearBtn   = document.getElementById("apiClearBtn");   // ✅ yeni
 const apiSaveStatus = document.getElementById("apiSaveStatus");
 
+// ✅ yeni butonlar
+const apiChangeBtn       = document.getElementById("apiChangeBtn");
+const apiCancelChangeBtn = document.getElementById("apiCancelChangeBtn");
+
+let apiEditing = false;
+
 async function verifyApiKey(key){
-  try{
-    const res = await fetch("https://api.openai.com/v1/models", {
-      headers: { "Authorization": "Bearer " + key }
-    });
-    if(res.status === 429) return "RATE_LIMIT";
-    return res.ok ? true : false;
-  }catch(e){
-    throw e;
-  }
+  // Basit doğrulama: /v1/models endpoint'i
+  const res = await fetch("https://api.openai.com/v1/models", {
+    headers: { "Authorization": "Bearer " + key }
+  });
+  return res.ok;
 }
 
 async function handleApiSave(){
@@ -342,22 +298,17 @@ async function handleApiSave(){
 
   try{
     const ok = await verifyApiKey(key);
-
-    if(ok === "RATE_LIMIT"){
-      apiSaveStatus.textContent = "⚠ 429 (limit/kota). Lütfen 1-2 dk bekleyip tekrar deneyin.";
-      apiSaveStatus.style.color = "orange";
-      return;
-    }
-
-    if(ok === true){
+    if(ok){
       localStorage.setItem("USER_API_KEY", key);
       apiSaveStatus.textContent = "✅ API geçerli ve kaydedildi.";
       apiSaveStatus.style.color = "green";
+      apiEditing = false;
       updateApiStatusLine();
     }else{
       localStorage.removeItem("USER_API_KEY");
       apiSaveStatus.textContent = "❌ API geçersiz. Lütfen tekrar deneyin.";
       apiSaveStatus.style.color = "red";
+      apiEditing = false;
       updateApiStatusLine();
     }
   }catch(err){
@@ -369,34 +320,58 @@ async function handleApiSave(){
   }
 }
 
-/* ✅ YENİ: API SİL/DEĞİŞTİR */
-function handleApiClear(){
-  localStorage.removeItem("USER_API_KEY");
-  if(apiKeyInput) apiKeyInput.value = "";
-  if(apiEntry) apiEntry.style.display = "block";
-  apiSaveStatus.textContent = "API anahtarı silindi. Yeni anahtar girebilirsiniz.";
-  apiSaveStatus.style.color = "orange";
-  updateApiStatusLine();
-}
-
 if(apiSaveBtn){
   apiSaveBtn.addEventListener("click", handleApiSave);
 }
-if(apiClearBtn){
-  apiClearBtn.addEventListener("click", handleApiClear);
+
+// ✅ API değiştir / iptal davranışı
+if(apiChangeBtn){
+  apiChangeBtn.addEventListener("click", ()=>{
+    apiEditing = true;
+    apiSaveStatus.textContent = "";
+    if(apiEntry) apiEntry.style.display = "block";
+    if(apiChangeBtn) apiChangeBtn.style.display = "none";
+    if(apiCancelChangeBtn) apiCancelChangeBtn.style.display = "block";
+    if(apiKeyInput) apiKeyInput.value = "";
+    if(apiKeyInput) apiKeyInput.focus();
+  });
+}
+if(apiCancelChangeBtn){
+  apiCancelChangeBtn.addEventListener("click", ()=>{
+    apiEditing = false;
+    apiSaveStatus.textContent = "";
+    updateApiStatusLine();
+  });
 }
 
 function updateApiStatusLine(){
   const key = getApiKey();
-  if(key && key.trim().length > 10){
+  const hasKey = (key && key.trim().length > 10);
+
+  if(hasKey){
     apiStatusLine.textContent = "✅ API kayıtlı";
     apiStatusLine.style.color = "green";
-    if(apiEntry) apiEntry.style.display = "none";
-    if(apiKeyInput) apiKeyInput.value = key;
+
+    // API kayıtlıyken: normalde giriş kapalı, sadece "API değiştir" açık
+    if(apiEditing){
+      if(apiEntry) apiEntry.style.display = "block";
+      if(apiChangeBtn) apiChangeBtn.style.display = "none";
+      if(apiCancelChangeBtn) apiCancelChangeBtn.style.display = "block";
+      if(apiKeyInput) apiKeyInput.value = "";
+    }else{
+      if(apiEntry) apiEntry.style.display = "none";
+      if(apiChangeBtn) apiChangeBtn.style.display = "block";
+      if(apiCancelChangeBtn) apiCancelChangeBtn.style.display = "none";
+      // güvenlik: kayıtlı anahtarı input'a yazma (type=password olsa da)
+      if(apiKeyInput) apiKeyInput.value = "";
+    }
   }else{
     apiStatusLine.textContent = "❌ API kayıtlı değil";
     apiStatusLine.style.color = "red";
+    apiEditing = false;
     if(apiEntry) apiEntry.style.display = "block";
+    if(apiChangeBtn) apiChangeBtn.style.display = "none";
+    if(apiCancelChangeBtn) apiCancelChangeBtn.style.display = "none";
   }
 }
 
@@ -569,6 +544,7 @@ async function generateTextFromAPI(){
   quizStatsPanel.innerHTML = "Test sonucu yok.";
   generateStatus.innerText = "Metin oluşturuluyor...";
 
+  // quiz state reset
   quizPhase = "reading";
   questionsGenerated = false;
   currentQuestions = null;
@@ -596,26 +572,24 @@ En sonda kısa bir kapanış cümlesi yaz.
 `;
 
   try{
-    const data = await fetchJsonOrThrow(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":"Bearer " + apiKey
-        },
-        body:JSON.stringify({
-          model:"gpt-4o-mini",
-          messages:[{role:"user",content:prompt}],
-          max_tokens:900,
-          temperature:0.8
-        })
+    const res = await fetch("https://api.openai.com/v1/chat/completions",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + apiKey
       },
-      5,
-      (msg)=>{ generateStatus.innerText = msg; }
-    );
+      body:JSON.stringify({
+        model:"gpt-4o-mini",
+        messages:[{role:"user",content:prompt}],
+        max_tokens:900,
+        temperature:0.8
+      })
+    });
 
+    const data = await res.json();
     let raw = data.choices?.[0]?.message?.content || "";
+
+    // Olası baştaki markdown başlık kalıntılarını temizle
     raw = raw.replace(/^#+\s*/gm,"");
 
     rawText = raw;
@@ -624,15 +598,8 @@ En sonda kısa bir kapanış cümlesi yaz.
     generateStatus.innerText = "✅ Metin hazır.";
   }catch(err){
     console.error(err);
-
-    // ✅ 429 ise alert patlatma, altta mesaj ver
-    if(String(err.message||"").startsWith("429")){
-      generateStatus.innerText = err.message;
-      return;
-    }
-
-    generateStatus.innerText = "Hata oluştu.";
     alert("Hata: " + err.message);
+    generateStatus.innerText = "Hata oluştu.";
   }
 }
 
@@ -819,24 +786,23 @@ function shuffleOptionsAndFixAnswer(q){
   if(correctIdx < 0) return;
   if(!Array.isArray(q.options) || q.options.length !== 5) return;
 
+  // (metin + eski index)
   const packed = q.options.map((t, i) => ({ t, i }));
+
+  // Fisher–Yates shuffle
   for(let i = packed.length - 1; i > 0; i--){
     const j = Math.floor(Math.random() * (i + 1));
     [packed[i], packed[j]] = [packed[j], packed[i]];
   }
 
+  // yeni options
   q.options = packed.map(x => x.t);
+
+  // doğru cevabın yeni konumu
   const newCorrectPos = packed.findIndex(x => x.i === correctIdx);
   q.answer = ANSWER_LETTERS[newCorrectPos];
 }
 /* ==================================================================== */
-
-function extractJsonObject(text){
-  const s = text.indexOf("{");
-  const e = text.lastIndexOf("}");
-  if(s === -1 || e === -1 || e <= s) return null;
-  return text.slice(s, e+1);
-}
 
 async function generateQuestionsForText(){
   const apiKey = getApiKey();
@@ -889,43 +855,31 @@ JSON formatı tam olarak şöyle olsun:
 `;
 
   try{
-    const data = await fetchJsonOrThrow(
-      "https://api.openai.com/v1/chat/completions",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":"Bearer " + apiKey
-        },
-        body:JSON.stringify({
-          model:"gpt-4o-mini",
-          messages:[{role:"user",content:prompt}],
-          max_tokens:1200,
-          temperature:0.7
-        })
+    const res = await fetch("https://api.openai.com/v1/chat/completions",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + apiKey
       },
-      5,
-      (msg)=>{ questionContainer.innerHTML = msg; }
-    );
+      body:JSON.stringify({
+        model:"gpt-4o-mini",
+        messages:[{role:"user",content:prompt}],
+        max_tokens:1200,
+        temperature:0.7
+      })
+    });
 
-    let content = (data.choices?.[0]?.message?.content || "").trim();
-    let jsonText = content;
+    const data = await res.json();
+    let text = data.choices?.[0]?.message?.content || "";
 
-    if(!(jsonText.startsWith("{") && jsonText.endsWith("}"))){
-      const extracted = extractJsonObject(jsonText);
-      if(extracted) jsonText = extracted;
-    }
+    const idx = text.indexOf("{");
+    if(idx > 0) text = text.slice(idx);
 
-    let obj;
-    try{
-      obj = JSON.parse(jsonText);
-    }catch(e){
-      throw new Error("Sorular JSON olarak çözümlenemedi.\nİlk 300 karakter:\n" + jsonText.slice(0, 300));
-    }
-
+    const obj = JSON.parse(text);
     currentQuestions = obj.questions || [];
     userAnswers = new Array(currentQuestions.length).fill(null);
 
+    // Şıkları A)/B) etiketlerinden temizle
     currentQuestions.forEach(q=>{
       if(Array.isArray(q.options)){
         q.options = q.options.map(t =>
@@ -934,17 +888,11 @@ JSON formatı tam olarak şöyle olsun:
       }
     });
 
+    // ✅ Şıkları karıştır ve doğru cevabı da yeni konuma göre güncelle
     currentQuestions.forEach(q => shuffleOptionsAndFixAnswer(q));
 
   }catch(err){
     console.error(err);
-
-    // ✅ 429 ise alert patlatma, sayfada göster
-    if(String(err.message||"").startsWith("429")){
-      questionContainer.innerHTML = err.message;
-      return;
-    }
-
     alert("Sorular oluşturulurken hata oluştu: " + err.message);
     questionContainer.innerHTML = "Sorular yüklenemedi.";
   }
