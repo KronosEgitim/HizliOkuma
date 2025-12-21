@@ -458,18 +458,18 @@ async function loadReadyList(){
 loadReadyList();
 
 /* ========= HAZIR METİN YÜKLEME (TXT içinden sadece metin) ========= */
-// TXT formatı:
+// TXT formatı (senin örneğine göre):
 // metin...
 // ...
 // -SORULAR-
-// 1) Soru metni
-// A) ...
-// B) ...
-// C) ...
-// D) ...
-// E) ...
-// Cevap: B
-//
+// (boş satır olabilir)
+// Soru cümlesi
+// a) ...
+// b) ...
+// c) ...
+// d) ...
+// e) ...
+// b
 async function loadReadyTextFromTxt(url){
   if(readyStatus){
     readyStatus.textContent = "";
@@ -503,7 +503,7 @@ async function loadReadyTextFromTxt(url){
     const parts = txt.split(/\r?\n[ \t\-_=]*SORULAR[ \t\-_=]*\r?\n/i);
 
     const onlyText = (parts[0] || "").trim();
-    readyQuestionsRaw = (parts[1] || "").trim();  // Soru bloğu (olmayabilir)
+    readyQuestionsRaw = (parts[1] || "").trim();  // Soru bloğu
 
     if(!onlyText){
       throw new Error("TXT içinde metin boş görünüyor.");
@@ -1042,6 +1042,16 @@ function shuffleOptionsAndFixAnswer(q){
 }
 
 /* ========= HAZIR SORU PARSE EDİCİ ========= */
+/* Bu fonksiyon TXT'deki senin formatını destekleyecek şekilde düzenlendi:
+   Soru satırı: düz cümle
+   Sonra:
+     a) ...
+     b) ...
+     c) ...
+     d) ...
+     e) ...
+   Sonraki satır: doğru şık (ör: b, c, E)
+*/
 function parseReadyQuestions(raw){
   currentQuestions = [];
   userAnswers = [];
@@ -1055,57 +1065,69 @@ function parseReadyQuestions(raw){
 
   let i = 0;
   while(i < lines.length){
-    // Soru satırı: 1) Soru, 1 ) Soru, 1- Soru, 1. Soru, Soru 1: Soru
-    let qMatch =
-      /^(\d+)\s*[\)\.\-\:]\s*(.+)/.exec(lines[i]) ||
-      /^Soru\s*(\d+)\s*[\)\.\-\:]\s*(.+)/i.exec(lines[i]);
+    let line = lines[i];
 
-    if(!qMatch){
+    // 1) ... veya Soru 1: ... formatını da destekle (ileride kullanırsan)
+    let qText;
+    let numberedMatch =
+      /^(\d+)\s*[\)\.\-\:]\s*(.+)/.exec(line) ||
+      /^Soru\s*(\d+)\s*[\)\.\-\:]\s*(.+)/i.exec(line);
+
+    if(numberedMatch){
+      qText = numberedMatch[2].trim();
       i++;
-      continue;
+    }else{
+      // Eğer satır A)/B)/... veya sadece cevap harfi ise soru değildir, atla
+      if(/^([a-e])\s*\)/i.test(line) || /^[a-e]$/i.test(line) ||
+         /^(Cevap|Doğru cevap)/i.test(line)){
+        i++;
+        continue;
+      }
+      // Senin örneğindeki gibi düz soru cümlesi
+      qText = line;
+      i++;
     }
 
-    const qText = qMatch[2].trim();
-    i++;
-
+    // 5 şık oku: a) .., b) .., c) .., d) .., e) ..
     const options = new Array(5).fill("");
-    const optFound = {A:false,B:false,C:false,D:false,E:false};
+    const found = {A:false,B:false,C:false,D:false,E:false};
 
-    // Şıklar: A) ..., A ) ...
-    for(let j=0; j<5 && i<lines.length; j++){
-      const optMatch = /^([A-E])\s*\)\s*(.+)/i.exec(lines[i]);
-      if(!optMatch) break;
-      const letter = optMatch[1].toUpperCase();
-      const text   = optMatch[2].trim();
+    while(i < lines.length){
+      const optLine = lines[i];
+      const m = /^([a-e])\s*\)\s*(.+)/i.exec(optLine);
+      if(!m) break;
+      const letter = m[1].toUpperCase();
+      const text   = m[2].trim();
       const idx    = ANSWER_LETTERS.indexOf(letter);
       if(idx >= 0){
         options[idx] = text;
-        optFound[letter] = true;
+        found[letter] = true;
       }
       i++;
     }
 
-    const allOptionsFilled = ANSWER_LETTERS.every(l => optFound[l]);
-    if(!allOptionsFilled){
+    const allFilled = ANSWER_LETTERS.every(l => found[l]);
+    if(!allFilled){
+      // format bozuksa bu soruyu atla
       continue;
     }
 
+    // doğru cevabı oku (örneğin: "b" veya "B" tek harf)
     let answerLetter = null;
-
     if(i < lines.length){
-      let ansLine = lines[i];
+      const ansLine = lines[i];
+      let m =
+        /^(?:Cevap|Cevap:|Doğru cevap|Doğru cevap:)\s*([a-e])/i.exec(ansLine) ||
+        /^([a-e])$/i.exec(ansLine);
 
-      let m = /^(?:Cevap|Cevap:|Doğru cevap|Doğru cevap:)\s*([A-E])/i.exec(ansLine);
       if(m){
         answerLetter = m[1].toUpperCase();
-        i++;
-      }else if(/^[A-E]$/i.test(ansLine)){
-        answerLetter = ansLine.toUpperCase();
         i++;
       }
     }
 
     if(!answerLetter){
+      // cevap bulunamadıysa soruyu atla
       continue;
     }
 
