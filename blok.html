@@ -154,7 +154,7 @@ body{
 
     <div id="settingsContent">
 
-      <!-- API BÖLÜMÜ (Bu sayfada sorgulansın) -->
+      <!-- API BÖLÜMÜ -->
       <div class="section">
         <h3>1) API Durumu</h3>
         <div id="apiStatusLine" style="font-weight:bold;margin-bottom:6px;"></div>
@@ -263,10 +263,10 @@ body{
 </div>
 
 <script>
-/* ========= SABİT: METİNLER KLASÖRÜ (GitHub Pages) ========= */
+/* ========= SABİT: METİNLER KLASÖRÜ ========= */
 const METINLER_BASE_URL = "https://kronosegitim.github.io/HizliOkuma/Metinler/";
 
-/* ========= KULLANICI KODU GÜVENLİK KONTROLÜ ========= */
+/* ========= KULLANICI KODU KONTROL ========= */
 (function ensureUserCode(){
   const code = localStorage.getItem("USER_CODE");
   if(!code || !code.trim()){
@@ -275,7 +275,7 @@ const METINLER_BASE_URL = "https://kronosegitim.github.io/HizliOkuma/Metinler/";
   }
 })();
 
-/* ========= API ANAHTARI DURUMU ========= */
+/* ========= API ANAHTARI ========= */
 
 function getApiKey(){
   return localStorage.getItem("USER_API_KEY") || "";
@@ -283,7 +283,7 @@ function getApiKey(){
 
 const apiStatusLine = document.getElementById("apiStatusLine");
 const apiEntry      = document.getElementById("apiEntry");
-const apiKeyInput   = document.getElementElementById?.("apiKeyInput") || document.getElementById("apiKeyInput");
+const apiKeyInput   = document.getElementById("apiKeyInput");
 const apiSaveBtn    = document.getElementById("apiSaveBtn");
 const apiSaveStatus = document.getElementById("apiSaveStatus");
 
@@ -347,8 +347,10 @@ if(apiChangeBtn){
     if(apiEntry) apiEntry.style.display = "block";
     if(apiChangeBtn) apiChangeBtn.style.display = "none";
     if(apiCancelChangeBtn) apiCancelChangeBtn.style.display = "block";
-    if(apiKeyInput) apiKeyInput.value = "";
-    if(apiKeyInput) apiKeyInput.focus();
+    if(apiKeyInput){
+      apiKeyInput.value = "";
+      apiKeyInput.focus();
+    }
   });
 }
 if(apiCancelChangeBtn){
@@ -410,12 +412,11 @@ if(srcAI) srcAI.addEventListener("change", updateTextSourceUI);
 if(srcReady) srcReady.addEventListener("change", updateTextSourceUI);
 updateTextSourceUI();
 
-/* ========= HAZIR METİN LİSTESİ: GitHub API ile Metinler klasörünü tara ========= */
+/* ========= HAZIR METİN LİSTESİ: GitHub API ile ========= */
 
 async function loadReadyList(){
   if (!readyTextSelect) return;
 
-  // Eski seçenekleri (ilk placeholder hariç) temizle
   while (readyTextSelect.options.length > 1) {
     readyTextSelect.remove(1);
   }
@@ -444,7 +445,7 @@ async function loadReadyList(){
     txtFiles.forEach(file => {
       const opt = document.createElement("option");
       opt.textContent = file.name.replace(/\.txt$/i, "");
-      opt.value = METINLER_BASE_URL + file.name; // Tam URL
+      opt.value = METINLER_BASE_URL + file.name;
       readyTextSelect.appendChild(opt);
     });
 
@@ -463,12 +464,23 @@ async function loadReadyList(){
 }
 loadReadyList();
 
-/* TXT formatı:
+/* ========= HAZIR METİN YÜKLEME:
+   TXT formatı:
    (1) Metin kısmı
-   (2) Yeni satır
-   ===SORULAR===
-   (3) JSON: { "questions":[ ... ] }
-*/
+   (2) Satırda: -SORULAR-
+   (3) 10 soru (5 şık + doğru cevap)
+   Örnek:
+   1) Soru metni
+   A) ...
+   B) ...
+   C) ...
+   D) ...
+   E) ...
+   Cevap: B
+====================================== */
+
+let readyQuestionsRaw = "";   // TXT içinden gelen ham soru bloğu
+
 async function loadReadyTextFromTxt(url){
   if(readyStatus){
     readyStatus.textContent = "";
@@ -483,7 +495,6 @@ async function loadReadyTextFromTxt(url){
     return;
   }
 
-  // Eğer değer tam URL değilse, Metinler klasörü altı kabul edilir
   if(!/^https?:\/\//i.test(url)){
     url = METINLER_BASE_URL + url;
   }
@@ -498,10 +509,16 @@ async function loadReadyTextFromTxt(url){
     if(!res.ok) throw new Error("TXT yüklenemedi. HTTP " + res.status);
 
     const txt = await res.text();
-    const parts = txt.split(/\n===SORULAR===\n/);
+
+    // -SORULAR- satırından böl
+    const parts = txt.split(/\r?\n\s*-SORULAR-\s*\r?\n/i);
 
     const onlyText = (parts[0] || "").trim();
-    if(!onlyText) throw new Error("TXT içinde metin boş görünüyor.");
+    readyQuestionsRaw = (parts[1] || "").trim();  // Soru bloğunu sakla
+
+    if(!onlyText){
+      throw new Error("TXT içinde metin boş görünüyor.");
+    }
 
     // state reset
     stop();
@@ -516,42 +533,20 @@ async function loadReadyTextFromTxt(url){
     currentQuestions = null;
     userAnswers = [];
 
-    rawText = onlyText;
+    rawText = onlyText;   // sadece metin kısmı
     loadText(rawText);
     calculateWordStats();
     generateStatus.innerText = "✅ Metin hazır.";
 
-    // Sorular varsa yükle
-    if(parts.length > 1){
-      const jsonPart = (parts[1] || "").trim();
-      if(jsonPart){
-        const obj = JSON.parse(jsonPart);
-        currentQuestions = obj.questions || [];
-        userAnswers = new Array(currentQuestions.length).fill(null);
-
-        currentQuestions.forEach(q=>{
-          if(Array.isArray(q.options)){
-            q.options = q.options.map(t => t.replace(/^[A-E]\)\s*/i,"").trim());
-          }
-        });
-        currentQuestions.forEach(q => shuffleOptionsAndFixAnswer(q));
-
-        if(readyStatus){
-          readyStatus.textContent = "✅ Hazır metin ve sorular yüklendi.";
-          readyStatus.style.color = "green";
-        }
+    if(readyStatus){
+      if(readyQuestionsRaw){
+        readyStatus.textContent = "✅ Metin yüklendi. Sorular, okuma bitince otomatik gösterilecek.";
       }else{
-        if(readyStatus){
-          readyStatus.textContent = "✅ Hazır metin yüklendi. (Sorular eklenmemiş)";
-          readyStatus.style.color = "green";
-        }
+        readyStatus.textContent = "✅ Metin yüklendi. (Sorular bölümü bulunamadı)";
       }
-    }else{
-      if(readyStatus){
-        readyStatus.textContent = "✅ Hazır metin yüklendi. (Sorular eklenmemiş)";
-        readyStatus.style.color = "green";
-      }
+      readyStatus.style.color = "green";
     }
+
   }catch(err){
     console.error(err);
     if(readyStatus){
@@ -567,7 +562,7 @@ if(loadReadyBtn){
   });
 }
 
-/* ========= RATE LIMIT / KİLİT / RETRY ========= */
+/* ========= RATE LIMIT / RETRY ========= */
 
 function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 
@@ -617,7 +612,7 @@ async function openaiChatCompletionWithRetry(payload, apiKey, maxRetries){
   }
 }
 
-/* ========= YAŞ + ZORLUK İÇİN YARDIMCI KURALLAR ========= */
+/* ========= YAŞ + ZORLUK KURALLARI ========= */
 
 function getTextLevelRules(ageGroup, level){
   let base = "";
@@ -755,7 +750,7 @@ let currentIndex = 0;
 let timeoutId = null;
 let paused = false;
 let rawText = "";
-let quizPhase = "reading";
+let quizPhase = "reading";        
 let currentQuestions = null;
 let userAnswers = [];
 let questionsGenerated = false;
@@ -797,6 +792,9 @@ async function generateTextFromAPI(){
     generateTextBtn.disabled = true;
     generateTextBtn.textContent = "Lütfen bekleyin...";
   }
+
+  // Hazır metin durumu sıfırlansın
+  readyQuestionsRaw = "";
 
   quizPhase = "reading";
   questionsGenerated = false;
@@ -861,7 +859,7 @@ En sonda kısa bir kapanış cümlesi yaz.
   }
 }
 
-/* ========= BLOK OKUMA VERİ YAPISI ========= */
+/* ========= BLOK OKUMA ========= */
 
 function loadText(txt){
   textDisplay.innerHTML = "";
@@ -886,7 +884,7 @@ function loadText(txt){
   });
 }
 
-/* ========= İSTATİSTİK HESAPLAMA ========= */
+/* ========= İSTATİSTİK ========= */
 
 const timeInput       = document.getElementById("timeInput");
 const blockCountInput = document.getElementById("blockCountInput");
@@ -926,7 +924,7 @@ function calculateWordStats(){
     `Hız: ${wpm} dk`;
 }
 
-/* ========= BLOK SİSTEMİ ========= */
+/* ========= BLOK AKIŞI ========= */
 
 function showNextWord(){
   if(paused) return;
@@ -936,13 +934,15 @@ function showNextWord(){
       questionsGenerated = true;
       quizPhase = "questions";
       setTimeout(async ()=>{
-        if(currentQuestions && currentQuestions.length){
-          renderQuestions();
-          finishBtn.style.display = "inline-block";
-          finishBtn.disabled = false;
-          return;
+        // 1) Eğer hazır metinden gelen soru bloğu varsa, onu parse et
+        if(readyQuestionsRaw){
+          parseReadyQuestions(readyQuestionsRaw);
         }
-        await generateQuestionsForText();
+        // 2) Hâlâ soru yoksa, API'den üret
+        if((!currentQuestions || !currentQuestions.length) && !readyQuestionsRaw){
+          await generateQuestionsForText();
+        }
+
         renderQuestions();
         if(currentQuestions && currentQuestions.length){
           finishBtn.style.display = "inline-block";
@@ -1063,7 +1063,105 @@ function shuffleOptionsAndFixAnswer(q){
   q.answer = ANSWER_LETTERS[newCorrectPos];
 }
 
-/* ========= SORU OLUŞTURMA ========= */
+/* ========= HAZIR SORU PARSE EDİCİ =========
+   Beklenen yapı (esnek):
+
+   1) Soru metni...
+   A) ...
+   B) ...
+   C) ...
+   D) ...
+   E) ...
+   Cevap: B
+
+   veya
+
+   1) Soru metni...
+   A) ...
+   ...
+   B   (tek harf satırı)
+*/
+
+function parseReadyQuestions(raw){
+  currentQuestions = [];
+  userAnswers = [];
+
+  if(!raw) return;
+
+  const lines = raw
+    .split(/\r?\n/)
+    .map(l => l.trim())
+    .filter(l => l.length > 0);
+
+  let i = 0;
+  while(i < lines.length){
+    const qMatch = /^(\d+)[\).\-\:]\s*(.+)/.exec(lines[i]);
+    if(!qMatch){
+      i++;
+      continue;
+    }
+    const qText = qMatch[2].trim();
+    i++;
+
+    const options = new Array(5).fill("");
+    const optFound = {A:false,B:false,C:false,D:false,E:false};
+
+    for(let j=0; j<5 && i<lines.length; j++){
+      const optMatch = /^([A-E])\)\s*(.+)/i.exec(lines[i]);
+      if(!optMatch) break;
+      const letter = optMatch[1].toUpperCase();
+      const text   = optMatch[2].trim();
+      const idx    = ANSWER_LETTERS.indexOf(letter);
+      if(idx >= 0){
+        options[idx] = text;
+        optFound[letter] = true;
+      }
+      i++;
+    }
+
+    const allOptionsFilled = ANSWER_LETTERS.every(l => optFound[l]);
+    if(!allOptionsFilled){
+      // opsiyonlar eksikse bu bloğu atlayalım
+      continue;
+    }
+
+    let answerLetter = null;
+
+    if(i < lines.length){
+      let ansLine = lines[i];
+
+      let m = /^(?:Cevap|Cevap:|Doğru cevap|Doğru cevap:)\s*([A-E])/i.exec(ansLine);
+      if(m){
+        answerLetter = m[1].toUpperCase();
+        i++;
+      }else if(/^[A-E]$/i.test(ansLine)){
+        answerLetter = ansLine.toUpperCase();
+        i++;
+      }
+    }
+
+    if(!answerLetter){
+      // cevap satırı yoksa geçersiz say
+      continue;
+    }
+
+    const qObj = {
+      q: qText,
+      options: options.slice(), // A..E sırası
+      answer: answerLetter
+    };
+
+    shuffleOptionsAndFixAnswer(qObj);
+
+    currentQuestions.push(qObj);
+  }
+
+  if(currentQuestions.length){
+    userAnswers = new Array(currentQuestions.length).fill(null);
+  }
+}
+
+/* ========= API İLE SORU ÜRETME (hazır soru yoksa) ========= */
 
 let isBusyQuestions = false;
 
@@ -1159,6 +1257,8 @@ JSON formatı tam olarak şöyle olsun:
   }
 }
 
+/* ========= SORULARI ÇİZ ========= */
+
 function renderQuestions(){
   questionContainer.innerHTML = "";
   if(!currentQuestions || !currentQuestions.length){
@@ -1201,6 +1301,8 @@ function renderQuestions(){
     questionContainer.appendChild(qDiv);
   });
 }
+
+/* ========= TESTİ DEĞERLENDİR ========= */
 
 function evaluateQuiz(){
   if(!currentQuestions || !currentQuestions.length) return;
