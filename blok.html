@@ -270,7 +270,6 @@ const METINLER_BASE_URL = "https://kronosegitim.github.io/HizliOkuma/Metinler/";
 (function ensureUserCode(){
   const code = localStorage.getItem("USER_CODE");
   if(!code || !code.trim()){
-    // Doğrudan link ile gelindiyse, ana sayfaya yönlendir
     alert("Önce kullanıcı kodu ile giriş yapmalısınız.");
     window.location.href = "AnaSayfa.html";
   }
@@ -278,14 +277,13 @@ const METINLER_BASE_URL = "https://kronosegitim.github.io/HizliOkuma/Metinler/";
 
 /* ========= API ANAHTARI DURUMU ========= */
 
-/* index.html ile aynı key: USER_API_KEY */
 function getApiKey(){
   return localStorage.getItem("USER_API_KEY") || "";
 }
 
 const apiStatusLine = document.getElementById("apiStatusLine");
 const apiEntry      = document.getElementById("apiEntry");
-const apiKeyInput   = document.getElementById("apiKeyInput");
+const apiKeyInput   = document.getElementElementById?.("apiKeyInput") || document.getElementById("apiKeyInput");
 const apiSaveBtn    = document.getElementById("apiSaveBtn");
 const apiSaveStatus = document.getElementById("apiSaveStatus");
 
@@ -295,7 +293,6 @@ const apiCancelChangeBtn = document.getElementById("apiCancelChangeBtn");
 let apiEditing = false;
 
 async function verifyApiKey(key){
-  // Basit doğrulama: /v1/models endpoint'i
   const res = await fetch("https://api.openai.com/v1/models", {
     headers: { "Authorization": "Bearer " + key }
   });
@@ -413,49 +410,54 @@ if(srcAI) srcAI.addEventListener("change", updateTextSourceUI);
 if(srcReady) srcReady.addEventListener("change", updateTextSourceUI);
 updateTextSourceUI();
 
-/* 
-   GitHub'da hazır metin/soru TXT dosyaları:
-   - Metinler/list.json  (GitHub Pages: https://kronosegitim.github.io/HizliOkuma/Metinler/list.json)
-   - Metinler/xxx.txt
+/* ========= HAZIR METİN LİSTESİ: GitHub API ile Metinler klasörünü tara ========= */
 
-   list.json örneği:
-   [
-     {"label":"Dikkatsizlik (7-9 / Kolay)","file":"Dikkatsizlik.txt"},
-     {"label":"Frig Kralı (10-12 / Orta)","file":"139-Frig_Kralı.txt"}
-   ]
-*/
 async function loadReadyList(){
-  if(!readyTextSelect) return;
-  try{
-    const res = await fetch(METINLER_BASE_URL + "list.json", { cache:"no-store" });
-    if(!res.ok) throw new Error("list.json bulunamadı");
-    const arr = await res.json();
-    if(!Array.isArray(arr) || !arr.length) return;
+  if (!readyTextSelect) return;
 
-    while(readyTextSelect.options.length > 1) readyTextSelect.remove(1);
+  // Eski seçenekleri (ilk placeholder hariç) temizle
+  while (readyTextSelect.options.length > 1) {
+    readyTextSelect.remove(1);
+  }
 
-    arr.forEach(item=>{
-      const file = (item.file || "").trim();
-      if(!file) return;
+  try {
+    const apiUrl = "https://api.github.com/repos/kronosegitim/HizliOkuma/contents/Metinler";
+    const res = await fetch(apiUrl, { cache: "no-store" });
+
+    if (!res.ok) {
+      throw new Error("GitHub API hata kodu: " + res.status);
+    }
+
+    const items = await res.json();
+
+    const txtFiles = (Array.isArray(items) ? items : [])
+      .filter(item => item.type === "file" && /\.txt$/i.test(item.name));
+
+    if (!txtFiles.length) {
+      if (readyStatus) {
+        readyStatus.textContent = "Metinler klasöründe txt dosyası bulunamadı.";
+        readyStatus.style.color = "red";
+      }
+      return;
+    }
+
+    txtFiles.forEach(file => {
       const opt = document.createElement("option");
-      // Eğer tam URL değilse, Metinler klasörünün altı kabul edilir
-      opt.value = file.startsWith("http") ? file : (METINLER_BASE_URL + file);
-      opt.textContent = item.label || file;
+      opt.textContent = file.name.replace(/\.txt$/i, "");
+      opt.value = METINLER_BASE_URL + file.name; // Tam URL
       readyTextSelect.appendChild(opt);
     });
-  }catch(e){
-    // list.json yoksa: birkaç örnek option, doğrudan Metinler klasörüne göre
-    if(readyTextSelect.options.length === 1){
-      const samples = [
-        "Dikkatsizlik.txt",
-        "139-Frig_Kralı.txt"
-      ];
-      samples.forEach(f=>{
-        const opt = document.createElement("option");
-        opt.value = METINLER_BASE_URL + f;
-        opt.textContent = f.replace(/\.txt$/,"");
-        readyTextSelect.appendChild(opt);
-      });
+
+    if (readyStatus) {
+      readyStatus.textContent = "Metin listesi yüklendi.";
+      readyStatus.style.color = "green";
+    }
+
+  } catch (e) {
+    console.error(e);
+    if (readyStatus) {
+      readyStatus.textContent = "Liste yüklenemedi: " + (e.message || e);
+      readyStatus.style.color = "red";
     }
   }
 }
@@ -604,7 +606,6 @@ async function openaiChatCompletionWithRetry(payload, apiKey, maxRetries){
     if(res.status === 429 && attempt <= (maxRetries + 1)){
       const retrySec = extractRetrySecondsFromMessage(msg);
       if(retrySec && retrySec > 120){
-        // saatlik blok gibi; otomatik bekletmeyelim
         throw new Error(msg);
       }
       const waitMs = retrySec ? retrySec*1000 : (15000 + (attempt-1)*10000);
@@ -754,11 +755,10 @@ let currentIndex = 0;
 let timeoutId = null;
 let paused = false;
 let rawText = "";
-let quizPhase = "reading";        // "reading" -> "questions" -> "finished"
+let quizPhase = "reading";
 let currentQuestions = null;
 let userAnswers = [];
 let questionsGenerated = false;
-
 let isBusyGenerating = false;
 
 async function generateTextFromAPI(){
@@ -798,7 +798,6 @@ async function generateTextFromAPI(){
     generateTextBtn.textContent = "Lütfen bekleyin...";
   }
 
-  // quiz state reset
   quizPhase = "reading";
   questionsGenerated = false;
   currentQuestions = null;
@@ -927,7 +926,7 @@ function calculateWordStats(){
     `Hız: ${wpm} dk`;
 }
 
-/* ========= BLOK SİSTEMİ (SATIR SONU DA BLOK SINIRI) ========= */
+/* ========= BLOK SİSTEMİ ========= */
 
 function showNextWord(){
   if(paused) return;
@@ -1051,23 +1050,20 @@ function shuffleOptionsAndFixAnswer(q){
   if(correctIdx < 0) return;
   if(!Array.isArray(q.options) || q.options.length !== 5) return;
 
-  // (metin + eski index)
   const packed = q.options.map((t, i) => ({ t, i }));
 
-  // Fisher–Yates shuffle
   for(let i = packed.length - 1; i > 0; i--){
     const j = Math.floor(Math.random() * (i + 1));
     [packed[i], packed[j]] = [packed[j], packed[i]];
   }
 
-  // yeni options
   q.options = packed.map(x => x.t);
 
-  // doğru cevabın yeni konumu
   const newCorrectPos = packed.findIndex(x => x.i === correctIdx);
   q.answer = ANSWER_LETTERS[newCorrectPos];
 }
-/* ==================================================================== */
+
+/* ========= SORU OLUŞTURMA ========= */
 
 let isBusyQuestions = false;
 
@@ -1144,7 +1140,6 @@ JSON formatı tam olarak şöyle olsun:
     currentQuestions = obj.questions || [];
     userAnswers = new Array(currentQuestions.length).fill(null);
 
-    // Şıkları A)/B) etiketlerinden temizle
     currentQuestions.forEach(q=>{
       if(Array.isArray(q.options)){
         q.options = q.options.map(t =>
@@ -1153,7 +1148,6 @@ JSON formatı tam olarak şöyle olsun:
       }
     });
 
-    // Şıkları karıştır ve doğru cevabı da yeni konuma göre güncelle
     currentQuestions.forEach(q => shuffleOptionsAndFixAnswer(q));
 
   }catch(err){
