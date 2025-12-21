@@ -1,0 +1,87 @@
+Çevremizde gördüğümüz her şey maddeden oluşur ve maddeler üç temel halde bulunur: katı, sıvı ve gaz. Bu haller, maddenin taneciklerinin dizilişine ve hareketine göre birbirinden ayrılır. Katı maddelerin tanecikleri birbirine çok yakın ve düzenli bir şekilde yerleşmiştir. Bu nedenle katılar belirli şekle sahiptir ve kolayca sıkıştırılamazlar. Sıvı maddelerde tanecikler daha düzensizdir ve birbirine daha gevşek bağlarla tutunur. Bu yüzden sıvılar bulundukları kabın şeklini alır fakat hacimleri değişmez. Gaz maddelerin tanecikleri ise en düzensiz ve en hızlı hareket eden taneciklerdir. Gazlar hem bulundukları kabın şeklini alır hem de hacmini tamamen doldurur.
+
+Maddenin halleri, ısı alışverişi ile değişebilir. Bir katı madde ısı aldığında erir ve sıvı hale geçer. Sıvı madde daha fazla ısı alırsa buharlaşarak gaz haline dönüşür. Tersine, gaz bir madde ısı kaybettiğinde yoğunlaşır ve sıvı hale gelir. Sıvı bir madde daha da soğutulursa donar ve katı hale dönüşür. Bu değişimler doğada sürekli gerçekleşir. Örneğin yağmur, suyun gaz halinden sıvı hale dönüşmesinin bir sonucudur. Buzun eriyip tekrar donması da günlük hayatta sıkça gözlemlediğimiz bir olaydır.
+
+Bu olaylarda dikkat edilmesi gereken en önemli nokta, maddenin hâl değiştirirken kimyasal yapısının değişmemesidir. Yani su, ister buz olsun ister buhar, her hâlinde aynı maddedir. Hâl değişimi sırasında sadece tanecikler arasındaki boşluk ve hareket değişir. Bu bilgiler, maddenin doğadaki döngüsünü anlamamızı kolaylaştırır ve bilimsel düşünmeyi geliştirir.
+
+-SORULAR-
+
+Maddenin kaç temel hâli vardır?
+a) 1
+b) 2
+c) 3
+d) 4
+e) 5
+c
+
+Katı maddelerle ilgili aşağıdakilerden hangisi doğrudur?
+a) Hacimleri yoktur
+b) Tanecikleri düzenlidir ve sık yapıdadır
+c) Bulundukları kabın şeklini alır
+d) Her zaman sıvıya dönüşür
+e) Gazlardan oluşur
+b
+
+Sıvı maddelerle ilgili verilenlerden hangisi doğrudur?
+a) Belirli şekilleri vardır
+b) Kolayca sıkıştırılır
+c) Tanecikleri katılardan daha düzenlidir
+d) Bulundukları kabın şeklini alır
+e) Hacimleri yoktur
+d
+
+Gaz maddeler için aşağıdakilerden hangisi yanlıştır?
+a) Tanecikleri çok düzenlidir
+b) Kabın şeklini alır
+c) Kabın hacmini doldurur
+d) Tanecikleri çok hızlı hareket eder
+e) Sıkıştırılabilir
+a
+
+Erime olayında hangi değişim gerçekleşir?
+a) Gaz → Sıvı
+b) Katı → Sıvı
+c) Sıvı → Gaz
+d) Gaz → Katı
+e) Sıvı → Katı
+b
+
+Yoğunlaşma hangi hâl değişimidir?
+a) Katıdan sıvıya
+b) Sıvıdan katıya
+c) Gazdan sıvıya
+d) Sıvıdan gaza
+e) Katıdan gaza
+c
+
+Maddenin hâl değiştirirken değişmeyen özelliği nedir?
+a) Taneciklerin sayısı
+b) Sıcaklığı
+c) Hacmi
+d) Kimyasal yapısı
+e) Rengi
+d
+
+Suyun buharlaşması hangi hâl değişimine örnektir?
+a) Donma
+b) Yoğunlaşma
+c) Buharlaşma
+d) Süblimleşme
+e) Erime
+c
+
+Aşağıdakilerden hangisi hâl değişimine örnek değildir?
+a) Parfümün kokusunun yayılması
+b) Suyun donması
+c) Buzun erimesi
+d) Suyun kaynaması
+e) Su buharının buluta dönüşmesi
+a
+
+Maddenin halleriyle ilgili verilenlerden hangisi yanlıştır?
+a) Katıların tanecikleri en düzenlidir
+b) Gazlar sıkıştırılabilir
+c) Sıvıların hacmi değişmez
+d) Gazların belirli şekli vardır
+e) Katılar belirli şekle sahiptir
+d

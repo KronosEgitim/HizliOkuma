@@ -1,0 +1,97 @@
+HÜCRELER
+
+Hücreler, canlıların en küçük yapı birimleridir. Bir bina nasıl tuğlalardan oluşuyorsa, canlılar da hücrelerden oluşur. İnsanlar, hayvanlar, bitkiler ve hatta mikroskobik canlılar bile hücrelerden meydana gelir. Bazı canlıların vücudu sadece bir hücreden oluşur. Bu canlılara “tek hücreliler” denir. Amip, öglena ve bakteriler buna örnektir. İnsanlar gibi büyük canlılar ise trilyonlarca hücreden oluşur ve bu canlılara “çok hücreliler” denir. Çok hücreli canlılarda hücreler birbirine benzemeyebilir; bazıları hareket için, bazıları nefes alma için, bazıları da koruma için özelleşmiştir.
+
+Hücreler genel olarak iki gruba ayrılır: prokaryot hücreler ve ökaryot hücreler. Prokaryot hücreler, yapıca daha basittir. Bu hücrelerde çekirdek bulunmaz ve DNA sitoplazmanın içinde dağınık hâlde durur. Bakteriler prokaryot hücreye en iyi örneklerden biridir. Ökaryot hücrelerde ise belirgin bir çekirdek vardır ve DNA bu çekirdeğin içinde korunur. Bitkiler, hayvanlar ve mantarlar ökaryot hücrelere sahiptir.
+
+Bir hücrenin temel kısımları üç tanedir: hücre zarı, sitoplazma ve çekirdek. Hücre zarı, hücrenin etrafını çeviren ince bir yapıdır. Dışarıdan gelecek maddeleri kontrol eder ve hücreyi korur. Aynı zamanda hücrenin şeklinin korunmasına yardımcı olur. Sitoplazma, hücrenin içini dolduran jel kıvamında bir sıvıdır. Hücredeki organeller bu sıvının içinde bulunur. Organeller, hücre içinde özel görevleri olan küçük yapılardır. Çekirdek ise hücrenin yönetim merkezidir. Hücrenin nasıl çalışacağını kontrol eden bilgiler burada saklanır.
+
+Mitokondri, hücrenin enerji üreten organelidir. İnsanların yemek yiyerek enerji kazanması gibi, hücreler de mitokondride enerji üretir. Ribozomlar protein üretir. Proteinler büyüme, onarım ve pek çok iş için gereklidir. Golgi aygıtı, hücre içinde üretilen maddeleri paketler ve gerekli yerlere gönderir. Endoplazmik retikulum ise hücre içinde madde taşınmasını sağlar. Bitki hücrelerinde bulunan kloroplastlar ise fotosentez yaparak bitkiye besin sağlar. Ayrıca bitki hücresinde hücre duvarı bulunur. Bu duvar, bitkiye dayanıklılık kazandırır. Hayvan hücrelerinde hücre duvarı yoktur.
+
+Hücreler zamanla bölünerek çoğalır. Bu işlem canlıların büyümesini ve yaraların iyileşmesini sağlar. Çok hücreli canlıların büyümesi yeni hücrelerin oluşmasıyla gerçekleşir. Hücre bölünmesi düzenli bir şekilde devam ederken, hücrenin ihtiyaç duyduğu besinleri alması ve sağlıklı olması da gerekir. Yeterli beslenme, temiz su ve düzenli uyku hücrelerin sağlıklı kalmasında önemli rol oynar.
+
+Hücrelerin görevlerini düzgün yapabilmesi için oksijen gereklidir. Oksijen eksikliği, toksik maddeler ve zararlı kimyasallar hücrelere zarar verebilir. Bu nedenle sağlıklı yaşam alışkanlıkları hem hücrelerin hem de tüm vücudun daha iyi çalışmasını sağlar.
+
+Sonuç olarak, hücreler canlıların temel yapı taşıdır. Çok küçük olmalarına rağmen canlıların sağlığını, büyümesini ve yaşamını belirleyen en önemli birimlerdir. Her hücre, yaşamın devamı için büyük bir uyum içinde çalışır.
+
+-SORULAR-
+
+Hücreler canlıların hangi özelliğini oluşturur?
+a) En büyük organını
+b) Temel yapı birimini
+c) Hareket sistemini
+d) Sindirim sistemini
+e) Kan dolaşımını
+b
+
+Tek hücreli bir canlıya örnek hangisidir?
+a) İnsan
+b) Kedi
+c) Bakteri
+d) Balık
+e) Kuş
+c
+
+Prokaryot hücrelerin basit olmasının nedeni nedir?
+a) Çekirdeğinin bulunmaması
+b) Enerji üretememesi
+c) Hücre duvarının olmaması
+d) Çok büyük olması
+e) Zararsız olması
+a
+
+Ökaryot hücrelerde DNA nerede bulunur?
+a) Mitokondride
+b) Sitoplazmada
+c) Hücre zarında
+d) Ribozomda
+e) Çekirdekte
+e
+
+Hücre zarının görevi nedir?
+a) Fotosentez yapmak
+b) Madde giriş çıkışını kontrol etmek
+c) Protein üretmek
+d) Bitkiye yeşil rengi vermek
+e) Enerji üretmek
+b
+
+Mitokondrinin görevi nedir?
+a) Besin üretmek
+b) Atıkları temizlemek
+c) Hücreyi bölmek
+d) Enerji üretmek
+e) Isı üretmek
+d
+
+Kloroplast hangi hücrede bulunur?
+a) Sadece hayvan hücresinde
+b) Sadece mantar hücresinde
+c) Bitki hücresinde
+d) Bakteri hücresinde
+e) İnsan hücresinde
+c
+
+Hücrenin yönetim merkezi neresidir?
+a) Çekirdek
+b) Ribozom
+c) Sitoplazma
+d) Mitokondri
+e) Hücre zarı
+a
+
+Çok hücreli canlıların büyümesi nasıl gerçekleşir?
+a) Hücrelerin küçülmesiyle
+b) Hücrelerin renk değiştirmesiyle
+c) Hücrelerin bölünerek çoğalmasıyla
+d) Hücrelerin su emmesiyle
+e) Hücrelerin durmasıyla
+c
+
+Hücrelere zarar verebilecek durum hangisidir?
+a) Dengeli beslenme
+b) Temiz su
+c) Düzenli uyku
+d) Oksijen eksikliği
+e) Egzersiz yapma
+d

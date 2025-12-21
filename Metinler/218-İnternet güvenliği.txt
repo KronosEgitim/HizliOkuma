@@ -1,0 +1,91 @@
+Günümüzde internet, bilgiye ulaşmanın en hızlı yollarından biri haline gelmiştir. Öğrenciler araştırma yapmak, oyun oynamak, arkadaşlarıyla iletişim kurmak ve eğlenceli içerikler izlemek için interneti sıkça kullanır. Ancak internet, doğru kullanılmadığında çeşitli riskler barındırabilir. Bu nedenle dijital ortamda güvenli davranmak, tıpkı günlük hayatta alınan güvenlik önlemleri kadar önemlidir.
+
+İnternet güvenliğinin temel kurallarından biri, kişisel bilgileri korumaktır. Ad, soyad, adres, telefon numarası veya okul bilgilerini tanımadığınız kişilerle paylaşmak ciddi sorunlara yol açabilir. Ayrıca sosyal medya hesaplarının güçlü bir şifreyle korunması gerekir. Şifrelerin başkaları tarafından tahmin edilmesini zorlaştırmak için harf, rakam ve özel karakter kombinasyonları kullanılmalıdır.
+
+Bir diğer önemli nokta ise güvenilmeyen bağlantılara tıklamaktan kaçınmaktır. Bazı internet siteleri veya uygulamalar, zararlı yazılımlar içerebilir. Bu yazılımlar bilgisayara ya da telefona zarar verebilir, hatta kişisel bilgileri ele geçirebilir. Bu nedenle sadece güvenilir ve bilinen siteler kullanılmalıdır. Öğrencilerin, öğretmen veya ebeveyn onayı olmadan program indirmemesi de güvenlik açısından büyük bir önem taşır.
+
+Siber zorbalık ise dijital dünyanın en büyük problemlerinden biridir. Bir kişiyi internet üzerinden tehdit etmek, küçük düşürmek veya rahatsız edici mesajlar göndermek siber zorbalık olarak adlandırılır. Bu tür davranışlar hem hukuka aykırıdır hem de insanların psikolojik olarak zarar görmesine neden olur. Siber zorbalığa maruz kalan bir öğrencinin mutlaka bir yetişkine haber vermesi gerekir.
+
+İnterneti güvenli kullanmak, hem teknolojiden doğru şekilde yararlanmayı sağlar hem de dijital dünyada daha bilinçli bireyler yetişmesine yardımcı olur.
+
+-SORULAR-
+
+Metinde internetin hangi yönüne özellikle dikkat çekilmiştir?
+a) Tehlikeler barındırabilmesi
+b) Eğlenceli olması
+c) Hızlı olması
+d) Ücretli hizmet sunması
+e) Sıkıcı olması
+a
+
+Kişisel bilgilere örnek aşağıdakilerden hangisidir?
+a) Sevdiği renk
+b) Adres
+c) Hobiler
+d) Okul ödevi
+e) İzlediği film
+b
+
+Güçlü şifre oluştururken hangisi kullanılmalıdır?
+a) Sadece harf
+b) Sadece rakam
+c) Harf, rakam ve özel karakter
+d) Tek bir kelime
+e) Doğum tarihi
+c
+
+Zararlı yazılımlar genellikle nereden bulaşabilir?
+a) Temiz su kaynaklarından
+b) Güvenilmeyen sitelerden
+c) Televizyon programlarından
+d) Spor aktivitelerinden
+e) Ders kitaplarından
+b
+
+Öğrencilerin hangi durumda onay alması önerilir?
+a) Ödev yaparken
+b) Ders çalışırken
+c) Oyun oynarken
+d) Program indirirken
+e) Video izlerken
+d
+
+Siber zorbalık aşağıdakilerden hangisine örnektir?
+a) Kitap hediye etmek
+b) Bir kişiye destek olmak
+c) İnternetten rahatsız edici mesajlar göndermek
+d) Arkadaşını ders çalışmaya çağırmak
+e) Okulda yardım etmek
+c
+
+Siber zorbalığa maruz kalan kişinin yapması gereken ilk şey nedir?
+a) Susmak
+b) Şifre değiştirmek
+c) Hesabını kapatmak
+d) Zorbalığa aynı şekilde karşılık vermek
+e) Bir yetişkine haber vermek
+e
+
+Aşağıdakilerden hangisi internet güvenliği için doğru bir davranıştır?
+a) Şifreleri arkadaşlarla paylaşmak
+b) Tanımadık kişilerle konuşmak
+c) Güvenilir siteleri kullanmak
+d) Her bağlantıya tıklamak
+e) Rastgele uygulama indirmek
+c
+
+İnternetin yararlı kullanımlarından biri nedir?
+a) Bilgi edinmek
+b) Bilgisayara zarar vermek
+c) İnsanları rahatsız etmek
+d) Kişisel bilgi yaymak
+e) Ders çalışmak ve araştırma yapmak
+a
+
+Metinde internet güvenliğinin önemi hangi nedenle vurgulanmıştır?
+a) İnternet yasaklanacağı için
+b) Riskleri olmadığı için
+c) İnternetin gereksiz olması için
+d) Yanlış kullanımın zarar verebilmesi için
+e) Kimsenin internet kullanmaması için
+d
