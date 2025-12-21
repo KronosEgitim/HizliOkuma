@@ -263,6 +263,8 @@ body{
 </div>
 
 <script>
+/* ========= SABİT: METİNLER KLASÖRÜ (GitHub Pages) ========= */
+const METINLER_BASE_URL = "https://kronosegitim.github.io/HizliOkuma/Metinler/";
 
 /* ========= KULLANICI KODU GÜVENLİK KONTROLÜ ========= */
 (function ensureUserCode(){
@@ -411,20 +413,21 @@ if(srcAI) srcAI.addEventListener("change", updateTextSourceUI);
 if(srcReady) srcReady.addEventListener("change", updateTextSourceUI);
 updateTextSourceUI();
 
-/* GitHub'da hazır metin/soru TXT dosyaları için önerilen yapı:
-   - Uygulamalar/metinler/list.json  (opsiyonel)
-   - Uygulamalar/metinler/xxx.txt
+/* 
+   GitHub'da hazır metin/soru TXT dosyaları:
+   - Metinler/list.json  (GitHub Pages: https://kronosegitim.github.io/HizliOkuma/Metinler/list.json)
+   - Metinler/xxx.txt
 
    list.json örneği:
    [
-     {"label":"7-9 / Kolay / 1","file":"metinler/ornek_7-9_kolay_1.txt"},
-     {"label":"10-12 / Orta / 1","file":"metinler/ornek_10-12_orta_1.txt"}
+     {"label":"Dikkatsizlik (7-9 / Kolay)","file":"Dikkatsizlik.txt"},
+     {"label":"Frig Kralı (10-12 / Orta)","file":"139-Frig_Kralı.txt"}
    ]
 */
 async function loadReadyList(){
   if(!readyTextSelect) return;
   try{
-    const res = await fetch("metinler/list.json", { cache:"no-store" });
+    const res = await fetch(METINLER_BASE_URL + "list.json", { cache:"no-store" });
     if(!res.ok) throw new Error("list.json bulunamadı");
     const arr = await res.json();
     if(!Array.isArray(arr) || !arr.length) return;
@@ -432,24 +435,27 @@ async function loadReadyList(){
     while(readyTextSelect.options.length > 1) readyTextSelect.remove(1);
 
     arr.forEach(item=>{
+      const file = (item.file || "").trim();
+      if(!file) return;
       const opt = document.createElement("option");
-      opt.value = item.file || "";
-      opt.textContent = item.label || item.file || "Hazır metin";
+      // Eğer tam URL değilse, Metinler klasörünün altı kabul edilir
+      opt.value = file.startsWith("http") ? file : (METINLER_BASE_URL + file);
+      opt.textContent = item.label || file;
       readyTextSelect.appendChild(opt);
     });
   }catch(e){
-    // list.json yoksa sorun değil; kullanıcı sonra ekleyebilir
-    // Şimdilik birkaç örnek placeholder ekleyelim:
+    // list.json yoksa: birkaç örnek option, doğrudan Metinler klasörüne göre
     if(readyTextSelect.options.length === 1){
-      const o1 = document.createElement("option");
-      o1.value = "metinler/ornek_7-9_kolay_1.txt";
-      o1.textContent = "Örnek 7-9 / Kolay / 1";
-      readyTextSelect.appendChild(o1);
-
-      const o2 = document.createElement("option");
-      o2.value = "metinler/ornek_10-12_orta_1.txt";
-      o2.textContent = "Örnek 10-12 / Orta / 1";
-      readyTextSelect.appendChild(o2);
+      const samples = [
+        "Dikkatsizlik.txt",
+        "139-Frig_Kralı.txt"
+      ];
+      samples.forEach(f=>{
+        const opt = document.createElement("option");
+        opt.value = METINLER_BASE_URL + f;
+        opt.textContent = f.replace(/\.txt$/,"");
+        readyTextSelect.appendChild(opt);
+      });
     }
   }
 }
@@ -473,6 +479,11 @@ async function loadReadyTextFromTxt(url){
       readyStatus.style.color = "red";
     }
     return;
+  }
+
+  // Eğer değer tam URL değilse, Metinler klasörü altı kabul edilir
+  if(!/^https?:\/\//i.test(url)){
+    url = METINLER_BASE_URL + url;
   }
 
   if(readyStatus){
@@ -997,7 +1008,7 @@ const stopBtn  = document.getElementById("stopBtn");
 
 function start(){
   if(!words.length){
-    alert("Önce metin oluşturun.");
+    alert("Önce metin oluşturun veya hazır metin seçin.");
     return;
   }
   paused = false;
@@ -1030,7 +1041,7 @@ finishBtn.addEventListener("click", ()=>{
   finishBtn.disabled = true;
 });
 
-/* ======== ✅ ÇÖZÜM B: ŞIKLARI KARIŞTIR + DOĞRU CEVABI GÜNCELLE ======== */
+/* ======== ŞIKLARI KARIŞTIR + DOĞRU CEVABI GÜNCELLE ======== */
 const ANSWER_LETTERS = ["A","B","C","D","E"];
 
 function shuffleOptionsAndFixAnswer(q){
@@ -1142,7 +1153,7 @@ JSON formatı tam olarak şöyle olsun:
       }
     });
 
-    // ✅ Şıkları karıştır ve doğru cevabı da yeni konuma göre güncelle
+    // Şıkları karıştır ve doğru cevabı da yeni konuma göre güncelle
     currentQuestions.forEach(q => shuffleOptionsAndFixAnswer(q));
 
   }catch(err){
