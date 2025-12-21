@@ -264,7 +264,7 @@ body{
 
 <script>
 const METINLER_BASE_URL = "https://kronosegitim.github.io/HizliOkuma/Metinler/";
-let readyQuestionsRaw = "";   // TXT içinden gelen ham soru bloğu
+let readyQuestionsRaw = "";   // TXT içindeki soru bloğu
 
 (function ensureUserCode(){
   const code = localStorage.getItem("USER_CODE");
@@ -459,12 +459,9 @@ loadReadyList();
 
 /* ========= HAZIR METİN YÜKLEME (TXT içinden sadece metin) ========= */
 // TXT formatı:
-// (1) Metin kısmı
-// (2) Ayrı bir satırda: -SORULAR-  (veya - SORULAR -, === SORULAR === vb.)
-// (3) 10 soru (5 şık + doğru cevap)
-//
-// Örnek:
-//
+// metin...
+// ...
+// -SORULAR-
 // 1) Soru metni
 // A) ...
 // B) ...
@@ -506,7 +503,7 @@ async function loadReadyTextFromTxt(url){
     const parts = txt.split(/\r?\n[ \t\-_=]*SORULAR[ \t\-_=]*\r?\n/i);
 
     const onlyText = (parts[0] || "").trim();
-    readyQuestionsRaw = (parts[1] || "").trim();  // Soru bloğu
+    readyQuestionsRaw = (parts[1] || "").trim();  // Soru bloğu (olmayabilir)
 
     if(!onlyText){
       throw new Error("TXT içinde metin boş görünüyor.");
@@ -652,7 +649,7 @@ function getTextLevelRules(ageGroup, level){
     case "orta":
       levelRule =
 `- Zorluk seviyesi ORTA olsun: cümle uzunlukları orta düzeyde olsun.
-- Bazı yeni kelimeler ve kavramlar kullan; anlamları metin içinde anlaşılabilir olsun.`;
+- Bazı yeni kavramlar ve kelimeler kullan; anlamları metin içinde anlaşılabilir olsun.`;
       break;
     case "zor":
       levelRule =
@@ -913,16 +910,24 @@ function showNextWord(){
       questionsGenerated = true;
       quizPhase = "questions";
       setTimeout(async ()=>{
-        if(readyQuestionsRaw){
-          parseReadyQuestions(readyQuestionsRaw);
-        }
-        if(!currentQuestions || !currentQuestions.length){
+        // HAZIR METİN MODU: txt içindeki soruları kullan, API'ye DOKUNMA
+        if(srcReady && srcReady.checked){
+          if(readyQuestionsRaw){
+            parseReadyQuestions(readyQuestionsRaw);
+          }
+          renderQuestions();
+          if(currentQuestions && currentQuestions.length){
+            finishBtn.style.display = "inline-block";
+            finishBtn.disabled = false;
+          }
+        }else{
+          // AI METİN MODU: API'den soru üret
           await generateQuestionsForText();
-        }
-        renderQuestions();
-        if(currentQuestions && currentQuestions.length){
-          finishBtn.style.display = "inline-block";
-          finishBtn.disabled = false;
+          renderQuestions();
+          if(currentQuestions && currentQuestions.length){
+            finishBtn.style.display = "inline-block";
+            finishBtn.disabled = false;
+          }
         }
       }, 300);
     }
@@ -1116,13 +1121,10 @@ function parseReadyQuestions(raw){
 
   if(currentQuestions.length){
     userAnswers = new Array(currentQuestions.length).fill(null);
-  }else{
-    // Hiç soru parse edilemediyse fallback için temizle
-    readyQuestionsRaw = "";
   }
 }
 
-/* ========= API İLE SORU ÜRETME (hazır soru yoksa) ========= */
+/* ========= API İLE SORU ÜRETME (Sadece AI metni için) ========= */
 let isBusyQuestions = false;
 
 async function generateQuestionsForText(){
@@ -1132,7 +1134,6 @@ async function generateQuestionsForText(){
   updateApiStatusLine();
 
   if(!apiKey){
-    // API yoksa sessizce çık
     return;
   }
 
