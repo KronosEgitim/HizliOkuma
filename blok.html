@@ -234,7 +234,7 @@ body{
           <label>Hazır metin seçiniz</label>
           <select id="readyTextSelect">
             <option value="">Seçiniz</option>
-            <!-- GitHub /HizliOkuma/metinler klasöründeki txt dosyaları JS ile doldurulacak -->
+            <!-- KronosEgitim/HizliOkuma/Metinler altındaki .txt dosyaları JS ile doldurulacak -->
           </select>
         </div>
 
@@ -507,15 +507,15 @@ let currentQuestions = null;
 let userAnswers = [];
 let questionsGenerated = false;
 
-/* GitHub /HizliOkuma/metinler klasöründen txt dosyalarını otomatik listele */
+/* KronosEgitim/HizliOkuma/Metinler klasöründen txt dosyalarını otomatik listele */
 async function populateReadyTexts(){
   const select = readyTextSelect;
   if(!select) return;
 
   select.innerHTML = '<option value="">Seçiniz</option>';
 
-  // DİKKAT: depo adı "ilhantopaloglu.github.io"
-  const apiUrl = "https://api.github.com/repos/ilhantopaloglu/ilhantopaloglu.github.io/contents/HizliOkuma/metinler";
+  // DOĞRU REPO + DOĞRU KLASÖR
+  const apiUrl = "https://api.github.com/repos/KronosEgitim/HizliOkuma/contents/Metinler";
 
   try{
     const res = await fetch(apiUrl);
@@ -532,7 +532,7 @@ async function populateReadyTexts(){
       .filter(item => item.type === "file" && item.name.toLowerCase().endsWith(".txt"));
 
     if(!txtFiles.length){
-      generateStatus.textContent = "metinler klasöründe .txt dosyası bulunamadı.";
+      generateStatus.textContent = "Metinler klasöründe .txt dosyası bulunamadı.";
       generateStatus.style.color = "red";
       return;
     }
@@ -541,7 +541,8 @@ async function populateReadyTexts(){
       .sort((a,b)=>a.name.localeCompare(b.name,"tr"))
       .forEach(item=>{
         const opt = document.createElement("option");
-        opt.value = "https://ilhantopaloglu.github.io/HizliOkuma/metinler/" + item.name;
+        // **download_url** → doğrudan ham txt içeriği
+        opt.value = item.download_url;
         opt.textContent = item.name.replace(/\.txt$/i,"");
         select.appendChild(opt);
       });
@@ -619,6 +620,7 @@ async function generateTextFromAPI(){
   questionContainer.innerHTML = "";
   quizStatsPanel.innerHTML = "Test sonucu yok.";
   generateStatus.innerText = "Metin oluşturuluyor...";
+  generateStatus.style.color = "black";
 
   quizPhase = "reading";
   questionsGenerated = false;
@@ -669,7 +671,7 @@ En sonda kısa bir kapanış cümlesi yaz.
     loadText(rawText);
     calculateWordStats();
     generateStatus.innerText = "✅ Metin hazır.";
-    generateStatus.style.color = "black";
+    generateStatus.style.color = "green";
   }catch(err){
     console.error(err);
     alert("Hata: " + err.message);
@@ -717,8 +719,12 @@ async function loadReadyText(){
 }
 
 /* ========= BLOK OKUMA VERİ YAPISI ========= */
+const textDisplayEl = textDisplay;
+let finishBtn       = document.getElementById("finishBtn");
+const questionContainer = document.getElementById("questionContainer");
+
 function loadText(txt){
-  textDisplay.innerHTML = "";
+  textDisplayEl.innerHTML = "";
   words = [];
   currentIndex = 0;
 
@@ -736,7 +742,7 @@ function loadText(txt){
       words.push(span);
       div.appendChild(span);
     });
-    textDisplay.appendChild(div);
+    textDisplayEl.appendChild(div);
   });
 }
 
@@ -780,6 +786,9 @@ function calculateWordStats(){
 }
 
 /* ========= BLOK SİSTEMİ ========= */
+let paused = false;
+let timeoutId = null;
+
 function showNextWord(){
   if(paused) return;
 
@@ -874,9 +883,6 @@ pauseBtn.onclick = pause;
 stopBtn.onclick  = stop;
 
 /* ========= SORU SİSTEMİ ========= */
-const finishBtn         = document.getElementById("finishBtn");
-const questionContainer = document.getElementById("questionContainer");
-
 finishBtn.addEventListener("click", ()=>{
   if(quizPhase !== "questions") return;
   evaluateQuiz();
