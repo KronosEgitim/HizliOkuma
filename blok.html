@@ -141,7 +141,25 @@ body{
   cursor:pointer;
   font-size:14px;
   align-self:flex-start;
-  display:none; /* başta gizli */
+  display:none;
+}
+
+/* Radyo satırları */
+.textModeRow{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin-bottom:8px;
+}
+.textModeRow label{
+  width:auto;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.textModeRow input[type="radio"]{
+  width:auto;
+  margin-bottom:0;
 }
 </style>
 </head>
@@ -154,74 +172,73 @@ body{
 
     <div id="settingsContent">
 
-      <!-- API BÖLÜMÜ -->
+      <!-- API BÖLÜMÜ (Bu sayfada sorgulansın) -->
       <div class="section">
         <h3>1) API Durumu</h3>
         <div id="apiStatusLine" style="font-weight:bold;margin-bottom:6px;"></div>
-
-        <button class="secondary" id="apiChangeBtn" type="button" style="display:none;">API değiştir</button>
-        <button class="secondary" id="apiCancelChangeBtn" type="button" style="display:none;">İptal</button>
 
         <div id="apiEntry" style="display:none;">
           <input id="apiKeyInput" type="password" placeholder="OpenAI API anahtarı (sk-...)" style="width:100%;margin-bottom:6px;box-sizing:border-box;">
           <button class="primary" id="apiSaveBtn" type="button">API Doğrula ve Kaydet</button>
           <div id="apiSaveStatus" style="font-size:11px;margin-top:6px;"></div>
-
-          <div style="font-size:11px;margin-top:6px;">
-            API kodu almak için:
-            <a href="https://platform.openai.com/api-keys"
-               target="_blank"
-               rel="noopener noreferrer">
-               Link
-            </a>
-          </div>
         </div>
       </div>
-      
+
+      <!-- METİN SEÇENEKLERİ -->
       <div class="section">
         <h3>2) Metin</h3>
-        <label>Yaş Aralığı</label>
-        <select id="ageGroupInput">
-          <option value="">Seçiniz</option>
-          <option value="7-9">7-9</option>
-          <option value="10-12">10-12</option>
-          <option value="13-15">13-15</option>
-          <option value="16-18">16-18</option>
-          <option value="18+">18+</option>
-        </select>
 
-        <label>Zorluk Seviyesi</label>
-        <select id="levelInput">
-          <option value="">Seçiniz</option>
-          <option value="kolay">Kolay</option>
-          <option value="orta">Orta</option>
-          <option value="zor">Zor</option>
-        </select>
-
-        <label>Metin Kaynağı</label>
-        <div style="display:flex;gap:6px;margin-bottom:6px;">
-          <label style="display:flex;align-items:center;gap:6px;width:auto;margin:0;">
-            <input type="radio" name="textSource" id="srcAI" value="ai" checked style="width:auto;margin:0;">
-            Yaş-zorluk-konuya göre oluştur
+        <!-- Ana iki seçenek -->
+        <div class="textModeRow">
+          <label>
+            <input type="radio" name="textMode" value="ai" checked>
+            Yapay zeka ile metin oluştur
           </label>
-          <label style="display:flex;align-items:center;gap:6px;width:auto;margin:0;">
-            <input type="radio" name="textSource" id="srcReady" value="ready" style="width:auto;margin:0;">
+          <label>
+            <input type="radio" name="textMode" value="ready">
             Hazır metin seç
           </label>
         </div>
 
-        <div id="readyTextBox" style="display:none;margin-bottom:6px;">
-          <select id="readyTextSelect">
-            <option value="">Hazır metin seçiniz</option>
+        <!-- 1) Yapay zeka ile metin oluştur alanı -->
+        <div id="aiOptions">
+          <label>Yaş Aralığı</label>
+          <select id="ageGroupInput">
+            <option value="">Seçiniz</option>
+            <option value="7-9">7-9</option>
+            <option value="10-12">10-12</option>
+            <option value="13-15">13-15</option>
+            <option value="16-18">16-18</option>
+            <option value="18+">18+</option>
           </select>
-          <button class="secondary" id="loadReadyBtn" type="button">Hazır Metni Yükle</button>
-          <div id="readyStatus" style="font-size:11px;margin-top:4px;"></div>
+
+          <label>Zorluk Seviyesi</label>
+          <select id="levelInput">
+            <option value="">Seçiniz</option>
+            <option value="kolay">Kolay</option>
+            <option value="orta">Orta</option>
+            <option value="zor">Zor</option>
+          </select>
+
+          <label>Konu</label>
+          <input type="text" id="topicInput" placeholder="Örn: Güneş Sistemi">
         </div>
 
-        <label>Konu</label>
-        <input type="text" id="topicInput" placeholder="Örn: Güneş Sistemi">
+        <!-- 2) Hazır metin seç alanı -->
+        <div id="readyOptions" style="display:none;">
+          <label>Hazır metin seçiniz</label>
+          <select id="readyTextSelect">
+            <option value="">Seçiniz</option>
+            <!-- Örnek: değer olarak txt adresini kullanabilirsiniz -->
+            <!--
+            <option value="https://ilhantopaloglu.github.io/HizliOkuma/metinler/metin1.txt">Metin 1 - Ortaokul</option>
+            <option value="https://ilhantopaloglu.github.io/HizliOkuma/metinler/metin2.txt">Metin 2 - Lise</option>
+            -->
+          </select>
+        </div>
 
-        <button class="primary" id="generateTextBtn">Metin Oluştur</button>
+        <!-- Ortak buton -->
+        <button class="primary" id="generateTextBtn" type="button">Metin Oluştur</button>
         <div id="generateStatus" style="font-size:11px;margin-top:4px;"></div>
       </div>
 
@@ -263,9 +280,7 @@ body{
 </div>
 
 <script>
-const METINLER_BASE_URL = "https://kronosegitim.github.io/HizliOkuma/Metinler/";
-let readyQuestionsRaw = "";   // TXT içindeki soru bloğu
-
+/* ========= KULLANICI KODU GÜVENLİK KONTROLÜ ========= */
 (function ensureUserCode(){
   const code = localStorage.getItem("USER_CODE");
   if(!code || !code.trim()){
@@ -274,7 +289,7 @@ let readyQuestionsRaw = "";   // TXT içindeki soru bloğu
   }
 })();
 
-/* ========= API ANAHTARI ========= */
+/* ========= API ANAHTARI DURUMU ========= */
 function getApiKey(){
   return localStorage.getItem("USER_API_KEY") || "";
 }
@@ -284,9 +299,6 @@ const apiEntry      = document.getElementById("apiEntry");
 const apiKeyInput   = document.getElementById("apiKeyInput");
 const apiSaveBtn    = document.getElementById("apiSaveBtn");
 const apiSaveStatus = document.getElementById("apiSaveStatus");
-const apiChangeBtn       = document.getElementById("apiChangeBtn");
-const apiCancelChangeBtn = document.getElementById("apiCancelChangeBtn");
-let apiEditing = false;
 
 async function verifyApiKey(key){
   const res = await fetch("https://api.openai.com/v1/models", {
@@ -314,13 +326,11 @@ async function handleApiSave(){
       localStorage.setItem("USER_API_KEY", key);
       apiSaveStatus.textContent = "✅ API geçerli ve kaydedildi.";
       apiSaveStatus.style.color = "green";
-      apiEditing = false;
       updateApiStatusLine();
     }else{
       localStorage.removeItem("USER_API_KEY");
       apiSaveStatus.textContent = "❌ API geçersiz. Lütfen tekrar deneyin.";
       apiSaveStatus.style.color = "red";
-      apiEditing = false;
       updateApiStatusLine();
     }
   }catch(err){
@@ -336,270 +346,22 @@ if(apiSaveBtn){
   apiSaveBtn.addEventListener("click", handleApiSave);
 }
 
-if(apiChangeBtn){
-  apiChangeBtn.addEventListener("click", ()=>{
-    apiEditing = true;
-    apiSaveStatus.textContent = "";
-    if(apiEntry) apiEntry.style.display = "block";
-    apiChangeBtn.style.display = "none";
-    apiCancelChangeBtn.style.display = "block";
-    if(apiKeyInput){
-      apiKeyInput.value = "";
-      apiKeyInput.focus();
-    }
-  });
-}
-if(apiCancelChangeBtn){
-  apiCancelChangeBtn.addEventListener("click", ()=>{
-    apiEditing = false;
-    apiSaveStatus.textContent = "";
-    updateApiStatusLine();
-  });
-}
-
 function updateApiStatusLine(){
   const key = getApiKey();
-  const hasKey = (key && key.trim().length > 10);
-
-  if(hasKey){
+  if(key && key.trim().length > 10){
     apiStatusLine.textContent = "✅ API kayıtlı";
     apiStatusLine.style.color = "green";
-
-    if(apiEditing){
-      if(apiEntry) apiEntry.style.display = "block";
-      apiChangeBtn.style.display = "none";
-      apiCancelChangeBtn.style.display = "block";
-      if(apiKeyInput) apiKeyInput.value = "";
-    }else{
-      if(apiEntry) apiEntry.style.display = "none";
-      apiChangeBtn.style.display = "block";
-      apiCancelChangeBtn.style.display = "none";
-      if(apiKeyInput) apiKeyInput.value = "";
-    }
+    if(apiEntry) apiEntry.style.display = "none";
+    if(apiKeyInput) apiKeyInput.value = key;
   }else{
     apiStatusLine.textContent = "❌ API kayıtlı değil";
     apiStatusLine.style.color = "red";
-    apiEditing = false;
     if(apiEntry) apiEntry.style.display = "block";
-    apiChangeBtn.style.display = "none";
-    apiCancelChangeBtn.style.display = "none";
   }
 }
 updateApiStatusLine();
 
-/* ========= METİN KAYNAĞI (AI / HAZIR) ========= */
-const srcAI = document.getElementById("srcAI");
-const srcReady = document.getElementById("srcReady");
-const readyTextBox = document.getElementById("readyTextBox");
-const readyTextSelect = document.getElementById("readyTextSelect");
-const loadReadyBtn = document.getElementById("loadReadyBtn");
-const readyStatus = document.getElementById("readyStatus");
-
-function updateTextSourceUI(){
-  const isReady = srcReady && srcReady.checked;
-  if(readyTextBox) readyTextBox.style.display = isReady ? "block" : "none";
-  const topicInputEl = document.getElementById("topicInput");
-  if(topicInputEl) topicInputEl.disabled = isReady;
-}
-
-if(srcAI) srcAI.addEventListener("change", updateTextSourceUI);
-if(srcReady) srcReady.addEventListener("change", updateTextSourceUI);
-updateTextSourceUI();
-
-/* ========= HAZIR METİN LİSTESİ (GitHub API) ========= */
-async function loadReadyList(){
-  if (!readyTextSelect) return;
-
-  while (readyTextSelect.options.length > 1) {
-    readyTextSelect.remove(1);
-  }
-
-  try {
-    const apiUrl = "https://api.github.com/repos/kronosegitim/HizliOkuma/contents/Metinler";
-    const res = await fetch(apiUrl, { cache: "no-store" });
-
-    if (!res.ok) {
-      throw new Error("GitHub API hata kodu: " + res.status);
-    }
-
-    const items = await res.json();
-
-    const txtFiles = (Array.isArray(items) ? items : [])
-      .filter(item => item.type === "file" && /\.txt$/i.test(item.name));
-
-    if (!txtFiles.length) {
-      if (readyStatus) {
-        readyStatus.textContent = "Metinler klasöründe txt dosyası bulunamadı.";
-        readyStatus.style.color = "red";
-      }
-      return;
-    }
-
-    txtFiles.forEach(file => {
-      const opt = document.createElement("option");
-      opt.textContent = file.name.replace(/\.txt$/i, "");
-      opt.value = METINLER_BASE_URL + file.name;
-      readyTextSelect.appendChild(opt);
-    });
-
-    if (readyStatus) {
-      readyStatus.textContent = "Metin listesi yüklendi.";
-      readyStatus.style.color = "green";
-    }
-
-  } catch (e) {
-    console.error(e);
-    if (readyStatus) {
-      readyStatus.textContent = "Liste yüklenemedi: " + (e.message || e);
-      readyStatus.style.color = "red";
-    }
-  }
-}
-loadReadyList();
-
-/* ========= HAZIR METİN YÜKLEME (TXT içinden sadece metin) ========= */
-// TXT formatı (senin örneğine göre):
-// metin...
-// ...
-// -SORULAR-
-// (boş satır olabilir)
-// Soru cümlesi
-// a) ...
-// b) ...
-// c) ...
-// d) ...
-// e) ...
-// b
-async function loadReadyTextFromTxt(url){
-  if(readyStatus){
-    readyStatus.textContent = "";
-    readyStatus.style.color = "black";
-  }
-
-  if(!url){
-    if(readyStatus){
-      readyStatus.textContent = "Lütfen bir hazır metin seçin.";
-      readyStatus.style.color = "red";
-    }
-    return;
-  }
-
-  if(!/^https?:\/\//i.test(url)){
-    url = METINLER_BASE_URL + url;
-  }
-
-  if(readyStatus){
-    readyStatus.textContent = "Hazır metin yükleniyor...";
-    readyStatus.style.color = "blue";
-  }
-
-  try{
-    const res = await fetch(url, { cache:"no-store" });
-    if(!res.ok) throw new Error("TXT yüklenemedi. HTTP " + res.status);
-
-    const txt = await res.text();
-
-    // -SORULAR- satırından esnek bölme
-    const parts = txt.split(/\r?\n[ \t\-_=]*SORULAR[ \t\-_=]*\r?\n/i);
-
-    const onlyText = (parts[0] || "").trim();
-    readyQuestionsRaw = (parts[1] || "").trim();  // Soru bloğu
-
-    if(!onlyText){
-      throw new Error("TXT içinde metin boş görünüyor.");
-    }
-
-    stop();
-    textDisplay.innerHTML = "";
-    questionContainer.innerHTML = "";
-    quizStatsPanel.innerHTML = "Test sonucu yok.";
-    finishBtn.style.display = "none";
-    finishBtn.disabled = false;
-
-    quizPhase = "reading";
-    questionsGenerated = false;
-    currentQuestions = null;
-    userAnswers = [];
-
-    rawText = onlyText;   // sadece metin kısmı
-    loadText(rawText);
-    calculateWordStats();
-    generateStatus.innerText = "✅ Metin hazır.";
-
-    if(readyStatus){
-      if(readyQuestionsRaw){
-        readyStatus.textContent = "✅ Metin yüklendi. Sorular, okuma bitince otomatik gösterilecek.";
-      }else{
-        readyStatus.textContent = "✅ Metin yüklendi. (SORULAR bölümü bulunamadı)";
-      }
-      readyStatus.style.color = "green";
-    }
-
-  }catch(err){
-    console.error(err);
-    if(readyStatus){
-      readyStatus.textContent = "❌ " + (err.message || err);
-      readyStatus.style.color = "red";
-    }
-  }
-}
-
-if(loadReadyBtn){
-  loadReadyBtn.addEventListener("click", ()=>{
-    loadReadyTextFromTxt(readyTextSelect.value);
-  });
-}
-
-/* ========= RATE LIMIT / RETRY ========= */
-function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
-
-function extractRetrySecondsFromMessage(msg){
-  const m = String(msg || "");
-  const hh = /(\d+)h/.exec(m);
-  const mm = /(\d+)m/.exec(m);
-  const ss = /(\d+)s/.exec(m);
-  const h = hh ? parseInt(hh[1],10) : 0;
-  const mi = mm ? parseInt(mm[1],10) : 0;
-  const s = ss ? parseInt(ss[1],10) : 0;
-  const total = h*3600 + mi*60 + s;
-  return total > 0 ? total : null;
-}
-
-async function openaiChatCompletionWithRetry(payload, apiKey, maxRetries){
-  let attempt = 0;
-  while(true){
-    attempt++;
-
-    const res = await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
-      },
-      body:JSON.stringify(payload)
-    });
-
-    const data = await res.json().catch(()=> ({}));
-
-    if(res.ok) return data;
-
-    const msg = data?.error?.message || ("HTTP " + res.status);
-
-    if(res.status === 429 && attempt <= (maxRetries + 1)){
-      const retrySec = extractRetrySecondsFromMessage(msg);
-      if(retrySec && retrySec > 120){
-        throw new Error(msg);
-      }
-      const waitMs = retrySec ? retrySec*1000 : (15000 + (attempt-1)*10000);
-      await sleep(waitMs);
-      continue;
-    }
-
-    throw new Error(msg);
-  }
-}
-
-/* ========= YAŞ + ZORLUK KURALLARI ========= */
+/* ========= YAŞ + ZORLUK İÇİN YARDIMCI KURALLAR ========= */
 function getTextLevelRules(ageGroup, level){
   let base = "";
   switch(ageGroup){
@@ -649,7 +411,7 @@ function getTextLevelRules(ageGroup, level){
     case "orta":
       levelRule =
 `- Zorluk seviyesi ORTA olsun: cümle uzunlukları orta düzeyde olsun.
-- Bazı yeni kavramlar ve kelimeler kullan; anlamları metin içinde anlaşılabilir olsun.`;
+- Bazı yeni kelimeler ve kavramlar kullan; anlamları metin içinde anlaşılabilir olsun.`;
       break;
     case "zor":
       levelRule =
@@ -720,7 +482,7 @@ function getQuestionLevelRules(ageGroup, level){
   return base + "\n" + levelRule;
 }
 
-/* ========= METİN OLUŞTURMA (ChatGPT) ========= */
+/* ========= METİN OLUŞTURMA / HAZIR METİN YÜKLEME ========= */
 const ageGroupInput   = document.getElementById("ageGroupInput");
 const levelInput      = document.getElementById("levelInput");
 const topicInput      = document.getElementById("topicInput");
@@ -728,7 +490,10 @@ const generateTextBtn = document.getElementById("generateTextBtn");
 const generateStatus  = document.getElementById("generateStatus");
 const textDisplay     = document.getElementById("textDisplay");
 
-generateTextBtn.onclick = generateTextFromAPI;
+const modeRadios      = document.querySelectorAll('input[name="textMode"]');
+const aiOptions       = document.getElementById("aiOptions");
+const readyOptions    = document.getElementById("readyOptions");
+const readyTextSelect = document.getElementById("readyTextSelect");
 
 let words = [];
 let currentIndex = 0;
@@ -739,16 +504,33 @@ let quizPhase = "reading";
 let currentQuestions = null;
 let userAnswers = [];
 let questionsGenerated = false;
-let isBusyGenerating = false;
+
+/* Modlar arası görünürlük */
+modeRadios.forEach(r => {
+  r.addEventListener("change", () => {
+    const val = r.value;
+    if(!r.checked) return;
+    if(val === "ai"){
+      aiOptions.style.display = "block";
+      readyOptions.style.display = "none";
+    }else{
+      aiOptions.style.display = "none";
+      readyOptions.style.display = "block";
+    }
+  });
+});
+
+/* Ortak "Metin Oluştur" butonu */
+generateTextBtn.onclick = async function(){
+  const selectedMode = [...modeRadios].find(r => r.checked)?.value || "ai";
+  if(selectedMode === "ai"){
+    await generateTextFromAPI();
+  }else{
+    await loadReadyText();
+  }
+};
 
 async function generateTextFromAPI(){
-  if(isBusyGenerating) return;
-
-  if(srcReady && srcReady.checked){
-    alert("Hazır metin modunda 'Hazır Metni Yükle' butonunu kullanın.");
-    return;
-  }
-
   const apiKey = getApiKey();
   updateApiStatusLine();
 
@@ -766,23 +548,8 @@ async function generateTextFromAPI(){
     return;
   }
 
-  stop();
-  textDisplay.innerHTML = "";
-  questionContainer.innerHTML = "";
-  quizStatsPanel.innerHTML = "Test sonucu yok.";
+  resetReadingAndQuiz();
   generateStatus.innerText = "Metin oluşturuluyor...";
-
-  isBusyGenerating = true;
-  generateTextBtn.disabled = true;
-  generateTextBtn.textContent = "Lütfen bekleyin...";
-
-  readyQuestionsRaw = "";
-  quizPhase = "reading";
-  questionsGenerated = false;
-  currentQuestions = null;
-  userAnswers = [];
-  finishBtn.style.display = "none";
-  finishBtn.disabled = false;
 
   const levelRules = getTextLevelRules(ageGroup, level);
 
@@ -804,38 +571,77 @@ En sonda kısa bir kapanış cümlesi yaz.
 `;
 
   try{
-    const data = await openaiChatCompletionWithRetry({
-      model:"gpt-4o-mini",
-      messages:[{role:"user",content:prompt}],
-      max_tokens:900,
-      temperature:0.8
-    }, apiKey, 2);
+    const res = await fetch("https://api.openai.com/v1/chat/completions",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + apiKey
+      },
+      body:JSON.stringify({
+        model:"gpt-4o-mini",
+        messages:[{role:"user",content:prompt}],
+        max_tokens:900,
+        temperature:0.8
+      })
+    });
 
-    let raw = data?.choices?.[0]?.message?.content || "";
-    raw = raw.replace(/^#+\s*/gm,"").trim();
-
-    if(!raw){
-      throw new Error("API yanıtı boş döndü (metin üretilemedi).");
-    }
+    const data = await res.json();
+    let raw = data.choices?.[0]?.message?.content || "";
+    raw = raw.replace(/^#+\s*/gm,"");
 
     rawText = raw;
     loadText(rawText);
-
-    if(!words || words.length === 0){
-      throw new Error("Metin işlendi ama kelimeler oluşturulamadı.");
-    }
-
     calculateWordStats();
     generateStatus.innerText = "✅ Metin hazır.";
   }catch(err){
     console.error(err);
-    generateStatus.innerText = "❌ Metin oluşturulamadı.";
-    alert("Metin üretilemedi:\n" + (err?.message || err));
-  }finally{
-    isBusyGenerating = false;
-    generateTextBtn.disabled = false;
-    generateTextBtn.textContent = "Metin Oluştur";
+    alert("Hata: " + err.message);
+    generateStatus.innerText = "Hata oluştu.";
   }
+}
+
+/* Hazır metin yükleme */
+async function loadReadyText(){
+  const sel = readyTextSelect.value;
+  if(!sel){
+    alert("Lütfen listeden bir metin seçiniz.");
+    return;
+  }
+
+  resetReadingAndQuiz();
+  generateStatus.innerText = "Metin yükleniyor...";
+
+  try{
+    const res = await fetch(sel);
+    const txt = await res.text();
+    rawText = txt;
+    loadText(rawText);
+    calculateWordStats();
+    generateStatus.innerText = "✅ Metin yüklendi.";
+  }catch(err){
+    console.error(err);
+    alert("Metin yüklenirken hata oluştu: " + err.message);
+    generateStatus.innerText = "Hata oluştu.";
+  }
+}
+
+/* Ortak reset */
+const finishBtn         = document.getElementById("finishBtn");
+const questionContainer = document.getElementById("questionContainer");
+const quizStatsPanel    = document.getElementById("quizStatsPanel");
+
+function resetReadingAndQuiz(){
+  stop();
+  textDisplay.innerHTML = "";
+  questionContainer.innerHTML = "";
+  quizStatsPanel.innerHTML = "Test sonucu yok.";
+
+  quizPhase = "reading";
+  questionsGenerated = false;
+  currentQuestions = null;
+  userAnswers = [];
+  finishBtn.style.display = "none";
+  finishBtn.disabled = false;
 }
 
 /* ========= BLOK OKUMA VERİ YAPISI ========= */
@@ -862,11 +668,10 @@ function loadText(txt){
   });
 }
 
-/* ========= İSTATİSTİK ========= */
+/* ========= İSTATİSTİK HESAPLAMA ========= */
 const timeInput       = document.getElementById("timeInput");
 const blockCountInput = document.getElementById("blockCountInput");
 const wordStats       = document.getElementById("wordStats");
-const quizStatsPanel  = document.getElementById("quizStatsPanel");
 
 timeInput.addEventListener("input", calculateWordStats);
 blockCountInput.addEventListener("input", calculateWordStats);
@@ -901,7 +706,7 @@ function calculateWordStats(){
     `Hız: ${wpm} dk`;
 }
 
-/* ========= BLOK AKIŞI ========= */
+/* ========= BLOK SİSTEMİ ========= */
 function showNextWord(){
   if(paused) return;
 
@@ -910,24 +715,11 @@ function showNextWord(){
       questionsGenerated = true;
       quizPhase = "questions";
       setTimeout(async ()=>{
-        // HAZIR METİN MODU: txt içindeki soruları kullan, API'ye DOKUNMA
-        if(srcReady && srcReady.checked){
-          if(readyQuestionsRaw){
-            parseReadyQuestions(readyQuestionsRaw);
-          }
-          renderQuestions();
-          if(currentQuestions && currentQuestions.length){
-            finishBtn.style.display = "inline-block";
-            finishBtn.disabled = false;
-          }
-        }else{
-          // AI METİN MODU: API'den soru üret
-          await generateQuestionsForText();
-          renderQuestions();
-          if(currentQuestions && currentQuestions.length){
-            finishBtn.style.display = "inline-block";
-            finishBtn.disabled = false;
-          }
+        await generateQuestionsForText();
+        renderQuestions();
+        if(currentQuestions && currentQuestions.length){
+          finishBtn.style.display = "inline-block";
+          finishBtn.disabled = false;
         }
       }, 300);
     }
@@ -987,7 +779,7 @@ const stopBtn  = document.getElementById("stopBtn");
 
 function start(){
   if(!words.length){
-    alert("Önce metin oluşturun veya hazır metin seçin.");
+    alert("Önce metin oluşturun.");
     return;
   }
   paused = false;
@@ -1009,9 +801,6 @@ pauseBtn.onclick = pause;
 stopBtn.onclick  = stop;
 
 /* ========= SORU SİSTEMİ ========= */
-const finishBtn         = document.getElementById("finishBtn");
-const questionContainer = document.getElementById("questionContainer");
-
 finishBtn.addEventListener("click", ()=>{
   if(quizPhase !== "questions") return;
   evaluateQuiz();
@@ -1041,137 +830,25 @@ function shuffleOptionsAndFixAnswer(q){
   q.answer = ANSWER_LETTERS[newCorrectPos];
 }
 
-/* ========= HAZIR SORU PARSE EDİCİ ========= */
-/* Bu fonksiyon TXT'deki senin formatını destekleyecek şekilde düzenlendi:
-   Soru satırı: düz cümle
-   Sonra:
-     a) ...
-     b) ...
-     c) ...
-     d) ...
-     e) ...
-   Sonraki satır: doğru şık (ör: b, c, E)
-*/
-function parseReadyQuestions(raw){
-  currentQuestions = [];
-  userAnswers = [];
-
-  if(!raw) return;
-
-  const lines = raw
-    .split(/\r?\n/)
-    .map(l => l.trim())
-    .filter(l => l.length > 0);
-
-  let i = 0;
-  while(i < lines.length){
-    let line = lines[i];
-
-    // 1) ... veya Soru 1: ... formatını da destekle (ileride kullanırsan)
-    let qText;
-    let numberedMatch =
-      /^(\d+)\s*[\)\.\-\:]\s*(.+)/.exec(line) ||
-      /^Soru\s*(\d+)\s*[\)\.\-\:]\s*(.+)/i.exec(line);
-
-    if(numberedMatch){
-      qText = numberedMatch[2].trim();
-      i++;
-    }else{
-      // Eğer satır A)/B)/... veya sadece cevap harfi ise soru değildir, atla
-      if(/^([a-e])\s*\)/i.test(line) || /^[a-e]$/i.test(line) ||
-         /^(Cevap|Doğru cevap)/i.test(line)){
-        i++;
-        continue;
-      }
-      // Senin örneğindeki gibi düz soru cümlesi
-      qText = line;
-      i++;
-    }
-
-    // 5 şık oku: a) .., b) .., c) .., d) .., e) ..
-    const options = new Array(5).fill("");
-    const found = {A:false,B:false,C:false,D:false,E:false};
-
-    while(i < lines.length){
-      const optLine = lines[i];
-      const m = /^([a-e])\s*\)\s*(.+)/i.exec(optLine);
-      if(!m) break;
-      const letter = m[1].toUpperCase();
-      const text   = m[2].trim();
-      const idx    = ANSWER_LETTERS.indexOf(letter);
-      if(idx >= 0){
-        options[idx] = text;
-        found[letter] = true;
-      }
-      i++;
-    }
-
-    const allFilled = ANSWER_LETTERS.every(l => found[l]);
-    if(!allFilled){
-      // format bozuksa bu soruyu atla
-      continue;
-    }
-
-    // doğru cevabı oku (örneğin: "b" veya "B" tek harf)
-    let answerLetter = null;
-    if(i < lines.length){
-      const ansLine = lines[i];
-      let m =
-        /^(?:Cevap|Cevap:|Doğru cevap|Doğru cevap:)\s*([a-e])/i.exec(ansLine) ||
-        /^([a-e])$/i.exec(ansLine);
-
-      if(m){
-        answerLetter = m[1].toUpperCase();
-        i++;
-      }
-    }
-
-    if(!answerLetter){
-      // cevap bulunamadıysa soruyu atla
-      continue;
-    }
-
-    const qObj = {
-      q: qText,
-      options: options.slice(),
-      answer: answerLetter
-    };
-
-    shuffleOptionsAndFixAnswer(qObj);
-    currentQuestions.push(qObj);
-  }
-
-  if(currentQuestions.length){
-    userAnswers = new Array(currentQuestions.length).fill(null);
-  }
-}
-
-/* ========= API İLE SORU ÜRETME (Sadece AI metni için) ========= */
-let isBusyQuestions = false;
-
 async function generateQuestionsForText(){
-  if(isBusyQuestions) return;
-
   const apiKey = getApiKey();
   updateApiStatusLine();
 
   if(!apiKey){
+    alert("API anahtarı kayıtlı değil. Bu sayfadan API anahtarını doğrulayın ve kaydedin.");
+    questionContainer.innerHTML = "";
     return;
   }
 
   if(!rawText){
+    questionContainer.innerHTML = "";
     return;
   }
 
-  if(currentQuestions && currentQuestions.length){
-    return;
-  }
-
-  isBusyQuestions = true;
   questionContainer.innerHTML = "Sorular hazırlanıyor...";
 
-  const ageGroup = ageGroupInput.value;
-  const level    = levelInput.value;
+  const ageGroup   = ageGroupInput.value;
+  const level      = levelInput.value;
   const levelRules = getQuestionLevelRules(ageGroup, level);
 
   const prompt = `
@@ -1204,14 +881,23 @@ JSON formatı tam olarak şöyle olsun:
 `;
 
   try{
-    const data = await openaiChatCompletionWithRetry({
-      model:"gpt-4o-mini",
-      messages:[{role:"user",content:prompt}],
-      max_tokens:1200,
-      temperature:0.7
-    }, apiKey, 2);
+    const res = await fetch("https://api.openai.com/v1/chat/completions",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + apiKey
+      },
+      body:JSON.stringify({
+        model:"gpt-4o-mini",
+        messages:[{role:"user",content:prompt}],
+        max_tokens:1200,
+        temperature:0.7
+      })
+    });
 
-    let text = data?.choices?.[0]?.message?.content || "";
+    const data = await res.json();
+    let text = data.choices?.[0]?.message?.content || "";
+
     const idx = text.indexOf("{");
     if(idx > 0) text = text.slice(idx);
 
@@ -1231,13 +917,11 @@ JSON formatı tam olarak şöyle olsun:
 
   }catch(err){
     console.error(err);
+    alert("Sorular oluşturulurken hata oluştu: " + err.message);
     questionContainer.innerHTML = "Sorular yüklenemedi.";
-  }finally{
-    isBusyQuestions = false;
   }
 }
 
-/* ========= SORULARI ÇİZ ========= */
 function renderQuestions(){
   questionContainer.innerHTML = "";
   if(!currentQuestions || !currentQuestions.length){
@@ -1281,7 +965,6 @@ function renderQuestions(){
   });
 }
 
-/* ========= TESTİ DEĞERLENDİR ========= */
 function evaluateQuiz(){
   if(!currentQuestions || !currentQuestions.length) return;
 
