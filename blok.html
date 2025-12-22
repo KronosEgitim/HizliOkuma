@@ -484,7 +484,7 @@ function getQuestionLevelRules(ageGroup, level){
   return base + "\n" + levelRule;
 }
 
-/* ========= METİN OLUŞTURMA / HAZIR METİN ========= */
+/* ========= DOM REFERANSLARI & GLOBAL DURUM ========= */
 const ageGroupInput   = document.getElementById("ageGroupInput");
 const levelInput      = document.getElementById("levelInput");
 const topicInput      = document.getElementById("topicInput");
@@ -497,16 +497,31 @@ const aiOptions       = document.getElementById("aiOptions");
 const readyOptions    = document.getElementById("readyOptions");
 const readyTextSelect = document.getElementById("readyTextSelect");
 
+const timeInput       = document.getElementById("timeInput");
+const blockCountInput = document.getElementById("blockCountInput");
+const wordStats       = document.getElementById("wordStats");
+const quizStatsPanel  = document.getElementById("quizStatsPanel");
+
+const startBtn        = document.getElementById("startBtn");
+const pauseBtn        = document.getElementById("pauseBtn");
+const stopBtn         = document.getElementById("stopBtn");
+const finishBtn       = document.getElementById("finishBtn");
+const questionContainer = document.getElementById("questionContainer");
+
+/* Global durum değişkenleri */
 let words = [];
 let currentIndex = 0;
 let timeoutId = null;
 let paused = false;
 let rawText = "";
 let quizPhase = "reading";
-let currentQuestions = null;
+let currentQuestions = [];
 let userAnswers = [];
 let questionsGenerated = false;
 
+const ANSWER_LETTERS = ["A","B","C","D","E"];
+
+/* ========= HAZIR METİNLERİ GİTHUB'DAN ÇEK ========= */
 /* KronosEgitim/HizliOkuma/Metinler klasöründen txt dosyalarını otomatik listele */
 async function populateReadyTexts(){
   const select = readyTextSelect;
@@ -541,7 +556,7 @@ async function populateReadyTexts(){
       .sort((a,b)=>a.name.localeCompare(b.name,"tr"))
       .forEach(item=>{
         const opt = document.createElement("option");
-        // **download_url** → doğrudan ham txt içeriği
+        // download_url doğrudan ham txt içeriği
         opt.value = item.download_url;
         opt.textContent = item.name.replace(/\.txt$/i,"");
         select.appendChild(opt);
@@ -557,7 +572,7 @@ async function populateReadyTexts(){
   }
 }
 
-/* Radyo – görünürlük kontrolü */
+/* ========= METİN MODU (AI / HAZIR) ========= */
 modeRadios.forEach(radio=>{
   radio.addEventListener("change", ()=>{
     const selected = document.querySelector('input[name="textMode"]:checked');
@@ -597,6 +612,7 @@ generateTextBtn.onclick = async function(){
   }
 };
 
+/* ========= YAPAY ZEKA İLE METİN OLUŞTUR ========= */
 async function generateTextFromAPI(){
   const apiKey = getApiKey();
   updateApiStatusLine();
@@ -624,7 +640,7 @@ async function generateTextFromAPI(){
 
   quizPhase = "reading";
   questionsGenerated = false;
-  currentQuestions = null;
+  currentQuestions = [];
   userAnswers = [];
   finishBtn.style.display = "none";
   finishBtn.disabled = false;
@@ -680,7 +696,7 @@ En sonda kısa bir kapanış cümlesi yaz.
   }
 }
 
-/* Hazır metin yükleme */
+/* ========= HAZIR METİN YÜKLE ========= */
 async function loadReadyText(){
   const sel = readyTextSelect.value;
   if(!sel){
@@ -697,7 +713,7 @@ async function loadReadyText(){
 
   quizPhase = "reading";
   questionsGenerated = false;
-  currentQuestions = null;
+  currentQuestions = [];
   userAnswers = [];
   finishBtn.style.display = "none";
   finishBtn.disabled = false;
@@ -719,12 +735,8 @@ async function loadReadyText(){
 }
 
 /* ========= BLOK OKUMA VERİ YAPISI ========= */
-const textDisplayEl = textDisplay;
-let finishBtn       = document.getElementById("finishBtn");
-const questionContainer = document.getElementById("questionContainer");
-
 function loadText(txt){
-  textDisplayEl.innerHTML = "";
+  textDisplay.innerHTML = "";
   words = [];
   currentIndex = 0;
 
@@ -742,16 +754,11 @@ function loadText(txt){
       words.push(span);
       div.appendChild(span);
     });
-    textDisplayEl.appendChild(div);
+    textDisplay.appendChild(div);
   });
 }
 
 /* ========= İSTATİSTİK HESAPLAMA ========= */
-const timeInput       = document.getElementById("timeInput");
-const blockCountInput = document.getElementById("blockCountInput");
-const wordStats       = document.getElementById("wordStats");
-const quizStatsPanel  = document.getElementById("quizStatsPanel");
-
 timeInput.addEventListener("input", calculateWordStats);
 blockCountInput.addEventListener("input", calculateWordStats);
 
@@ -786,9 +793,6 @@ function calculateWordStats(){
 }
 
 /* ========= BLOK SİSTEMİ ========= */
-let paused = false;
-let timeoutId = null;
-
 function showNextWord(){
   if(paused) return;
 
@@ -855,10 +859,6 @@ function showNextWord(){
 }
 
 /* ========= OKUMA BUTONLARI ========= */
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const stopBtn  = document.getElementById("stopBtn");
-
 function start(){
   if(!words.length){
     alert("Önce metin oluşturun veya hazır metin seçin.");
@@ -889,8 +889,6 @@ finishBtn.addEventListener("click", ()=>{
   quizPhase = "finished";
   finishBtn.disabled = true;
 });
-
-const ANSWER_LETTERS = ["A","B","C","D","E"];
 
 function shuffleOptionsAndFixAnswer(q){
   const answerLetter = (q.answer || "").toString().trim().toUpperCase();
