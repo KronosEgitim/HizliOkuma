@@ -69,6 +69,24 @@ body{
 .primary{background:#007bff;color:white}
 .secondary{background:#6c757d;color:white}
 
+/* Radyo satırı – tamamen sola hizalı */
+.textModeRow{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin-bottom:8px;
+}
+.radioRow{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+}
+.radioRow input[type="radio"]{
+  width:auto;
+  margin:0;
+}
+
 /* SAĞ PANEL (METİN + SORULAR) */
 #rightPanel{
   flex:1;
@@ -143,25 +161,6 @@ body{
   align-self:flex-start;
   display:none;
 }
-
-/* Radyo satırları */
-.textModeRow{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-  margin-bottom:8px;
-}
-.textModeRow label{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  width:auto;        /* global width:100%'ü ez */
-  margin-bottom:0;   /* global margin-bottom'u ez */
-}
-.textModeRow input[type="radio"]{
-  width:auto;
-  margin-bottom:0;
-}
 </style>
 </head>
 
@@ -173,7 +172,7 @@ body{
 
     <div id="settingsContent">
 
-      <!-- API BÖLÜMÜ (Bu sayfada sorgulansın) -->
+      <!-- API BÖLÜMÜ -->
       <div class="section">
         <h3>1) API Durumu</h3>
         <div id="apiStatusLine" style="font-weight:bold;margin-bottom:6px;"></div>
@@ -191,14 +190,14 @@ body{
 
         <!-- Ana iki seçenek -->
         <div class="textModeRow">
-          <label>
+          <div class="radioRow">
             <input type="radio" name="textMode" value="ai" checked>
-            Yapay zeka ile metin oluştur
-          </label>
-          <label>
+            <span>Yapay zeka ile metin oluştur</span>
+          </div>
+          <div class="radioRow">
             <input type="radio" name="textMode" value="ready">
-            Hazır metin seç
-          </label>
+            <span>Hazır metin seç</span>
+          </div>
         </div>
 
         <!-- 1) Yapay zeka ile metin oluştur alanı -->
@@ -230,8 +229,7 @@ body{
           <label>Hazır metin seçiniz</label>
           <select id="readyTextSelect">
             <option value="">Seçiniz</option>
-            <!-- Buraya kendi txt adreslerinizi ekleyebilirsiniz -->
-            <!--
+            <!-- Örnek: buraya kendi txt adreslerinizi ekleyin
             <option value="https://ilhantopaloglu.github.io/HizliOkuma/metinler/metin1.txt">Metin 1 - Ortaokul</option>
             <option value="https://ilhantopaloglu.github.io/HizliOkuma/metinler/metin2.txt">Metin 2 - Lise</option>
             -->
