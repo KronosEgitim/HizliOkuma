@@ -484,7 +484,7 @@ function getQuestionLevelRules(ageGroup, level){
   return base + "\n" + levelRule;
 }
 
-/* ========= DOM REFERANSLARI & GLOBAL DURUM ========= */
+/* ========= DOM & GLOBAL DURUM ========= */
 const ageGroupInput   = document.getElementById("ageGroupInput");
 const levelInput      = document.getElementById("levelInput");
 const topicInput      = document.getElementById("topicInput");
@@ -517,7 +517,7 @@ let quizPhase = "reading";
 let currentQuestions = [];
 let userAnswers = [];
 let questionsGenerated = false;
-let readyFileQuestions = [];  // sadece hazır metinler için
+let readyFileQuestions = [];  // hazır metinlerde txt’den gelen sorular
 
 const ANSWER_LETTERS = ["A","B","C","D","E"];
 
@@ -693,52 +693,94 @@ En sonda kısa bir kapanış cümlesi yaz.
   }
 }
 
-/* ========= TXT İÇİNDEN SORU PARSE (HAZIR METİN) ========= */
+/* ========= HAZIR METİN SORU PARSE – SENİN FORMATIN ========= */
+/*
+Format (örnek):
+
+Metin...
+...
+-SORULAR-
+Soru?
+a) Şık 1
+b) Şık 2
+c) Şık 3
+d) Şık 4
+e) Şık 5
+c
+
+Soru?
+a) ...
+...
+
+Yani:
+- Şıklar: a) ... b) ... c) ... d) ... e) ...
+- En altta: sadece harf (a/b/c/d/e)
+*/
 function parseQuestionsFromFile(raw){
   const result = [];
   if(!raw) return result;
 
   const lines = raw
     .split(/\r?\n/)
-    .map(l => l.trim())
-    .filter((l,idx,arr)=>true); // sadece trim
+    .map(l => l.trim());
 
   let i = 0;
-  while(i < lines.length){
-    // boş satırları atla
-    while(i < lines.length && !lines[i]) i++;
-    if(i >= lines.length) break;
+  while (i < lines.length) {
 
-    const qLine = lines[i];
+    // Boş satırları atla
+    while (i < lines.length && !lines[i]) i++;
+    if (i >= lines.length) break;
+
+    // 1) Soru satırı
+    let qLine = lines[i];
     i++;
 
-    if(!qLine) continue;
+    // "1) ..." gibi numarayı sil
+    qLine = qLine.replace(/^\d+\)\s*/, "").trim();
+    if (!qLine) continue;
 
-    // Şıklar
+    // 2) Şıklar (a) ... b) ... c) ... d) ... e) ...)
     const opts = [];
-    while(i < lines.length && /^[A-Ea-e]\)/.test(lines[i])){
-      opts.push(lines[i]);
+    let optCount = 0;
+
+    while (i < lines.length && optCount < 5) {
+      const line = lines[i];
+      const m = line.match(/^([a-eA-E])\)\s*(.+)$/);
+      if (!m) break;
+
+      const text = m[2].trim();
+      opts.push(text);
+      optCount++;
       i++;
     }
 
-    // Cevap satırı
-    let ans = null;
-    if(i < lines.length){
-      const m = lines[i].match(/^(Cevap|Cevap:|Doğru cevap|Dogru cevap|Answer)\s*[:\-]?\s*([A-Ea-e])/i);
-      if(m){
-        ans = m[2].toUpperCase();
-        i++;
-      }
+    if (opts.length !== 5) {
+      // 5 şık yoksa geçersiz
+      continue;
     }
 
-    if(opts.length === 5 && ans && ANSWER_LETTERS.includes(ans)){
-      result.push({
-        q: qLine.replace(/^\d+\)\s*/,"").trim(),
-        options: opts.map(t => t.replace(/^[A-Ea-e]\)\s*/, "").trim()),
-        answer: ans
-      });
+    // 3) Cevap satırı (tek harf: a/b/c/d/e)
+    while (i < lines.length && !lines[i]) i++; // aradaki boşlukları atla
+    if (i >= lines.length) break;
+
+    let ansLine = lines[i];
+    let ansMatch = ansLine.match(/^[a-eA-E]$/);
+    let answer = null;
+
+    if (ansMatch) {
+      answer = ansMatch[0].toUpperCase();
+      i++;
     }
-    // değilse, o bloğu atlıyoruz
+
+    if (!answer || !["A","B","C","D","E"].includes(answer)) {
+      continue;
+    }
+
+    result.push({
+      q: qLine,
+      options: opts,
+      answer: answer
+    });
   }
 
   return result;
@@ -771,7 +813,7 @@ async function loadReadyText(){
     const res = await fetch(sel);
     const txt = await res.text();
 
-    // --- Metin / Soru ayrımı: -SORULAR- ---
+    // Metin / Soru ayrımı: -SORULAR-
     const marker = "-SORULAR-";
     let textPart = txt;
     let questionsPart = "";
@@ -782,8 +824,8 @@ async function loadReadyText(){
       questionsPart = txt.slice(idx + marker.length).trim();
     }
 
-    rawText = textPart;           // okuma ve istatistik için sadece metin
-    readyFileQuestions = parseQuestionsFromFile(questionsPart); // sorular dosyadan
+    rawText = textPart;                     // sadece metin okuma için
+    readyFileQuestions = parseQuestionsFromFile(questionsPart); // sorular txt’den
 
     loadText(rawText);
     calculateWordStats();
@@ -870,11 +912,9 @@ function showNextWord(){
         const selectedMode = selected ? selected.value : "ai";
 
         if(selectedMode === "ai"){
-          // API'den soru üret
           await generateQuestionsForText();
           renderQuestions();
         }else{
-          // HAZIR METİN: sorular txt dosyasından
           currentQuestions = readyFileQuestions || [];
           userAnswers = new Array(currentQuestions.length).fill(null);
           renderQuestions();
