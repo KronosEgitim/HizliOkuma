@@ -69,20 +69,21 @@ body{
 .primary{background:#007bff;color:white}
 .secondary{background:#6c757d;color:white}
 
-/* Radyo satırı – tamamen sola hizalı */
+/* Sadece bu iki label için özel hizalama */
 .textModeRow{
   display:flex;
   flex-direction:column;
   gap:4px;
   margin-bottom:8px;
 }
-.radioRow{
+.textModeLabel{
   display:flex;
   align-items:center;
   gap:6px;
-  font-size:12px;
+  width:auto !important;
+  margin:0 !important;
 }
-.radioRow input[type="radio"]{
+.textModeLabel input[type="radio"]{
   width:auto;
   margin:0;
 }
@@ -190,14 +191,14 @@ body{
 
         <!-- Ana iki seçenek -->
         <div class="textModeRow">
-          <div class="radioRow">
+          <label class="textModeLabel">
             <input type="radio" name="textMode" value="ai" checked>
             <span>Yapay zeka ile metin oluştur</span>
-          </div>
-          <div class="radioRow">
+          </label>
+          <label class="textModeLabel">
             <input type="radio" name="textMode" value="ready">
             <span>Hazır metin seç</span>
-          </div>
+          </label>
         </div>
 
         <!-- 1) Yapay zeka ile metin oluştur alanı -->
@@ -229,7 +230,8 @@ body{
           <label>Hazır metin seçiniz</label>
           <select id="readyTextSelect">
             <option value="">Seçiniz</option>
-            <!-- Örnek: buraya kendi txt adreslerinizi ekleyin
+            <!-- Buraya kendi txt adreslerinizi ekleyebilirsiniz -->
+            <!--
             <option value="https://ilhantopaloglu.github.io/HizliOkuma/metinler/metin1.txt">Metin 1 - Ortaokul</option>
             <option value="https://ilhantopaloglu.github.io/HizliOkuma/metinler/metin2.txt">Metin 2 - Lise</option>
             -->
