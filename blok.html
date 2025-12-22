@@ -152,10 +152,11 @@ body{
   margin-bottom:8px;
 }
 .textModeRow label{
-  width:auto;
   display:flex;
   align-items:center;
   gap:6px;
+  width:auto;        /* global width:100%'ü ez */
+  margin-bottom:0;   /* global margin-bottom'u ez */
 }
 .textModeRow input[type="radio"]{
   width:auto;
@@ -229,7 +230,7 @@ body{
           <label>Hazır metin seçiniz</label>
           <select id="readyTextSelect">
             <option value="">Seçiniz</option>
-            <!-- Örnek: değer olarak txt adresini kullanabilirsiniz -->
+            <!-- Buraya kendi txt adreslerinizi ekleyebilirsiniz -->
             <!--
             <option value="https://ilhantopaloglu.github.io/HizliOkuma/metinler/metin1.txt">Metin 1 - Ortaokul</option>
             <option value="https://ilhantopaloglu.github.io/HizliOkuma/metinler/metin2.txt">Metin 2 - Lise</option>
@@ -411,7 +412,7 @@ function getTextLevelRules(ageGroup, level){
     case "orta":
       levelRule =
 `- Zorluk seviyesi ORTA olsun: cümle uzunlukları orta düzeyde olsun.
-- Bazı yeni kelimeler ve kavramlar kullan; anlamları metin içinde anlaşılabilir olsun.`;
+- Bazı yeni kavramlar ve kelimeler kullan; anlamları metin içinde anlaşılabilir olsun.`;
       break;
     case "zor":
       levelRule =
@@ -505,11 +506,11 @@ let currentQuestions = null;
 let userAnswers = [];
 let questionsGenerated = false;
 
-/* Modlar arası görünürlük */
-modeRadios.forEach(r => {
-  r.addEventListener("change", () => {
-    const val = r.value;
-    if(!r.checked) return;
+/* Radyo – görünürlük kontrolü */
+modeRadios.forEach(radio=>{
+  radio.addEventListener("change", ()=>{
+    const selected = document.querySelector('input[name="textMode"]:checked');
+    const val = selected ? selected.value : "ai";
     if(val === "ai"){
       aiOptions.style.display = "block";
       readyOptions.style.display = "none";
@@ -520,9 +521,23 @@ modeRadios.forEach(r => {
   });
 });
 
+/* Sayfa açılışında doğru görünürlük */
+(function initTextMode(){
+  const selected = document.querySelector('input[name="textMode"]:checked');
+  const val = selected ? selected.value : "ai";
+  if(val === "ai"){
+    aiOptions.style.display = "block";
+    readyOptions.style.display = "none";
+  }else{
+    aiOptions.style.display = "none";
+    readyOptions.style.display = "block";
+  }
+})();
+
 /* Ortak "Metin Oluştur" butonu */
 generateTextBtn.onclick = async function(){
-  const selectedMode = [...modeRadios].find(r => r.checked)?.value || "ai";
+  const selected = document.querySelector('input[name="textMode"]:checked');
+  const selectedMode = selected ? selected.value : "ai";
   if(selectedMode === "ai"){
     await generateTextFromAPI();
   }else{
