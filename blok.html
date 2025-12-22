@@ -527,7 +527,7 @@ async function populateReadyTexts(){
       .sort((a,b)=>a.name.localeCompare(b.name,"tr"))
       .forEach(item=>{
         const opt = document.createElement("option");
-        opt.value = "https://ilhantopaloglu.github.io/HizliOkuma/metinler/" + item.name;
+        opt.value = "https://kronosegitim.github.io/HizliOkuma/metinler/" + item.name;
         opt.textContent = item.name.replace(/\.txt$/i,"");
         readyTextSelect.appendChild(opt);
       });
