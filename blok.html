@@ -292,7 +292,6 @@ body{
 
     <div id="wordStats">
       Toplam: 0<br>
-      Ortalama: 0<br>
       Hız: 0 kelime/dk<br>
       Süre: 0 sn
     </div>
@@ -685,14 +684,12 @@ function updateFreeTimerDisplay(){
   if(!stats){
     wordStats.innerHTML =
       `Toplam: 0<br>` +
-      `Ortalama: 0<br>` +
       `Hız: 0 kelime/dk<br>` +
       `Süre: ${seconds} sn`;
     return;
   }
   wordStats.innerHTML =
     `Toplam: ${stats.total}<br>` +
-    `Ortalama: ${stats.avg}<br>` +
     `Hız: -<br>` +
     `Süre: ${seconds} sn`;
 }
@@ -702,7 +699,6 @@ function showFreeFinalStats(){
   if(!stats || freeElapsedMs <= 0){
     wordStats.innerHTML =
       `Toplam: ${stats ? stats.total : 0}<br>` +
-      `Ortalama: ${stats ? stats.avg : 0}<br>` +
       `Hız: 0 kelime/dk<br>` +
       `Süre: 0 sn`;
     return;
@@ -713,7 +709,6 @@ function showFreeFinalStats(){
 
   wordStats.innerHTML =
     `Toplam: ${stats.total}<br>` +
-    `Ortalama: ${stats.avg}<br>` +
     `Hız: ${wpm} kelime/dk<br>` +
     `Süre: ${seconds} sn`;
 }
@@ -757,13 +752,11 @@ function setReadModeUI(mode){
     if(stats){
       wordStats.innerHTML =
         `Toplam: ${stats.total}<br>` +
-        `Ortalama: ${stats.avg}<br>` +
         `Hız: 0 kelime/dk<br>` +
         `Süre: 0 sn`;
     }else{
       wordStats.innerHTML =
         `Toplam: 0<br>` +
-        `Ortalama: 0<br>` +
         `Hız: 0 kelime/dk<br>` +
         `Süre: 0 sn`;
     }
@@ -897,7 +890,6 @@ En sonda kısa bir kapanış cümlesi yaz.
       if(stats){
         wordStats.innerHTML =
           `Toplam: ${stats.total}<br>` +
-          `Ortalama: ${stats.avg}<br>` +
           `Hız: 0 kelime/dk<br>` +
           `Süre: 0 sn`;
       }
@@ -1032,13 +1024,11 @@ async function loadReadyText(){
       if(stats){
         wordStats.innerHTML =
           `Toplam: ${stats.total}<br>` +
-          `Ortalama: ${stats.avg}<br>` +
           `Hız: 0 kelime/dk<br>` +
           `Süre: 0 sn`;
       }else{
         wordStats.innerHTML =
           `Toplam: 0<br>` +
-          `Ortalama: 0<br>` +
           `Hız: 0 kelime/dk<br>` +
           `Süre: 0 sn`;
       }
@@ -1106,7 +1096,6 @@ function calculateWordStats(){
   const wpm = Math.round(60000 / (totalTime / stats.total / block));
   wordStats.innerHTML =
     `Toplam: ${stats.total}<br>` +
-    `Ortalama: ${stats.avg}<br>` +
     `Hız: ${wpm} kelime/dk<br>` +
     `Süre: -`;
 }
