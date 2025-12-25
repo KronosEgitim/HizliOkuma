@@ -153,7 +153,7 @@ body{
   border-color:#dc3545 !important;
 }
 
-/* BUTONLAR (OKUMA BİTTİ + TESTİ BİTİR) */
+/* BUTONLAR (OKUMAYI BAŞLAT + OKUMA BİTTİ + TESTİ BİTİR) */
 #readingDoneBtn,
 #finishBtn{
   margin:0 20px 10px 20px;
@@ -172,6 +172,9 @@ body{
 #finishBtn{
   background:#28a745;
   color:white;
+}
+#freeStartBtn{
+  margin-top:6px;
 }
 </style>
 </head>
@@ -266,6 +269,9 @@ body{
           </div>
         </div>
 
+        <!-- Serbest okuma: Okumayı Başlat -->
+        <button class="primary" id="freeStartBtn" type="button" style="display:none;">Okumayı Başlat</button>
+
         <!-- Hız belirleme seçenekleri -->
         <div id="speedOptions">
           <label>Süre (ms) – 5 harf</label>
@@ -287,7 +293,7 @@ body{
     <div id="wordStats">
       Toplam: 0<br>
       Ortalama: 0<br>
-      Hız: 0 dk
+      Hız: 0 kelime/dk
     </div>
     <div id="quizStatsPanel">
       Test sonucu yok.
@@ -532,10 +538,12 @@ const stopBtn         = document.getElementById("stopBtn");
 const finishBtn       = document.getElementById("finishBtn");
 const questionContainer = document.getElementById("questionContainer");
 
-/* Yeni: okuma modu */
+/* Yeni: okuma modu + serbest okuma butonu */
 const readModeRadios  = document.querySelectorAll('input[name="readMode"]');
 const speedOptions    = document.getElementById("speedOptions");
 const readingDoneBtn  = document.getElementById("readingDoneBtn");
+const freeStartBtn    = document.getElementById("freeStartBtn");
+
 let currentReadMode   = "speed";
 
 let words = [];
@@ -548,6 +556,11 @@ let currentQuestions = [];
 let userAnswers = [];
 let questionsGenerated = false;
 let readyFileQuestions = [];  // hazır metinlerde txt’den gelen sorular
+
+/* Serbest okuma sayaç değişkenleri */
+let freeReadingStart = null;
+let freeTimerInterval = null;
+let freeElapsedMs = 0;
 
 const ANSWER_LETTERS = ["A","B","C","D","E"];
 
@@ -628,30 +641,120 @@ modeRadios.forEach(radio=>{
   populateReadyTexts();
 })();
 
+/* ========= TEMEL METİN İSTATİSTİK HESABI ========= */
+function computeBasicTextStats(){
+  if(!rawText) return null;
+  const arr = rawText
+    .replace(/[^\wğüşöçıİĞÜŞÖÇ]/g," ")
+    .split(/\s+/)
+    .filter(Boolean);
+
+  const total = arr.length;
+  if(total === 0) return null;
+
+  const chars = arr.reduce((s,w)=>s + w.length, 0);
+  const avg   = (chars / total).toFixed(2);
+
+  return { total, chars, avg };
+}
+
 /* ========= OKUMA MODU (HIZ / SERBEST) ========= */
 function revealAllWords(){
   words.forEach(w => w.className = "visibleWord");
 }
 
+function hideAllWords(){
+  words.forEach(w => w.className = "hiddenWord");
+}
+
+function resetFreeTimer(){
+  freeReadingStart = null;
+  freeElapsedMs = 0;
+  if(freeTimerInterval){
+    clearInterval(freeTimerInterval);
+    freeTimerInterval = null;
+  }
+}
+
+function updateFreeTimerDisplay(){
+  const stats = computeBasicTextStats();
+  const seconds = Math.floor(freeElapsedMs / 1000);
+  if(!stats){
+    wordStats.innerHTML =
+      `Toplam: 0<br>` +
+      `Ortalama: 0<br>` +
+      `Hız: 0 kelime/dk<br>` +
+      `Süre: ${seconds} sn`;
+    return;
+  }
+  wordStats.innerHTML =
+    `Toplam: ${stats.total}<br>` +
+    `Ortalama: ${stats.avg}<br>` +
+    `Hız: -<br>` +
+    `Süre: ${seconds} sn`;
+}
+
+function showFreeFinalStats(){
+  const stats = computeBasicTextStats();
+  if(!stats || freeElapsedMs <= 0){
+    wordStats.innerHTML =
+      `Toplam: ${stats ? stats.total : 0}<br>` +
+      `Ortalama: ${stats ? stats.avg : 0}<br>` +
+      `Hız: 0 kelime/dk<br>` +
+      `Süre: 0 sn`;
+    return;
+  }
+  const seconds = Math.floor(freeElapsedMs / 1000);
+  const minutes = freeElapsedMs / 60000;
+  const wpm = Math.round(stats.total / minutes);
+
+  wordStats.innerHTML =
+    `Toplam: ${stats.total}<br>` +
+    `Ortalama: ${stats.avg}<br>` +
+    `Hız: ${wpm} kelime/dk<br>` +
+    `Süre: ${seconds} sn`;
+}
+
 function setReadModeUI(mode){
   currentReadMode = mode;
   if(mode === "speed"){
+    // hız belirle
     speedOptions.style.display = "block";
+    freeStartBtn.style.display = "none";
     readingDoneBtn.style.display = "none";
+
     paused = false;
     clearTimeout(timeoutId);
     currentIndex = 0;
-    words.forEach(w => w.className = "hiddenWord");
+    hideAllWords();
+    resetFreeTimer();
+    // varsayılan istatistik (teorik hız)
+    calculateWordStats();
   }else{
+    // serbest okuma
     speedOptions.style.display = "none";
+    freeStartBtn.style.display = "inline-block";
+    readingDoneBtn.style.display = "none";
+
     paused = false;
     clearTimeout(timeoutId);
     currentIndex = 0;
-    if(words && words.length){
-      revealAllWords();
-      readingDoneBtn.style.display = "inline-block";
+    hideAllWords();
+    resetFreeTimer();
+    // yalnızca temel metin istatistiği
+    const stats = computeBasicTextStats();
+    if(stats){
+      wordStats.innerHTML =
+        `Toplam: ${stats.total}<br>` +
+        `Ortalama: ${stats.avg}<br>` +
+        `Hız: 0 kelime/dk<br>` +
+        `Süre: 0 sn`;
     }else{
-      readingDoneBtn.style.display = "none";
+      wordStats.innerHTML =
+        `Toplam: 0<br>` +
+        `Ortalama: 0<br>` +
+        `Hız: 0 kelime/dk<br>` +
+        `Süre: 0 sn`;
     }
   }
 }
@@ -665,6 +768,28 @@ readModeRadios.forEach(r=>{
 
 // Başlangıç: hız belirle
 setReadModeUI("speed");
+
+/* Serbest okuma: Okumayı Başlat */
+freeStartBtn.addEventListener("click", ()=>{
+  if(currentReadMode !== "free") return;
+  if(!rawText || !words.length){
+    alert("Önce metin oluşturun veya hazır metin seçin.");
+    return;
+  }
+  // metni göster
+  revealAllWords();
+  readingDoneBtn.style.display = "inline-block";
+
+  // sayaç reset ve başlat
+  resetFreeTimer();
+  freeReadingStart = performance.now();
+  freeTimerInterval = setInterval(()=>{
+    if(freeReadingStart != null){
+      freeElapsedMs = performance.now() - freeReadingStart;
+      updateFreeTimerDisplay();
+    }
+  }, 200);
+});
 
 /* Ortak "Metin Oluştur" */
 generateTextBtn.onclick = async function(){
@@ -711,6 +836,7 @@ async function generateTextFromAPI(){
   finishBtn.style.display = "none";
   finishBtn.disabled = false;
   readingDoneBtn.style.display = "none";
+  resetFreeTimer();
 
   const levelRules = getTextLevelRules(ageGroup, level);
 
@@ -752,12 +878,21 @@ En sonda kısa bir kapanış cümlesi yaz.
 
     rawText = raw;
     loadText(rawText);
-    calculateWordStats();
 
     if(currentReadMode === "free"){
-      revealAllWords();
-      readingDoneBtn.style.display = "inline-block";
+      hideAllWords();        // serbest modda hemen görünmesin
+      resetFreeTimer();
+      const stats = computeBasicTextStats();
+      if(stats){
+        wordStats.innerHTML =
+          `Toplam: ${stats.total}<br>` +
+          `Ortalama: ${stats.avg}<br>` +
+          `Hız: 0 kelime/dk<br>` +
+          `Süre: 0 sn`;
+      }
+      readingDoneBtn.style.display = "none";
     }else{
+      calculateWordStats();
       readingDoneBtn.style.display = "none";
     }
 
@@ -859,6 +994,7 @@ async function loadReadyText(){
   finishBtn.style.display = "none";
   finishBtn.disabled = false;
   readingDoneBtn.style.display = "none";
+  resetFreeTimer();
 
   try{
     const res = await fetch(sel);
@@ -878,13 +1014,25 @@ async function loadReadyText(){
     readyFileQuestions = parseQuestionsFromFile(questionsPart);
 
     loadText(rawText);
-    calculateWordStats();
 
     if(currentReadMode === "free"){
-      revealAllWords();
-      readingDoneBtn.style.display = "inline-block";
+      hideAllWords();
+      const stats = computeBasicTextStats();
+      if(stats){
+        wordStats.innerHTML =
+          `Toplam: ${stats.total}<br>` +
+          `Ortalama: ${stats.avg}<br>` +
+          `Hız: 0 kelime/dk<br>` +
+          `Süre: 0 sn`;
+      }else{
+        wordStats.innerHTML =
+          `Toplam: 0<br>` +
+          `Ortalama: 0<br>` +
+          `Hız: 0 kelime/dk<br>` +
+          `Süre: 0 sn`;
+      }
     }else{
-      readingDoneBtn.style.display = "none";
+      calculateWordStats();
     }
 
     generateStatus.innerText = "✅ Metin yüklendi.";
@@ -921,22 +1069,22 @@ function loadText(txt){
   });
 }
 
-/* ========= İSTATİSTİK ========= */
+/* ========= İSTATİSTİK (HIZ MODU) ========= */
 timeInput.addEventListener("input", calculateWordStats);
 blockCountInput.addEventListener("input", calculateWordStats);
 
 function calculateWordStats(){
-  if(!rawText) return;
+  if(currentReadMode !== "speed"){
+    // hız modu dışındayken teorik hesap yapmak istemeyebilirsin,
+    // ama istersen bu satırı kaldırıp serbestte de kullanabilirsin.
+  }
+  const stats = computeBasicTextStats();
+  if(!stats) return;
+
   const arr = rawText
     .replace(/[^\wğüşöçıİĞÜŞÖÇ]/g," ")
     .split(/\s+/)
     .filter(Boolean);
-
-  const total = arr.length;
-  if(total === 0) return;
-
-  const chars = arr.reduce((s,w)=>s + w.length, 0);
-  const avg   = (chars / total).toFixed(2);
 
   const X     = +timeInput.value || 300;
   const block = +blockCountInput.value || 1;
@@ -948,11 +1096,12 @@ function calculateWordStats(){
     totalTime += t;
   });
 
-  const wpm = Math.round(60000 / (totalTime / total / block));
+  const wpm = Math.round(60000 / (totalTime / stats.total / block));
   wordStats.innerHTML =
-    `Toplam: ${total}<br>` +
-    `Ortalama: ${avg}<br>` +
-    `Hız: ${wpm} dk`;
+    `Toplam: ${stats.total}<br>` +
+    `Ortalama: ${stats.avg}<br>` +
+    `Hız: ${wpm} kelime/dk<br>` +
+    `Süre: -`;
 }
 
 /* ========= BLOK SİSTEMİ ========= */
@@ -1036,7 +1185,7 @@ function showNextWord(){
 /* ========= OKUMA BUTONLARI ========= */
 function start(){
   if(currentReadMode !== "speed"){
-    alert("Serbest okuma modundasınız. Metni okuyup 'Okuma Bitti' butonuna basınız.");
+    alert("Serbest okuma modundasınız. Metni okuyup 'Okumayı Başlat' ve ardından 'Okuma Bitti' butonlarını kullanın.");
     return;
   }
   if(!words.length){
@@ -1058,7 +1207,7 @@ function stop(){
   paused = false;
   clearTimeout(timeoutId);
   currentIndex = 0;
-  words.forEach(w=>w.className="hiddenWord");
+  hideAllWords();
 }
 
 startBtn.onclick = start;
@@ -1073,6 +1222,13 @@ readingDoneBtn.addEventListener("click", async ()=>{
     return;
   }
   if(quizPhase !== "reading") return;
+
+  // sayaç durdur
+  if(freeReadingStart != null){
+    freeElapsedMs = performance.now() - freeReadingStart;
+  }
+  resetFreeTimer();
+  showFreeFinalStats();
 
   quizPhase = "questions";
 
@@ -1129,8 +1285,8 @@ async function generateQuestionsForText(){
 
   if(!apiKey){
     alert("API anahtarı kayıtlı değil. Bu sayfadan API anahtarını doğrulayın ve kaydedin.");
-  questionContainer.innerHTML = "";
-  return;
+    questionContainer.innerHTML = "";
+    return;
   }
 
   if(!rawText){
