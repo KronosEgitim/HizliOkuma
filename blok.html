@@ -153,18 +153,25 @@ body{
   border-color:#dc3545 !important;
 }
 
-/* TESTİ BİTİR BUTONU */
+/* BUTONLAR (OKUMA BİTTİ + TESTİ BİTİR) */
+#readingDoneBtn,
 #finishBtn{
-  margin:0 20px 15px 20px;
+  margin:0 20px 10px 20px;
   padding:8px 12px;
   border:none;
   border-radius:4px;
-  background:#28a745;
-  color:white;
   cursor:pointer;
   font-size:14px;
   align-self:flex-start;
   display:none; /* başta gizli */
+}
+#readingDoneBtn{
+  background:#17a2b8;
+  color:white;
+}
+#finishBtn{
+  background:#28a745;
+  color:white;
 }
 </style>
 </head>
@@ -246,17 +253,33 @@ body{
       <!-- OKUMA BÖLÜMÜ -->
       <div class="section">
         <h3>3) Okuma</h3>
-        <label>Süre (ms) – 5 harf</label>
-        <input type="number" id="timeInput" value="300" step="50" min="50">
-        <label>Blok (en fazla 3)</label>
-        <select id="blockCountInput">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-        <button class="primary" id="startBtn">Başlat</button>
-        <button class="secondary" id="pauseBtn">Duraklat</button>
-        <button class="secondary" id="stopBtn">Durdur</button>
+
+        <!-- Okuma modu: Hız belirle / Serbest okuma -->
+        <div class="textModeRow">
+          <div class="radioRow">
+            <input type="radio" name="readMode" value="speed" checked>
+            <span>Hız belirle</span>
+          </div>
+          <div class="radioRow">
+            <input type="radio" name="readMode" value="free">
+            <span>Serbest okuma</span>
+          </div>
+        </div>
+
+        <!-- Hız belirleme seçenekleri -->
+        <div id="speedOptions">
+          <label>Süre (ms) – 5 harf</label>
+          <input type="number" id="timeInput" value="300" step="50" min="50">
+          <label>Blok (en fazla 3)</label>
+          <select id="blockCountInput">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+          <button class="primary" id="startBtn" type="button">Başlat</button>
+          <button class="secondary" id="pauseBtn" type="button">Duraklat</button>
+          <button class="secondary" id="stopBtn" type="button">Durdur</button>
+        </div>
       </div>
 
     </div>
@@ -275,7 +298,8 @@ body{
   <!-- SAĞ PANEL: METİN + SORULAR -->
   <div id="rightPanel">
     <div id="textDisplay"></div>
-    <button id="finishBtn">Testi Bitir</button>
+    <button id="readingDoneBtn" type="button">Okuma Bitti</button>
+    <button id="finishBtn" type="button">Testi Bitir</button>
     <div id="questionContainer"></div>
   </div>
 
@@ -508,6 +532,12 @@ const stopBtn         = document.getElementById("stopBtn");
 const finishBtn       = document.getElementById("finishBtn");
 const questionContainer = document.getElementById("questionContainer");
 
+/* Yeni: okuma modu */
+const readModeRadios  = document.querySelectorAll('input[name="readMode"]');
+const speedOptions    = document.getElementById("speedOptions");
+const readingDoneBtn  = document.getElementById("readingDoneBtn");
+let currentReadMode   = "speed";
+
 let words = [];
 let currentIndex = 0;
 let timeoutId = null;
@@ -585,7 +615,7 @@ modeRadios.forEach(radio=>{
 });
 
 (function initTextMode(){
-  const selected = document.querySelector('input[name="textMode"]:checked');
+  const selected = document.querySelector('input[name="textMode"]:checked");
   const val = selected ? selected.value : "ai";
   if(val === "ai"){
     aiOptions.style.display = "block";
@@ -596,6 +626,45 @@ modeRadios.forEach(radio=>{
   }
   populateReadyTexts();
 })();
+
+/* ========= OKUMA MODU (HIZ / SERBEST) ========= */
+function revealAllWords(){
+  words.forEach(w => w.className = "visibleWord");
+}
+
+function setReadModeUI(mode){
+  currentReadMode = mode;
+  if(mode === "speed"){
+    speedOptions.style.display = "block";
+    readingDoneBtn.style.display = "none";
+    // bloklu okumaya geçerken önce her şeyi gizle
+    paused = false;
+    clearTimeout(timeoutId);
+    currentIndex = 0;
+    words.forEach(w => w.className = "hiddenWord");
+  }else{
+    speedOptions.style.display = "none";
+    paused = false;
+    clearTimeout(timeoutId);
+    currentIndex = 0;
+    if(words && words.length){
+      revealAllWords();
+      readingDoneBtn.style.display = "inline-block";
+    }else{
+      readingDoneBtn.style.display = "none";
+    }
+  }
+}
+
+readModeRadios.forEach(r=>{
+  r.addEventListener("change", ()=>{
+    const selected = document.querySelector('input[name="readMode"]:checked');
+    setReadModeUI(selected ? selected.value : "speed");
+  });
+});
+
+// Başlangıç: hız belirle
+setReadModeUI("speed");
 
 /* Ortak "Metin Oluştur" */
 generateTextBtn.onclick = async function(){
@@ -641,6 +710,7 @@ async function generateTextFromAPI(){
   userAnswers = [];
   finishBtn.style.display = "none";
   finishBtn.disabled = false;
+  readingDoneBtn.style.display = "none";
 
   const levelRules = getTextLevelRules(ageGroup, level);
 
@@ -683,6 +753,15 @@ En sonda kısa bir kapanış cümlesi yaz.
     rawText = raw;
     loadText(rawText);
     calculateWordStats();
+
+    // Eğer serbest okuma modundaysak metni tamamen göster
+    if(currentReadMode === "free"){
+      revealAllWords();
+      readingDoneBtn.style.display = "inline-block";
+    }else{
+      readingDoneBtn.style.display = "none";
+    }
+
     generateStatus.innerText = "✅ Metin hazır.";
     generateStatus.style.color = "green";
   }catch(err){
@@ -694,28 +773,6 @@ En sonda kısa bir kapanış cümlesi yaz.
 }
 
 /* ========= HAZIR METİN SORU PARSE – SENİN FORMATIN ========= */
-/*
-Format (örnek):
-
-Metin...
-...
--SORULAR-
-Soru?
-a) Şık 1
-b) Şık 2
-c) Şık 3
-d) Şık 4
-e) Şık 5
-c
-
-Soru?
-a) ...
-...
-
-Yani:
-- Şıklar: a) ... b) ... c) ... d) ... e) ...
-- En altta: sadece harf (a/b/c/d/e)
-*/
 function parseQuestionsFromFile(raw){
   const result = [];
   if(!raw) return result;
@@ -727,19 +784,15 @@ function parseQuestionsFromFile(raw){
   let i = 0;
   while (i < lines.length) {
 
-    // Boş satırları atla
     while (i < lines.length && !lines[i]) i++;
     if (i >= lines.length) break;
 
-    // 1) Soru satırı
     let qLine = lines[i];
     i++;
 
-    // "1) ..." gibi numarayı sil
     qLine = qLine.replace(/^\d+\)\s*/, "").trim();
     if (!qLine) continue;
 
-    // 2) Şıklar (a) ... b) ... c) ... d) ... e) ...)
     const opts = [];
     let optCount = 0;
 
@@ -755,12 +808,10 @@ function parseQuestionsFromFile(raw){
     }
 
     if (opts.length !== 5) {
-      // 5 şık yoksa geçersiz
       continue;
     }
 
-    // 3) Cevap satırı (tek harf: a/b/c/d/e)
-    while (i < lines.length && !lines[i]) i++; // aradaki boşlukları atla
+    while (i < lines.length && !lines[i]) i++;
     if (i >= lines.length) break;
 
     let ansLine = lines[i];
@@ -808,12 +859,12 @@ async function loadReadyText(){
   userAnswers = [];
   finishBtn.style.display = "none";
   finishBtn.disabled = false;
+  readingDoneBtn.style.display = "none";
 
   try{
     const res = await fetch(sel);
     const txt = await res.text();
 
-    // Metin / Soru ayrımı: -SORULAR-
     const marker = "-SORULAR-";
     let textPart = txt;
     let questionsPart = "";
@@ -824,11 +875,18 @@ async function loadReadyText(){
       questionsPart = txt.slice(idx + marker.length).trim();
     }
 
-    rawText = textPart;                     // sadece metin okuma için
-    readyFileQuestions = parseQuestionsFromFile(questionsPart); // sorular txt’den
+    rawText = textPart;
+    readyFileQuestions = parseQuestionsFromFile(questionsPart);
 
     loadText(rawText);
     calculateWordStats();
+
+    if(currentReadMode === "free"){
+      revealAllWords();
+      readingDoneBtn.style.display = "inline-block";
+    }else{
+      readingDoneBtn.style.display = "none";
+    }
 
     generateStatus.innerText = "✅ Metin yüklendi.";
     generateStatus.style.color = "green";
@@ -900,10 +958,11 @@ function calculateWordStats(){
 
 /* ========= BLOK SİSTEMİ ========= */
 function showNextWord(){
+  if(currentReadMode !== "speed") return; // güvenlik
   if(paused) return;
 
   if(currentIndex >= words.length){
-    if(!questionsGenerated && quizPhase === "reading"){
+    if(!questionsGenerated && quizPhase === "reading" && currentReadMode === "speed"){
       questionsGenerated = true;
       quizPhase = "questions";
 
@@ -977,6 +1036,10 @@ function showNextWord(){
 
 /* ========= OKUMA BUTONLARI ========= */
 function start(){
+  if(currentReadMode !== "speed"){
+    alert("Serbest okuma modundasınız. Metni okuyup 'Okuma Bitti' butonuna basınız.");
+    return;
+  }
   if(!words.length){
     alert("Önce metin oluşturun veya hazır metin seçin.");
     return;
@@ -985,10 +1048,15 @@ function start(){
   showNextWord();
 }
 function pause(){
+  if(currentReadMode !== "speed") return;
   paused = true;
   clearTimeout(timeoutId);
 }
 function stop(){
+  if(currentReadMode !== "speed"){
+    // serbest modda stop anlamsız, sadece her şeyi görünür bırakıyoruz
+    return;
+  }
   paused = false;
   clearTimeout(timeoutId);
   currentIndex = 0;
@@ -998,6 +1066,36 @@ function stop(){
 startBtn.onclick = start;
 pauseBtn.onclick = pause;
 stopBtn.onclick  = stop;
+
+/* ========= SERBEST OKUMA: OKUMA BİTTİ ========= */
+readingDoneBtn.addEventListener("click", async ()=>{
+  if(currentReadMode !== "free") return;
+  if(!rawText){
+    alert("Önce metin oluşturun veya hazır metin seçin.");
+    return;
+  }
+  if(quizPhase !== "reading") return;
+
+  quizPhase = "questions";
+
+  if(!currentQuestions.length){
+    const selected = document.querySelector('input[name="textMode"]:checked');
+    const selectedMode = selected ? selected.value : "ai";
+
+    if(selectedMode === "ai"){
+      await generateQuestionsForText();
+    }else{
+      currentQuestions = readyFileQuestions || [];
+      userAnswers = new Array(currentQuestions.length).fill(null);
+    }
+  }
+
+  renderQuestions();
+  if(currentQuestions && currentQuestions.length){
+    finishBtn.style.display = "inline-block";
+    finishBtn.disabled = false;
+  }
+});
 
 /* ========= SORU SİSTEMİ ========= */
 finishBtn.addEventListener("click", ()=>{
