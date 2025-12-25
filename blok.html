@@ -806,7 +806,7 @@ function setReadModeUI(mode){
     currentIndex = 0;
     hideAllWords();
     resetFreeTimer();
-    calculateWordStats(); // Hız ve Süre:- göster
+    calculateWordStats(); // Hız ve Süre:0 sn göster
   }else{
     // serbest okuma
     speedOptions.style.display = "none";
@@ -1143,30 +1143,57 @@ function loadText(txt){
   });
 }
 
-/* ========= İSTATİSTİK (HIZ MODU) ========= */
+/* ========= İSTATİSTİK (HIZ MODU – BLOK BAZLI) ========= */
 timeInput.addEventListener("input", calculateWordStats);
 blockCountInput.addEventListener("input", calculateWordStats);
 
 function calculateWordStats(){
   const stats = computeBasicTextStats();
-  if(!stats) return;
+  if(!stats){
+    wordStats.innerHTML =
+      `Toplam: 0<br>` +
+      `Hız: 0 kelime/dk<br>` +
+      `Süre: 0 sn`;
+    return;
+  }
 
-  const arr = rawText
+  const wordsArr = rawText
     .replace(/[^\wğüşöçıİĞÜŞÖÇ]/g," ")
     .split(/\s+/)
     .filter(Boolean);
 
-  const X     = +timeInput.value || 300;
-  const block = +blockCountInput.value || 1;
+  if(!wordsArr.length){
+    wordStats.innerHTML =
+      `Toplam: 0<br>` +
+      `Hız: 0 kelime/dk<br>` +
+      `Süre: 0 sn`;
+    return;
+  }
 
-  let totalTime = 0;
-  arr.forEach(w=>{
-    let t = X - ((5 - w.length) * X / 10) * 1.2;
-    if(t < 1) t = 1;
-    totalTime += t;
-  });
+  const X = +timeInput.value || 300; // ms
+  const blockCount = Math.min(3, Math.max(1, parseInt(blockCountInput.value, 10) || 1));
+  const baseLettersPerBlock = 5 * blockCount; // 1 blok=5, 2 blok=10, 3 blok=15 harf
 
-  const wpm = Math.round(60000 / (totalTime / stats.total / block));
+  let totalTimeMs = 0;
+  let idx = 0;
+
+  while(idx < wordsArr.length){
+    const blockWords = wordsArr.slice(idx, idx + blockCount);
+    let charCount = 0;
+    blockWords.forEach(w => { charCount += w.length; });
+
+    if(charCount > 0){
+      // "Aynı matematik hesap": fark * X/10 *1.2, sadece baz harf sayısı değişti
+      let tBlock = X - ((baseLettersPerBlock - charCount) * X / 10) * 1.2;
+      if(tBlock < 1) tBlock = 1;
+      totalTimeMs += tBlock;
+    }
+
+    idx += blockCount;
+  }
+
+  const minutes = totalTimeMs / 60000;
+  const wpm = minutes > 0 ? Math.round(stats.total / minutes) : 0;
   lastCalculatedWpm = wpm;
 
   wordStats.innerHTML =
@@ -1175,7 +1202,7 @@ function calculateWordStats(){
     `Süre: 0 sn`;
 }
 
-/* ========= BLOK SİSTEMİ ========= */
+/* ========= BLOK SİSTEMİ (EŞ ZAMANLI GÖSTERİM) ========= */
 function showNextWord(){
   if(currentReadMode !== "speed") return;
   if(paused) return;
@@ -1215,18 +1242,21 @@ function showNextWord(){
     return;
   }
 
+  // Önce herkesi gizle
   words.forEach(w=>w.className="hiddenWord");
 
-  let blockCount = Math.min(3, parseInt(blockCountInput.value,10) || 1);
+  const maxBlockCount = Math.min(3, parseInt(blockCountInput.value,10) || 1);
   const blockWords = [];
   let displayed = 0;
 
+  // İlk kelime
   let first = words[currentIndex];
   first.className = "visibleWord";
   blockWords.push(first);
   displayed = 1;
 
-  for(let i=1; i<blockCount; i++){
+  // Satır sonu / cümle sonu / paragraf sınırı bozulmadan 2. ve 3. kelimeleri ekle
+  for(let i=1; i<maxBlockCount; i++){
     if(currentIndex + i >= words.length) break;
 
     const prev = words[currentIndex + i - 1];
@@ -1244,21 +1274,29 @@ function showNextWord(){
   }
 
   const X = +timeInput.value || 300;
-  let total = 0;
+  const blockCount = blockWords.length;          // Gerçekte gösterilen blok sayısı (1–3)
+  const baseLetters = 5 * blockCount;           // 1 blok=5, 2 blok=10, 3 blok=15
+
+  let totalChars = 0;
   blockWords.forEach(w=>{
-    const len = w.textContent.trim().length;
-    let t = X - ((5 - len) * X / 10) * 1.2;
-    if(t < 1) t = 1;
-    total += t;
+    totalChars += w.textContent.trim().length;
   });
-  const time = total / blockWords.length;
+
+  let tBlock;
+  if(totalChars > 0){
+    // Aynı matematik: baz harften sapmaya göre süre oynar
+    tBlock = X - ((baseLetters - totalChars) * X / 10) * 1.2;
+    if(tBlock < 1) tBlock = 1;
+  }else{
+    tBlock = X;
+  }
 
   currentIndex += displayed;
 
   timeoutId = setTimeout(()=>{
     blockWords.forEach(w=>w.className="hiddenWord");
     showNextWord();
-  }, time);
+  }, tBlock);
 }
 
 /* ========= OKUMA BUTONLARI ========= */
