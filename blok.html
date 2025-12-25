@@ -282,7 +282,7 @@ body{
             <option value="2">2</option>
             <option value="3">3</option>
           </select>
-          <button class="primary" id="startBtn" type="button">Okumayı Başlat</button>
+          <button class="primary" id="startBtn" type="button">Başlat</button>
           <button class="secondary" id="pauseBtn" type="button">Duraklat</button>
           <button class="secondary" id="stopBtn" type="button">Durdur</button>
         </div>
@@ -538,7 +538,7 @@ const stopBtn         = document.getElementById("stopBtn");
 const finishBtn       = document.getElementById("finishBtn");
 const questionContainer = document.getElementById("questionContainer");
 
-/* Yeni: okuma modu + serbest okuma butonu */
+/* Okuma modu + serbest okuma butonu */
 const readModeRadios  = document.querySelectorAll('input[name="readMode"]');
 const speedOptions    = document.getElementById("speedOptions");
 const readingDoneBtn  = document.getElementById("readingDoneBtn");
@@ -561,6 +561,13 @@ let readyFileQuestions = [];  // hazır metinlerde txt’den gelen sorular
 let freeReadingStart = null;
 let freeTimerInterval = null;
 let freeElapsedMs = 0;
+
+/* Hız modunda süre takibi için değişkenler */
+let speedReadingStart = null;
+let speedTimerInterval = null;
+let speedElapsedMs = 0;
+let speedBaseElapsedMs = 0;
+let lastCalculatedWpm = 0;
 
 const ANSWER_LETTERS = ["A","B","C","D","E"];
 
@@ -659,7 +666,6 @@ function computeBasicTextStats(){
 }
 
 /* ========= SERBEST OKUMA SAYAÇ FONKSİYONLARI ========= */
-// Tamamen sıfırlamak için (mod değişimi / yeni metin vb.)
 function resetFreeTimer(){
   freeReadingStart = null;
   freeElapsedMs = 0;
@@ -669,7 +675,6 @@ function resetFreeTimer(){
   }
 }
 
-// Süreyi koruyarak sadece sayacı durdurmak için
 function stopFreeTimerKeepElapsed(){
   if(freeTimerInterval){
     clearInterval(freeTimerInterval);
@@ -713,6 +718,70 @@ function showFreeFinalStats(){
     `Süre: ${seconds} sn`;
 }
 
+/* ========= HIZ MODU SÜRE SAYAÇ FONKSİYONLARI ========= */
+function resetSpeedTimer(){
+  speedReadingStart = null;
+  speedElapsedMs = 0;
+  speedBaseElapsedMs = 0;
+  if(speedTimerInterval){
+    clearInterval(speedTimerInterval);
+    speedTimerInterval = null;
+  }
+}
+
+function updateSpeedTimerDisplay(){
+  const stats = computeBasicTextStats();
+  const seconds = Math.floor(speedElapsedMs / 1000);
+  if(!stats){
+    wordStats.innerHTML =
+      `Toplam: 0<br>` +
+      `Hız: 0 kelime/dk<br>` +
+      `Süre: ${seconds} sn`;
+    return;
+  }
+  const wpm = lastCalculatedWpm || 0;
+  wordStats.innerHTML =
+    `Toplam: ${stats.total}<br>` +
+    `Hız: ${wpm} kelime/dk<br>` +
+    `Süre: ${seconds} sn`;
+}
+
+function startSpeedTimer(){
+  if(speedTimerInterval){
+    clearInterval(speedTimerInterval);
+    speedTimerInterval = null;
+  }
+  if(speedReadingStart === null){
+    speedReadingStart = performance.now();
+  }
+  speedTimerInterval = setInterval(()=>{
+    if(speedReadingStart != null){
+      const now = performance.now();
+      speedElapsedMs = speedBaseElapsedMs + (now - speedReadingStart);
+      updateSpeedTimerDisplay();
+    }
+  }, 200);
+}
+
+function pauseSpeedTimer(){
+  if(speedReadingStart != null){
+    const now = performance.now();
+    speedBaseElapsedMs += (now - speedReadingStart);
+    speedReadingStart = null;
+  }
+  if(speedTimerInterval){
+    clearInterval(speedTimerInterval);
+    speedTimerInterval = null;
+  }
+  speedElapsedMs = speedBaseElapsedMs;
+  updateSpeedTimerDisplay();
+}
+
+function finalizeSpeedTimer(){
+  // okuma sona erdiğinde çağrılır
+  pauseSpeedTimer();
+}
+
 /* ========= OKUMA MODU (HIZ / SERBEST) ========= */
 function revealAllWords(){
   words.forEach(w => w.className = "visibleWord");
@@ -724,6 +793,8 @@ function hideAllWords(){
 
 function setReadModeUI(mode){
   currentReadMode = mode;
+  resetSpeedTimer(); // mod değişince hız sayaçlarını sıfırla
+
   if(mode === "speed"){
     // hız belirle
     speedOptions.style.display = "block";
@@ -735,7 +806,7 @@ function setReadModeUI(mode){
     currentIndex = 0;
     hideAllWords();
     resetFreeTimer();
-    calculateWordStats();
+    calculateWordStats(); // Hız ve Süre:- göster
   }else{
     // serbest okuma
     speedOptions.style.display = "none";
@@ -826,6 +897,7 @@ async function generateTextFromAPI(){
   }
 
   stop();
+  resetSpeedTimer();
   textDisplay.innerHTML = "";
   questionContainer.innerHTML = "";
   quizStatsPanel.innerHTML = "Test sonucu yok.";
@@ -983,6 +1055,7 @@ async function loadReadyText(){
   }
 
   stop();
+  resetSpeedTimer();
   textDisplay.innerHTML = "";
   questionContainer.innerHTML = "";
   quizStatsPanel.innerHTML = "Test sonucu yok.";
@@ -1094,10 +1167,12 @@ function calculateWordStats(){
   });
 
   const wpm = Math.round(60000 / (totalTime / stats.total / block));
+  lastCalculatedWpm = wpm;
+
   wordStats.innerHTML =
     `Toplam: ${stats.total}<br>` +
     `Hız: ${wpm} kelime/dk<br>` +
-    `Süre: -`;
+    `Süre: 0 sn`;
 }
 
 /* ========= BLOK SİSTEMİ ========= */
@@ -1109,6 +1184,9 @@ function showNextWord(){
     if(!questionsGenerated && quizPhase === "reading" && currentReadMode === "speed"){
       questionsGenerated = true;
       quizPhase = "questions";
+
+      // okuma süresi bitti, süreyi sabitle
+      finalizeSpeedTimer();
 
       setTimeout(async ()=>{
         const selected = document.querySelector('input[name="textMode"]:checked');
@@ -1194,12 +1272,14 @@ function start(){
     return;
   }
   paused = false;
+  startSpeedTimer();
   showNextWord();
 }
 function pause(){
   if(currentReadMode !== "speed") return;
   paused = true;
   clearTimeout(timeoutId);
+  pauseSpeedTimer();
 }
 function stop(){
   if(currentReadMode !== "speed"){
@@ -1209,6 +1289,7 @@ function stop(){
   clearTimeout(timeoutId);
   currentIndex = 0;
   hideAllWords();
+  resetSpeedTimer();
 }
 
 startBtn.onclick = start;
