@@ -244,7 +244,6 @@ body{
           <label>Hazır metin seçiniz</label>
           <select id="readyTextSelect">
             <option value="">Seçiniz</option>
-            <!-- KronosEgitim/HizliOkuma/Metinler altındaki .txt dosyaları JS ile doldurulacak -->
           </select>
         </div>
 
@@ -555,14 +554,12 @@ let quizPhase = "reading";
 let currentQuestions = [];
 let userAnswers = [];
 let questionsGenerated = false;
-let readyFileQuestions = [];  // hazır metinlerde txt’den gelen sorular
+let readyFileQuestions = [];
 
-/* Serbest okuma sayaç değişkenleri */
 let freeReadingStart = null;
 let freeTimerInterval = null;
 let freeElapsedMs = 0;
 
-/* Hız modunda süre takibi için değişkenler */
 let speedReadingStart = null;
 let speedTimerInterval = null;
 let speedElapsedMs = 0;
@@ -630,7 +627,7 @@ modeRadios.forEach(radio=>{
     }else{
       aiOptions.style.display = "none";
       readyOptions.style.display = "block";
-      populateReadyTexts(); // hazır moda geçince tazele
+      populateReadyTexts();
     }
   });
 });
@@ -778,7 +775,6 @@ function pauseSpeedTimer(){
 }
 
 function finalizeSpeedTimer(){
-  // okuma sona erdiğinde çağrılır
   pauseSpeedTimer();
 }
 
@@ -793,10 +789,9 @@ function hideAllWords(){
 
 function setReadModeUI(mode){
   currentReadMode = mode;
-  resetSpeedTimer(); // mod değişince hız sayaçlarını sıfırla
+  resetSpeedTimer();
 
   if(mode === "speed"){
-    // hız belirle
     speedOptions.style.display = "block";
     freeStartBtn.style.display = "none";
     readingDoneBtn.style.display = "none";
@@ -806,9 +801,8 @@ function setReadModeUI(mode){
     currentIndex = 0;
     hideAllWords();
     resetFreeTimer();
-    calculateWordStats(); // Hız ve Süre:0 sn göster
+    calculateWordStats();
   }else{
-    // serbest okuma
     speedOptions.style.display = "none";
     freeStartBtn.style.display = "inline-block";
     readingDoneBtn.style.display = "none";
@@ -841,7 +835,6 @@ readModeRadios.forEach(r=>{
   });
 });
 
-// Başlangıç: hız belirle
 setReadModeUI("speed");
 
 /* Serbest okuma: Okumayı Başlat */
@@ -851,11 +844,9 @@ freeStartBtn.addEventListener("click", ()=>{
     alert("Önce metin oluşturun veya hazır metin seçin.");
     return;
   }
-  // metni göster
   revealAllWords();
   readingDoneBtn.style.display = "inline-block";
 
-  // sayaç reset ve başlat
   resetFreeTimer();
   freeReadingStart = performance.now();
   freeTimerInterval = setInterval(()=>{
@@ -956,7 +947,7 @@ En sonda kısa bir kapanış cümlesi yaz.
     loadText(rawText);
 
     if(currentReadMode === "free"){
-      hideAllWords();        // serbest modda hemen görünmesin
+      hideAllWords();
       resetFreeTimer();
       const stats = computeBasicTextStats();
       if(stats){
@@ -981,7 +972,7 @@ En sonda kısa bir kapanış cümlesi yaz.
   }
 }
 
-/* ========= HAZIR METİN SORU PARSE – SENİN FORMATIN ========= */
+/* ========= HAZIR METİN SORU PARSE ========= */
 function parseQuestionsFromFile(raw){
   const result = [];
   if(!raw) return result;
@@ -1143,7 +1134,7 @@ function loadText(txt){
   });
 }
 
-/* ========= İSTATİSTİK (HIZ MODU – BLOK BAZLI) ========= */
+/* ========= İSTATİSTİK (HIZ MODU – BLOK BAZLI, KISMİ BLOKTA ORANLI) ========= */
 timeInput.addEventListener("input", calculateWordStats);
 blockCountInput.addEventListener("input", calculateWordStats);
 
@@ -1171,25 +1162,30 @@ function calculateWordStats(){
   }
 
   const X = +timeInput.value || 300; // ms
-  const blockCount = Math.min(3, Math.max(1, parseInt(blockCountInput.value, 10) || 1));
-  const baseLettersPerBlock = 5 * blockCount; // 1 blok=5, 2 blok=10, 3 blok=15 harf
+  const desiredBlocks = Math.min(3, Math.max(1, parseInt(blockCountInput.value, 10) || 1));
 
   let totalTimeMs = 0;
   let idx = 0;
 
   while(idx < wordsArr.length){
-    const blockWords = wordsArr.slice(idx, idx + blockCount);
+    const blockWords = wordsArr.slice(idx, idx + desiredBlocks);
+    const actualBlocks = blockWords.length;
+    if(actualBlocks === 0) break;
+
     let charCount = 0;
     blockWords.forEach(w => { charCount += w.length; });
 
-    if(charCount > 0){
-      // "Aynı matematik hesap": fark * X/10 *1.2, sadece baz harf sayısı değişti
-      let tBlock = X - ((baseLettersPerBlock - charCount) * X / 10) * 1.2;
-      if(tBlock < 1) tBlock = 1;
-      totalTimeMs += tBlock;
-    }
+    // Oranlı süre: tam blok  X ms, 1/3 blok  X*(1/3) ms gibi
+    const fraction = actualBlocks / desiredBlocks;
+    let baseMs = X * fraction;
 
-    idx += blockCount;
+    const targetLetters = 5 * actualBlocks; // her blok ~5 harf
+    // Eski mantığın blok uyarlaması:
+    let tBlock = baseMs - ((targetLetters - charCount) * baseMs / 10) * 1.2;
+    if(tBlock < 1) tBlock = 1;
+
+    totalTimeMs += tBlock;
+    idx += desiredBlocks;
   }
 
   const minutes = totalTimeMs / 60000;
@@ -1202,7 +1198,7 @@ function calculateWordStats(){
     `Süre: 0 sn`;
 }
 
-/* ========= BLOK SİSTEMİ (EŞ ZAMANLI GÖSTERİM) ========= */
+/* ========= BLOK SİSTEMİ (EKRANDA GÖSTERİRKEN – ORANLI SÜRE) ========= */
 function showNextWord(){
   if(currentReadMode !== "speed") return;
   if(paused) return;
@@ -1212,7 +1208,6 @@ function showNextWord(){
       questionsGenerated = true;
       quizPhase = "questions";
 
-      // okuma süresi bitti, süreyi sabitle
       finalizeSpeedTimer();
 
       setTimeout(async ()=>{
@@ -1228,7 +1223,6 @@ function showNextWord(){
           renderQuestions();
         }
 
-        // Sorulara geçerken metni tamamen temizle
         hideAllWords();
         textDisplay.innerHTML = "";
         readingDoneBtn.style.display = "none";
@@ -1242,10 +1236,9 @@ function showNextWord(){
     return;
   }
 
-  // Önce herkesi gizle
   words.forEach(w=>w.className="hiddenWord");
 
-  const maxBlockCount = Math.min(3, parseInt(blockCountInput.value,10) || 1);
+  const desiredBlocks = Math.min(3, parseInt(blockCountInput.value,10) || 1);
   const blockWords = [];
   let displayed = 0;
 
@@ -1255,8 +1248,8 @@ function showNextWord(){
   blockWords.push(first);
   displayed = 1;
 
-  // Satır sonu / cümle sonu / paragraf sınırı bozulmadan 2. ve 3. kelimeleri ekle
-  for(let i=1; i<maxBlockCount; i++){
+  // Satır/cümle/paragraf kırılmasına göre 2. ve 3. kelimeleri ekle
+  for(let i=1; i<desiredBlocks; i++){
     if(currentIndex + i >= words.length) break;
 
     const prev = words[currentIndex + i - 1];
@@ -1274,21 +1267,25 @@ function showNextWord(){
   }
 
   const X = +timeInput.value || 300;
-  const blockCount = blockWords.length;          // Gerçekte gösterilen blok sayısı (1–3)
-  const baseLetters = 5 * blockCount;           // 1 blok=5, 2 blok=10, 3 blok=15
-
+  const actualBlocks = blockWords.length;
   let totalChars = 0;
   blockWords.forEach(w=>{
     totalChars += w.textContent.trim().length;
   });
 
+  // ÖRNEK: desired=3, X=300
+  // actual=3 -> baseMs=300
+  // actual=1 -> baseMs=100
+  const fraction = actualBlocks / desiredBlocks;
+  let baseMs = X * fraction;
+
+  const targetLetters = 5 * actualBlocks;
   let tBlock;
   if(totalChars > 0){
-    // Aynı matematik: baz harften sapmaya göre süre oynar
-    tBlock = X - ((baseLetters - totalChars) * X / 10) * 1.2;
+    tBlock = baseMs - ((targetLetters - totalChars) * baseMs / 10) * 1.2;
     if(tBlock < 1) tBlock = 1;
   }else{
-    tBlock = X;
+    tBlock = baseMs;
   }
 
   currentIndex += displayed;
@@ -1343,14 +1340,12 @@ readingDoneBtn.addEventListener("click", async ()=>{
   }
   if(quizPhase !== "reading") return;
 
-  // sayaç durdur, süreyi koru
   if(freeReadingStart != null){
     freeElapsedMs = performance.now() - freeReadingStart;
   }
-  stopFreeTimerKeepElapsed();   // sadece durdur, elapsed kalsın
-  showFreeFinalStats();         // freeElapsedMs ile hız hesaplanır
+  stopFreeTimerKeepElapsed();
+  showFreeFinalStats();
 
-  // Sorulara geçerken metin ve butonu kaldır
   readingDoneBtn.style.display = "none";
   hideAllWords();
   textDisplay.innerHTML = "";
@@ -1410,7 +1405,7 @@ async function generateQuestionsForText(){
 
   if(!apiKey){
     alert("API anahtarı kayıtlı değil. Bu sayfadan API anahtarını doğrulayın ve kaydedin.");
-    questionContainer.innerHTML = "";
+  questionContainer.innerHTML = "";
     return;
   }
 
