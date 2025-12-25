@@ -610,12 +610,13 @@ modeRadios.forEach(radio=>{
     }else{
       aiOptions.style.display = "none";
       readyOptions.style.display = "block";
+      populateReadyTexts(); // hazır moda geçince tazele
     }
   });
 });
 
 (function initTextMode(){
-  const selected = document.querySelector('input[name="textMode"]:checked");
+  const selected = document.querySelector('input[name="textMode"]:checked');
   const val = selected ? selected.value : "ai";
   if(val === "ai"){
     aiOptions.style.display = "block";
@@ -637,7 +638,6 @@ function setReadModeUI(mode){
   if(mode === "speed"){
     speedOptions.style.display = "block";
     readingDoneBtn.style.display = "none";
-    // bloklu okumaya geçerken önce her şeyi gizle
     paused = false;
     clearTimeout(timeoutId);
     currentIndex = 0;
@@ -754,7 +754,6 @@ En sonda kısa bir kapanış cümlesi yaz.
     loadText(rawText);
     calculateWordStats();
 
-    // Eğer serbest okuma modundaysak metni tamamen göster
     if(currentReadMode === "free"){
       revealAllWords();
       readingDoneBtn.style.display = "inline-block";
@@ -958,7 +957,7 @@ function calculateWordStats(){
 
 /* ========= BLOK SİSTEMİ ========= */
 function showNextWord(){
-  if(currentReadMode !== "speed") return; // güvenlik
+  if(currentReadMode !== "speed") return;
   if(paused) return;
 
   if(currentIndex >= words.length){
@@ -1054,7 +1053,6 @@ function pause(){
 }
 function stop(){
   if(currentReadMode !== "speed"){
-    // serbest modda stop anlamsız, sadece her şeyi görünür bırakıyoruz
     return;
   }
   paused = false;
@@ -1131,8 +1129,8 @@ async function generateQuestionsForText(){
 
   if(!apiKey){
     alert("API anahtarı kayıtlı değil. Bu sayfadan API anahtarını doğrulayın ve kaydedin.");
-    questionContainer.innerHTML = "";
-    return;
+  questionContainer.innerHTML = "";
+  return;
   }
 
   if(!rawText){
