@@ -1123,6 +1123,11 @@ function showNextWord(){
           renderQuestions();
         }
 
+        // Sorulara geçerken metni tamamen temizle
+        hideAllWords();
+        textDisplay.innerHTML = "";
+        readingDoneBtn.style.display = "none";
+
         if(currentQuestions && currentQuestions.length){
           finishBtn.style.display = "inline-block";
           finishBtn.disabled = false;
@@ -1225,6 +1230,11 @@ readingDoneBtn.addEventListener("click", async ()=>{
   }
   stopFreeTimerKeepElapsed();   // sadece durdur, elapsed kalsın
   showFreeFinalStats();         // freeElapsedMs ile hız hesaplanır
+
+  // Sorulara geçerken metin ve butonu kaldır
+  readingDoneBtn.style.display = "none";
+  hideAllWords();
+  textDisplay.innerHTML = "";
 
   quizPhase = "questions";
 
