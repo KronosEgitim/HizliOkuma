@@ -293,7 +293,8 @@ body{
     <div id="wordStats">
       Toplam: 0<br>
       Ortalama: 0<br>
-      Hız: 0 kelime/dk
+      Hız: 0 kelime/dk<br>
+      Süre: 0 sn
     </div>
     <div id="quizStatsPanel">
       Test sonucu yok.
@@ -658,15 +659,8 @@ function computeBasicTextStats(){
   return { total, chars, avg };
 }
 
-/* ========= OKUMA MODU (HIZ / SERBEST) ========= */
-function revealAllWords(){
-  words.forEach(w => w.className = "visibleWord");
-}
-
-function hideAllWords(){
-  words.forEach(w => w.className = "hiddenWord");
-}
-
+/* ========= SERBEST OKUMA SAYAÇ FONKSİYONLARI ========= */
+// Tamamen sıfırlamak için (mod değişimi / yeni metin vb.)
 function resetFreeTimer(){
   freeReadingStart = null;
   freeElapsedMs = 0;
@@ -674,6 +668,15 @@ function resetFreeTimer(){
     clearInterval(freeTimerInterval);
     freeTimerInterval = null;
   }
+}
+
+// Süreyi koruyarak sadece sayacı durdurmak için
+function stopFreeTimerKeepElapsed(){
+  if(freeTimerInterval){
+    clearInterval(freeTimerInterval);
+    freeTimerInterval = null;
+  }
+  freeReadingStart = null;
 }
 
 function updateFreeTimerDisplay(){
@@ -715,6 +718,15 @@ function showFreeFinalStats(){
     `Süre: ${seconds} sn`;
 }
 
+/* ========= OKUMA MODU (HIZ / SERBEST) ========= */
+function revealAllWords(){
+  words.forEach(w => w.className = "visibleWord");
+}
+
+function hideAllWords(){
+  words.forEach(w => w.className = "hiddenWord");
+}
+
 function setReadModeUI(mode){
   currentReadMode = mode;
   if(mode === "speed"){
@@ -728,7 +740,6 @@ function setReadModeUI(mode){
     currentIndex = 0;
     hideAllWords();
     resetFreeTimer();
-    // varsayılan istatistik (teorik hız)
     calculateWordStats();
   }else{
     // serbest okuma
@@ -741,7 +752,7 @@ function setReadModeUI(mode){
     currentIndex = 0;
     hideAllWords();
     resetFreeTimer();
-    // yalnızca temel metin istatistiği
+
     const stats = computeBasicTextStats();
     if(stats){
       wordStats.innerHTML =
@@ -1074,10 +1085,6 @@ timeInput.addEventListener("input", calculateWordStats);
 blockCountInput.addEventListener("input", calculateWordStats);
 
 function calculateWordStats(){
-  if(currentReadMode !== "speed"){
-    // hız modu dışındayken teorik hesap yapmak istemeyebilirsin,
-    // ama istersen bu satırı kaldırıp serbestte de kullanabilirsin.
-  }
   const stats = computeBasicTextStats();
   if(!stats) return;
 
@@ -1223,12 +1230,12 @@ readingDoneBtn.addEventListener("click", async ()=>{
   }
   if(quizPhase !== "reading") return;
 
-  // sayaç durdur
+  // sayaç durdur, süreyi koru
   if(freeReadingStart != null){
     freeElapsedMs = performance.now() - freeReadingStart;
   }
-  resetFreeTimer();
-  showFreeFinalStats();
+  stopFreeTimerKeepElapsed();   // sadece durdur, elapsed kalsın
+  showFreeFinalStats();         // freeElapsedMs ile hız hesaplanır
 
   quizPhase = "questions";
 
