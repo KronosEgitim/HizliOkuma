@@ -68,11 +68,9 @@
       margin:0;
       font-size:13px;
       color:#555;
-      line-height:1.35;
     }
-    .muted{ color:#6b7280; }
 
-    /* OVERLAY (Kullanıcı Kodu) */
+    /* OVERLAY */
     #overlay{
       position:fixed;
       inset:0;
@@ -89,23 +87,6 @@
       padding:18px;
     }
 
-    /* OVERLAY (API) */
-    #apiOverlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.55);
-      display:none;
-      justify-content:center;
-      align-items:center;
-      z-index:10000;
-    }
-    #apiOverlayBox{
-      width:min(560px,92%);
-      background:#fff;
-      border-radius:12px;
-      padding:18px;
-    }
-
     .code-wrapper{
       position:relative;
     }
@@ -117,25 +98,13 @@
       border:1px solid #ccc;
       box-sizing:border-box;
     }
-    .code-wrapper textarea{
-      width:100%;
-      min-height:46px;
-      padding:10px 44px 10px 10px;
-      font-size:14px;
-      border-radius:8px;
-      border:1px solid #ccc;
-      resize:vertical;
-      box-sizing:border-box;
-    }
-
-    #toggleCode, #toggleApi{
+    #toggleCode{
       position:absolute;
       right:12px;
       top:50%;
       transform:translateY(-50%);
       cursor:pointer;
       opacity:.6;
-      user-select:none;
     }
 
     .btnRow{
@@ -143,7 +112,6 @@
       gap:10px;
       justify-content:flex-end;
       margin-top:10px;
-      flex-wrap:wrap;
     }
     button{
       padding:10px 12px;
@@ -155,34 +123,10 @@
     #btnCheck{background:#2563eb;color:#fff}
     #btnReset{background:#e5e7eb}
 
-    .btnPrimary{background:#2563eb;color:#fff}
-    .btnSoft{background:#e5e7eb}
-    .btnDanger{background:#ef4444;color:#fff}
-
     #msg{
       margin-top:8px;
       font-size:13px;
       min-height:18px;
-    }
-    #apiMsg{
-      margin-top:10px;
-      font-size:13px;
-      min-height:18px;
-    }
-
-    .rowTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:8px;
-    }
-    .closeX{
-      cursor:pointer;
-      padding:6px 10px;
-      border-radius:8px;
-      background:#f3f4f6;
-      user-select:none;
     }
   </style>
 </head>
@@ -209,34 +153,6 @@
   </div>
 </div>
 
-<!-- API OVERLAY -->
-<div id="apiOverlay" onclick="closeApiOverlayOnBg(event)">
-  <div id="apiOverlayBox">
-    <div class="rowTop">
-      <div>
-        <h2 style="margin:0 0 6px 0;">OpenAI API Anahtarı</h2>
-        <div class="muted" style="font-size:13px;">
-          Anahtar tarayıcıda (localStorage) saklanır. Sayfa kaynağına yazılmaz.
-        </div>
-      </div>
-      <div class="closeX" onclick="closeApiOverlay()">✕</div>
-    </div>
-
-    <div class="code-wrapper">
-      <input type="password" id="apiKeyInput" placeholder="sk-... ile başlayan API anahtarınızı girin">
-      <span id="toggleApi" onclick="toggleApiVisibility()">👁</span>
-    </div>
-
-    <div class="btnRow">
-      <button class="btnSoft" onclick="fillSavedApiToInput()">Kayıtlıyı Göster</button>
-      <button class="btnDanger" onclick="clearApiKey()">API Sil</button>
-      <button class="btnPrimary" onclick="saveApiKey()">Kaydet / Değiştir</button>
-    </div>
-
-    <div id="apiMsg"></div>
-  </div>
-</div>
-
 <!-- ANA SAYFA -->
 <div id="mainContent">
   <div class="left">
@@ -245,12 +161,6 @@
   </div>
 
   <div class="right">
-
-    <!-- API DURUM KARTI -->
-    <div class="card" onclick="openApiOverlay()">
-      <h3>API Durumu</h3>
-      <p id="apiStatusText">Kontrol ediliyor...</p>
-    </div>
 
     <!-- 1 -->
     <div class="card"
@@ -287,16 +197,12 @@
 const KOD_TXT_URL = "https://KronosEgitim.github.io/HizliOkuma/kod.txt";
 const STORAGE_KEY = "USER_CODE";
 
-/* API KEY (localStorage) */
-const API_STORAGE_KEY = "OPENAI_API_KEY";
-
 window.onload = () => {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) {
     userCode.value = saved;
     checkUserCode(true);
   }
-  refreshApiStatusCard();
 };
 
 function toggleCodeVisibility(){
@@ -315,14 +221,7 @@ async function checkUserCode(auto=false){
 
   msg.textContent = auto ? "Kayıtlı kod kontrol ediliyor..." : "Kontrol ediliyor...";
 
-  let txt = "";
-  try{
-    txt = await fetch(KOD_TXT_URL,{cache:"no-store"}).then(r=>r.text());
-  }catch(e){
-    msg.textContent = "kod.txt okunamadı. İnternet bağlantısını kontrol edin.";
-    return;
-  }
-
+  const txt = await fetch(KOD_TXT_URL,{cache:"no-store"}).then(r=>r.text());
   const lines = txt.split(/\r?\n/);
 
   for(const l of lines){
@@ -336,81 +235,6 @@ async function checkUserCode(auto=false){
   }
   msg.textContent="Kullanıcı kodu hatalı";
 }
-
-/* ===== API OVERLAY ===== */
-function refreshApiStatusCard(){
-  const key = localStorage.getItem(API_STORAGE_KEY);
-  const el = document.getElementById("apiStatusText");
-  if(!el) return;
-
-  if(key && key.trim().length > 10){
-    // Anahtarı tam göstermeyelim
-    const masked = key.trim().slice(0, 4) + "..." + key.trim().slice(-4);
-    el.textContent = "Kayıtlı ( " + masked + " ) — Değiştirmek için tıklayın.";
-  }else{
-    el.textContent = "Kayıtlı değil — Eklemek için tıklayın.";
-  }
-}
-
-function openApiOverlay(){
-  apiMsg.textContent = "";
-  apiKeyInput.value = "";
-  apiKeyInput.type = "password";
-  apiOverlay.style.display = "flex";
-}
-
-function closeApiOverlay(){
-  apiOverlay.style.display = "none";
-  refreshApiStatusCard();
-}
-
-function closeApiOverlayOnBg(e){
-  if(e.target === apiOverlay){
-    closeApiOverlay();
-  }
-}
-
-function toggleApiVisibility(){
-  apiKeyInput.type = apiKeyInput.type === "password" ? "text" : "password";
-}
-
-function fillSavedApiToInput(){
-  const key = localStorage.getItem(API_STORAGE_KEY) || "";
-  if(!key){
-    apiMsg.textContent = "Kayıtlı API anahtarı bulunamadı.";
-    return;
-  }
-  apiKeyInput.value = key;
-  apiMsg.textContent = "Kayıtlı anahtar kutuya getirildi. İstersen değiştirip kaydedebilirsin.";
-}
-
-function saveApiKey(){
-  const key = (apiKeyInput.value || "").trim();
-
-  if(!key){
-    apiMsg.textContent = "API anahtarı boş olamaz.";
-    return;
-  }
-  if(!key.startsWith("sk-") || key.length < 20){
-    apiMsg.textContent = "API anahtarı formatı şüpheli görünüyor. (sk-... ile başlamalı)";
-    return;
-  }
-
-  localStorage.setItem(API_STORAGE_KEY, key);
-  apiMsg.textContent = "API anahtarı kaydedildi.";
-  refreshApiStatusCard();
-}
-
-function clearApiKey(){
-  localStorage.removeItem(API_STORAGE_KEY);
-  apiKeyInput.value = "";
-  apiMsg.textContent = "API anahtarı silindi.";
-  refreshApiStatusCard();
-}
-
-/* İstersen diğer sayfalarda okumak için:
-   const apiKey = localStorage.getItem("OPENAI_API_KEY");
-*/
 </script>
 
 </body>
