@@ -1,1580 +1,416 @@
-<!-- Uygulamalar/blok.html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>Blok Okuma + ChatGPT Metin Üretme</title>
-<style>
-body{
-  font-family:Arial,sans-serif;
-  margin:0;
-  padding:0;
-  height:100vh;
-}
-#container{
-  display:flex;
-  height:100vh;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hızlı Okuma ve Alıştırmalar</title>
 
-/* SOL PANEL */
-#settings{
-  width:260px;
-  background:#f0f0f0;
-  border-right:1px solid #ccc;
-  display:flex;
-  flex-direction:column;
-  height:100vh;
-}
-#settingsContent{
-  flex:1;
-  overflow-y:auto;
-  padding:15px;
-}
-#wordStats{
-  background:#e8e8e8;
-  padding:8px;
-  font-size:12px;
-  border-top:1px solid #ccc;
-}
-#quizStatsPanel{
-  background:#e8e8e8;
-  padding:8px;
-  font-size:12px;
-  border-top:1px solid #ccc;
-}
-.section{
-  margin-bottom:12px;
-  padding-bottom:8px;
-  border-bottom:1px solid #ccc;
-}
-#settings label,
-#settings input,
-#settings select,
-#settings button{
-  width:100%;
-  margin-bottom:6px;
-  font-size:12px;
-  box-sizing:border-box;
-}
-#settings h3{
-  margin:0 0 6px;
-  font-size:14px;
-}
-#settings button{
-  padding:6px;
-  border:none;
-  border-radius:4px;
-  cursor:pointer;
-}
-.primary{background:#007bff;color:white}
-.secondary{background:#6c757d;color:white}
+  <style>
+    *,*::before,*::after{box-sizing:border-box;}
 
-/* Radyo/checkbox genişlik düzeltmesi */
-#settings input[type="radio"],
-#settings input[type="checkbox"]{
-  width:auto !important;
-  display:inline-block !important;
-  margin:0 6px 0 0 !important;
-}
+    body{
+      font-family: Arial, sans-serif;
+      background:#f5f5f5;
+      display:flex;
+      height:100vh;
+      margin:0;
+    }
 
-/* Radyo satırları sola hizalı */
-.textModeRow{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:4px;
-  margin-bottom:8px;
-}
-.radioRow{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  font-size:12px;
-}
+    #mainContent{
+      display:none;
+      flex:1;
+    }
 
-/* SAĞ PANEL (METİN + SORULAR) */
-#rightPanel{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  background:white;
-}
+    .left{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#fff;
+      border-right:2px solid #ddd;
+      padding:20px;
+    }
+    .left img{
+      max-width:100%;
+      max-height:80%;
+      object-fit:contain;
+    }
 
-/* METİN ALANI */
-#textDisplay{
-  flex:1;
-  padding:20px;
-  font-family:monospace;
-  font-size:20px;
-  background:white;
-  overflow-y:auto;
-  white-space:pre-wrap;
-  line-height:1.6;
-}
-.hiddenWord{color:#f5f5f5}
-.visibleWord{color:black}
-.line{display:block}
+    .right{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:14px;
+      padding:20px;
+    }
 
-/* SORU ALANI */
-#questionContainer{
-  padding:10px 20px 10px 20px;
-  overflow-y:auto;
-}
-.question{
-  margin-bottom:15px;
-}
-.question p{
-  margin:0 0 6px 0;
-}
-.options{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-.optionBtn{
-  text-align:left;
-  padding:6px 8px;
-  border:1px solid #ccc;
-  border-radius:4px;
-  background:#f8f8f8;
-  cursor:pointer;
-  font-size:14px;
-}
-.optionBtn.selected{
-  border-color:#007bff;
-  background:#e6f0ff;
-}
-.optionBtn.correct{
-  background:#c9f7c2 !important;
-  border-color:#28a745 !important;
-}
-.optionBtn.wrong{
-  background:#f8d7da !important;
-  border-color:#dc3545 !important;
-}
+    .card{
+      width:min(420px, 92%);
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:10px;
+      padding:14px 16px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
+      cursor:pointer;
+      transition:.1s;
+    }
+    .card:hover{
+      transform:translateY(-1px);
+      box-shadow:0 6px 14px rgba(0,0,0,0.08);
+    }
+    .card h3{
+      margin:0 0 6px 0;
+      font-size:16px;
+    }
+    .card p{
+      margin:0;
+      font-size:13px;
+      color:#555;
+      line-height:1.35;
+    }
+    .muted{ color:#6b7280; }
 
-/* BUTONLAR (OKUMAYI BAŞLAT + OKUMA BİTTİ + TESTİ BİTİR) */
-#readingDoneBtn,
-#finishBtn{
-  margin:0 20px 10px 20px;
-  padding:8px 12px;
-  border:none;
-  border-radius:4px;
-  cursor:pointer;
-  font-size:14px;
-  align-self:flex-start;
-  display:none; /* başta gizli */
-}
-#readingDoneBtn{
-  background:#17a2b8;
-  color:white;
-}
-#finishBtn{
-  background:#28a745;
-  color:white;
-}
-#freeStartBtn{
-  margin-top:6px;
-}
-</style>
+    /* OVERLAY (Kullanıcı Kodu) */
+    #overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      z-index:9999;
+    }
+    #overlayBox{
+      width:min(520px,92%);
+      background:#fff;
+      border-radius:12px;
+      padding:18px;
+    }
+
+    /* OVERLAY (API) */
+    #apiOverlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:10000;
+    }
+    #apiOverlayBox{
+      width:min(560px,92%);
+      background:#fff;
+      border-radius:12px;
+      padding:18px;
+    }
+
+    .code-wrapper{
+      position:relative;
+    }
+    .code-wrapper input{
+      width:100%;
+      padding:10px 44px 10px 10px;
+      font-size:16px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      box-sizing:border-box;
+    }
+    .code-wrapper textarea{
+      width:100%;
+      min-height:46px;
+      padding:10px 44px 10px 10px;
+      font-size:14px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      resize:vertical;
+      box-sizing:border-box;
+    }
+
+    #toggleCode, #toggleApi{
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      cursor:pointer;
+      opacity:.6;
+      user-select:none;
+    }
+
+    .btnRow{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+    button{
+      padding:10px 12px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    #btnCheck{background:#2563eb;color:#fff}
+    #btnReset{background:#e5e7eb}
+
+    .btnPrimary{background:#2563eb;color:#fff}
+    .btnSoft{background:#e5e7eb}
+    .btnDanger{background:#ef4444;color:#fff}
+
+    #msg{
+      margin-top:8px;
+      font-size:13px;
+      min-height:18px;
+    }
+    #apiMsg{
+      margin-top:10px;
+      font-size:13px;
+      min-height:18px;
+    }
+
+    .rowTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:8px;
+    }
+    .closeX{
+      cursor:pointer;
+      padding:6px 10px;
+      border-radius:8px;
+      background:#f3f4f6;
+      user-select:none;
+    }
+  </style>
 </head>
 
 <body>
 
-<div id="container">
+<!-- KOD GİRİŞ -->
+<div id="overlay">
+  <div id="overlayBox">
+    <h2>Kullanıcı Kodu</h2>
+    <p>Devam etmek için kullanıcı kodunu giriniz.</p>
 
-  <div id="settings">
-
-    <div id="settingsContent">
-
-      <!-- API BÖLÜMÜ -->
-      <div class="section">
-        <h3>1) API Durumu</h3>
-        <div id="apiStatusLine" style="font-weight:bold;margin-bottom:6px;"></div>
-
-        <div id="apiEntry" style="display:none;">
-          <input id="apiKeyInput" type="password" placeholder="OpenAI API anahtarı (sk-...)" style="width:100%;margin-bottom:6px;box-sizing:border-box;">
-          <button class="primary" id="apiSaveBtn" type="button">API Doğrula ve Kaydet</button>
-          <div id="apiSaveStatus" style="font-size:11px;margin-top:6px;"></div>
-        </div>
-      </div>
-
-      <!-- METİN BÖLÜMÜ -->
-      <div class="section">
-        <h3>2) Metin</h3>
-
-        <!-- Ana iki seçenek -->
-        <div class="textModeRow">
-          <div class="radioRow">
-            <input type="radio" name="textMode" value="ai" checked>
-            <span>Yapay zeka ile metin oluştur</span>
-          </div>
-          <div class="radioRow">
-            <input type="radio" name="textMode" value="ready">
-            <span>Hazır metin seç</span>
-          </div>
-        </div>
-
-        <!-- 1) Yapay zeka ile metin oluştur -->
-        <div id="aiOptions">
-          <label>Yaş Aralığı</label>
-          <select id="ageGroupInput">
-            <option value="">Seçiniz</option>
-            <option value="7-9">7-9</option>
-            <option value="10-12">10-12</option>
-            <option value="13-15">13-15</option>
-            <option value="16-18">16-18</option>
-            <option value="18+">18+</option>
-          </select>
-
-          <label>Zorluk Seviyesi</label>
-          <select id="levelInput">
-            <option value="">Seçiniz</option>
-            <option value="kolay">Kolay</option>
-            <option value="orta">Orta</option>
-            <option value="zor">Zor</option>
-          </select>
-
-          <label>Konu</label>
-          <input type="text" id="topicInput" placeholder="Örn: Güneş Sistemi">
-        </div>
-
-        <!-- 2) Hazır metin seç -->
-        <div id="readyOptions" style="display:none;">
-          <label>Hazır metin seçiniz</label>
-          <select id="readyTextSelect">
-            <option value="">Seçiniz</option>
-          </select>
-        </div>
-
-        <!-- Ortak buton -->
-        <button class="primary" id="generateTextBtn" type="button">Metin Oluştur</button>
-        <div id="generateStatus" style="font-size:11px;margin-top:4px;"></div>
-      </div>
-
-      <!-- OKUMA BÖLÜMÜ -->
-      <div class="section">
-        <h3>3) Okuma</h3>
-
-        <!-- Okuma modu: Hız belirle / Serbest okuma -->
-        <div class="textModeRow">
-          <div class="radioRow">
-            <input type="radio" name="readMode" value="speed" checked>
-            <span>Hız belirle</span>
-          </div>
-          <div class="radioRow">
-            <input type="radio" name="readMode" value="free">
-            <span>Serbest okuma</span>
-          </div>
-        </div>
-
-        <!-- Serbest okuma: Okumayı Başlat -->
-        <button class="primary" id="freeStartBtn" type="button" style="display:none;">Okumayı Başlat</button>
-
-        <!-- Hız belirleme seçenekleri -->
-        <div id="speedOptions">
-          <label>Süre (ms) – 5 harf</label>
-          <input type="number" id="timeInput" value="300" step="50" min="50">
-          <label>Blok (en fazla 3)</label>
-          <select id="blockCountInput">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-          <button class="primary" id="startBtn" type="button">Başlat</button>
-          <button class="secondary" id="pauseBtn" type="button">Duraklat</button>
-          <button class="secondary" id="stopBtn" type="button">Durdur</button>
-        </div>
-      </div>
-
+    <div class="code-wrapper">
+      <input type="password" id="userCode" placeholder="Kullanıcı kodu">
+      <span id="toggleCode" onclick="toggleCodeVisibility()">👁</span>
     </div>
 
-    <div id="wordStats">
-      Toplam: 0<br>
-      Hız: 0 kelime/dk<br>
-      Süre: 0 sn
+    <div class="btnRow">
+      <button id="btnReset" onclick="clearSavedCode()">Sıfırla</button>
+      <button id="btnCheck" onclick="checkUserCode()">Giriş</button>
     </div>
-    <div id="quizStatsPanel">
-      Test sonucu yok.
+
+    <div id="msg"></div>
+  </div>
+</div>
+
+<!-- API OVERLAY -->
+<div id="apiOverlay" onclick="closeApiOverlayOnBg(event)">
+  <div id="apiOverlayBox">
+    <div class="rowTop">
+      <div>
+        <h2 style="margin:0 0 6px 0;">OpenAI API Anahtarı</h2>
+        <div class="muted" style="font-size:13px;">
+          Anahtar tarayıcıda (localStorage) saklanır. Sayfa kaynağına yazılmaz.
+        </div>
+      </div>
+      <div class="closeX" onclick="closeApiOverlay()">✕</div>
+    </div>
+
+    <div class="code-wrapper">
+      <input type="password" id="apiKeyInput" placeholder="sk-... ile başlayan API anahtarınızı girin">
+      <span id="toggleApi" onclick="toggleApiVisibility()">👁</span>
+    </div>
+
+    <div class="btnRow">
+      <button class="btnSoft" onclick="fillSavedApiToInput()">Kayıtlıyı Göster</button>
+      <button class="btnDanger" onclick="clearApiKey()">API Sil</button>
+      <button class="btnPrimary" onclick="saveApiKey()">Kaydet / Değiştir</button>
+    </div>
+
+    <div id="apiMsg"></div>
+  </div>
+</div>
+
+<!-- ANA SAYFA -->
+<div id="mainContent">
+  <div class="left">
+    <img src="https://KronosEgitim.github.io/HizliOkuma/Logo.jpg"
+         onerror="this.style.display='none'">
+  </div>
+
+  <div class="right">
+
+    <!-- API DURUM KARTI -->
+    <div class="card" onclick="openApiOverlay()">
+      <h3>API Durumu</h3>
+      <p id="apiStatusText">Kontrol ediliyor...</p>
+    </div>
+
+    <!-- 1 -->
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/goz.html'">
+      <h3>Göz Kası Çalışması</h3>
+      <p>Göz kaslarını güçlendiren odak ve takip egzersizleri.</p>
+    </div>
+
+    <!-- 2 -->
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/kelime.html'">
+      <h3>Kelime Çalışması</h3>
+      <p>Kelime tanıma, hız ve algı geliştirme çalışmaları.</p>
+    </div>
+
+    <!-- 3 -->
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/blok.html'">
+      <h3>Metin Çalışması</h3>
+      <p>Blok okuma ve metinle hız kazanma alıştırmaları.</p>
+    </div>
+
+    <!-- 4 -->
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/hafiza.html'">
+      <h3>Hafıza Oyunu</h3>
+      <p>Kısa süreli hafıza ve görsel hatırlama oyunu.</p>
     </div>
 
   </div>
-
-  <!-- SAĞ PANEL: METİN + SORULAR -->
-  <div id="rightPanel">
-    <div id="textDisplay"></div>
-    <button id="readingDoneBtn" type="button">Okuma Bitti</button>
-    <button id="finishBtn" type="button">Testi Bitir</button>
-    <div id="questionContainer"></div>
-  </div>
-
 </div>
 
 <script>
-/* ========= KULLANICI KODU GÜVENLİK KONTROLÜ ========= */
-(function ensureUserCode(){
-  const code = localStorage.getItem("USER_CODE");
-  if(!code || !code.trim()){
-    alert("Önce kullanıcı kodu ile giriş yapmalısınız.");
-    window.location.href = "AnaSayfa.html";
+const KOD_TXT_URL = "https://KronosEgitim.github.io/HizliOkuma/kod.txt";
+const STORAGE_KEY = "USER_CODE";
+
+/* API KEY (localStorage) */
+const API_STORAGE_KEY = "OPENAI_API_KEY";
+
+window.onload = () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    userCode.value = saved;
+    checkUserCode(true);
   }
-})();
-
-/* ========= API ANAHTARI DURUMU ========= */
-function getApiKey(){
-  return localStorage.getItem("USER_API_KEY") || "";
-}
-
-const apiStatusLine = document.getElementById("apiStatusLine");
-const apiEntry      = document.getElementById("apiEntry");
-const apiKeyInput   = document.getElementById("apiKeyInput");
-const apiSaveBtn    = document.getElementById("apiSaveBtn");
-const apiSaveStatus = document.getElementById("apiSaveStatus");
-
-async function verifyApiKey(key){
-  const res = await fetch("https://api.openai.com/v1/models", {
-    headers: { "Authorization": "Bearer " + key }
-  });
-  return res.ok;
-}
-
-async function handleApiSave(){
-  const key = (apiKeyInput.value || "").trim();
-  apiSaveStatus.textContent = "";
-  if(!key || key.length < 10){
-    apiSaveStatus.textContent = "Lütfen geçerli bir anahtar girin.";
-    apiSaveStatus.style.color = "red";
-    return;
-  }
-
-  apiSaveBtn.disabled = true;
-  apiSaveStatus.textContent = "API kontrol ediliyor...";
-  apiSaveStatus.style.color = "blue";
-
-  try{
-    const ok = await verifyApiKey(key);
-    if(ok){
-      localStorage.setItem("USER_API_KEY", key);
-      apiSaveStatus.textContent = "✅ API geçerli ve kaydedildi.";
-      apiSaveStatus.style.color = "green";
-      updateApiStatusLine();
-    }else{
-      localStorage.removeItem("USER_API_KEY");
-      apiSaveStatus.textContent = "❌ API geçersiz. Lütfen tekrar deneyin.";
-      apiSaveStatus.style.color = "red";
-      updateApiStatusLine();
-    }
-  }catch(err){
-    console.error(err);
-    apiSaveStatus.textContent = "⚠ Bağlantı hatası. Lütfen tekrar deneyin.";
-    apiSaveStatus.style.color = "orange";
-  }finally{
-    apiSaveBtn.disabled = false;
-  }
-}
-
-if(apiSaveBtn){
-  apiSaveBtn.addEventListener("click", handleApiSave);
-}
-
-function updateApiStatusLine(){
-  const key = getApiKey();
-  if(key && key.trim().length > 10){
-    apiStatusLine.textContent = "✅ API kayıtlı";
-    apiStatusLine.style.color = "green";
-    if(apiEntry) apiEntry.style.display = "none";
-    if(apiKeyInput) apiKeyInput.value = key;
-  }else{
-    apiStatusLine.textContent = "❌ API kayıtlı değil";
-    apiStatusLine.style.color = "red";
-    if(apiEntry) apiEntry.style.display = "block";
-  }
-}
-updateApiStatusLine();
-
-/* ========= YAŞ + ZORLUK KURALLARI ========= */
-function getTextLevelRules(ageGroup, level){
-  let base = "";
-  switch(ageGroup){
-    case "7-9":
-      base =
-`- Dil ilkokul 2-3. sınıf düzeyinde sade ve anlaşılır olsun.
-- Kısa ve basit cümleler kullan, karmaşık yan cümleciklerden kaçın.
-- Somut örnekler ver; soyut kavram gerekiyorsa kısaca açıkla.`;
-      break;
-    case "10-12":
-      base =
-`- Dil ilkokul 4 ve ortaokul 1. sınıf düzeyinde olsun.
-- Orta uzunlukta cümleler kullan; çok karmaşık yapılar kurma.
-- Yeni kavramları basit tanımlarla açıkla.`;
-      break;
-    case "13-15":
-      base =
-`- Dil ortaokul 2-3. sınıf düzeyinde olsun.
-- Orta–uzun cümleler kullanabilirsin.
-- Soyut kavramları kullanırken kısa açıklamalar ekle.`;
-      break;
-    case "16-18":
-      base =
-`- Dil lise düzeyinde olsun.
-- Daha uzun ve bağlantılı cümleler kullanabilirsin.
-- Gerekli yerlerde terim kullan ama kısaca tanımla.`;
-      break;
-    case "18+":
-      base =
-`- Dil yetişkin/üniversite düzeyinde olabilir.
-- Konuyu derinlemesine ve akıcı bir dille işle.
-- Gerekli yerlerde teknik kavramlara yer verebilirsin.`;
-      break;
-    default:
-      base =
-`- Dil sade ve anlaşılır olsun.
-- Cümleler çok karmaşık olmasın.`;
-  }
-
-  let levelRule = "";
-  switch(level){
-    case "kolay":
-      levelRule =
-`- Zorluk seviyesi KOLAY olsun: daha kısa cümleler, daha sık tekrarlar ve temel kavramlara odaklan.
-- Çok fazla yeni kelime kullanma; kullanırsan hemen ardından kısa açıklama ekle.`;
-      break;
-    case "orta":
-      levelRule =
-`- Zorluk seviyesi ORTA olsun: cümle uzunlukları orta düzeyde olsun.
-- Bazı yeni kavramlar ve kelimeler kullan; anlamları metin içinde anlaşılabilir olsun.`;
-      break;
-    case "zor":
-      levelRule =
-`- Zorluk seviyesi ZOR olsun: daha uzun ve bağlantılı cümleler kullan.
-- Konuyu daha derinlemesine işle; gerektiğinde terimler kullan ama kısaca tanımla.`;
-      break;
-    default:
-      levelRule = "";
-  }
-
-  return base + "\n" + levelRule;
-}
-
-function getQuestionLevelRules(ageGroup, level){
-  let base = "";
-  switch(ageGroup){
-    case "7-9":
-      base =
-`- Sorular ilkokul 2-3. sınıf düzeyinde, kısa ve sade olsun.
-- Soru kökleri çok uzun olmasın, tek bir fikir sorsun.`;
-      break;
-    case "10-12":
-      base =
-`- Sorular ilkokul 4 ve ortaokul 1. sınıf düzeyinde olsun.
-- Hem detay hem ana fikir soruları içerebilir.`;
-      break;
-    case "13-15":
-      base =
-`- Sorular ortaokul düzeyinde olsun.
-- Bazı sorular yorum gerektirebilir, ama metne dayalı kalsın.`;
-      break;
-    case "16-18":
-      base =
-`- Sorular lise düzeyinde olsun.
-- Yorum ve çıkarım gerektiren sorulara da yer ver.`;
-      break;
-    case "18+":
-      base =
-`- Sorular yetişkin/üniversite düzeyinde olabilir.
-- Yorum ve analiz gerektiren sorular sorabilirsin.`;
-      break;
-    default:
-      base =
-`- Sorular metne dayalı ve anlaşılır olsun.`;
-  }
-
-  let levelRule = "";
-  switch(level){
-    case "kolay":
-      levelRule =
-`- Zorluk seviyesi KOLAY olsun: daha çok doğrudan metinde geçen bilgiyi sorsun.
-- Çeldirici şıklar çok karmaşık olmasın.`;
-      break;
-    case "orta":
-      levelRule =
-`- Zorluk seviyesi ORTA olsun: hem doğrudan bilgi hem de basit çıkarım soruları içersin.
-- Çeldiriciler mantıklı ama ayırt edilebilir olsun.`;
-      break;
-    case "zor":
-      levelRule =
-`- Zorluk seviyesi ZOR olsun: detay ve yorum soruları daha fazla olsun.
-- Çeldiriciler metne kısmen dayalı, dikkat gerektiren türden olsun.`;
-      break;
-    default:
-      levelRule = "";
-  }
-
-  return base + "\n" + levelRule;
-}
-
-/* ========= DOM & GLOBAL DURUM ========= */
-const ageGroupInput   = document.getElementById("ageGroupInput");
-const levelInput      = document.getElementById("levelInput");
-const topicInput      = document.getElementById("topicInput");
-const generateTextBtn = document.getElementById("generateTextBtn");
-const generateStatus  = document.getElementById("generateStatus");
-const textDisplay     = document.getElementById("textDisplay");
-
-const modeRadios      = document.querySelectorAll('input[name="textMode"]');
-const aiOptions       = document.getElementById("aiOptions");
-const readyOptions    = document.getElementById("readyOptions");
-const readyTextSelect = document.getElementById("readyTextSelect");
-
-const timeInput       = document.getElementById("timeInput");
-const blockCountInput = document.getElementById("blockCountInput");
-const wordStats       = document.getElementById("wordStats");
-const quizStatsPanel  = document.getElementById("quizStatsPanel");
-
-const startBtn        = document.getElementById("startBtn");
-const pauseBtn        = document.getElementById("pauseBtn");
-const stopBtn         = document.getElementById("stopBtn");
-const finishBtn       = document.getElementById("finishBtn");
-const questionContainer = document.getElementById("questionContainer");
-
-/* Okuma modu + serbest okuma butonu */
-const readModeRadios  = document.querySelectorAll('input[name="readMode"]');
-const speedOptions    = document.getElementById("speedOptions");
-const readingDoneBtn  = document.getElementById("readingDoneBtn");
-const freeStartBtn    = document.getElementById("freeStartBtn");
-
-let currentReadMode   = "speed";
-
-let words = [];
-let currentIndex = 0;
-let timeoutId = null;
-let paused = false;
-let rawText = "";
-let quizPhase = "reading";
-let currentQuestions = [];
-let userAnswers = [];
-let questionsGenerated = false;
-let readyFileQuestions = [];
-
-let freeReadingStart = null;
-let freeTimerInterval = null;
-let freeElapsedMs = 0;
-
-let speedReadingStart = null;
-let speedTimerInterval = null;
-let speedElapsedMs = 0;
-let speedBaseElapsedMs = 0;
-let lastCalculatedWpm = 0;
-
-const ANSWER_LETTERS = ["A","B","C","D","E"];
-
-/* ========= HAZIR METİNLERİ GİTHUB'DAN ÇEK ========= */
-async function populateReadyTexts(){
-  const select = readyTextSelect;
-  if(!select) return;
-
-  select.innerHTML = '<option value="">Seçiniz</option>';
-
-  const apiUrl = "https://api.github.com/repos/KronosEgitim/HizliOkuma/contents/Metinler";
-
-  try{
-    const res = await fetch(apiUrl);
-    if(!res.ok){
-      console.error("GitHub API hatası:", res.status, res.statusText);
-      generateStatus.textContent = "Hazır metin listesi alınamadı ("+res.status+").";
-      generateStatus.style.color = "red";
-      return;
-    }
-
-    const data = await res.json();
-
-    const txtFiles = (data || [])
-      .filter(item => item.type === "file" && item.name.toLowerCase().endsWith(".txt"));
-
-    if(!txtFiles.length){
-      generateStatus.textContent = "Metinler klasöründe .txt dosyası bulunamadı.";
-      generateStatus.style.color = "red";
-      return;
-    }
-
-    txtFiles
-      .sort((a,b)=>a.name.localeCompare(b.name,"tr"))
-      .forEach(item=>{
-        const opt = document.createElement("option");
-        opt.value = item.download_url;
-        opt.textContent = item.name.replace(/\.txt$/i,"");
-        select.appendChild(opt);
-      });
-
-    generateStatus.textContent = "Hazır metin listesi yüklendi.";
-    generateStatus.style.color = "green";
-
-  }catch(err){
-    console.error("Hazır metin listesi alınamadı:", err);
-    generateStatus.textContent = "Hazır metin listesi alınamadı (bağlantı hatası).";
-    generateStatus.style.color = "red";
-  }
-}
-
-/* ========= METİN MODU (AI / HAZIR) ========= */
-modeRadios.forEach(radio=>{
-  radio.addEventListener("change", ()=>{
-    const selected = document.querySelector('input[name="textMode"]:checked');
-    const val = selected ? selected.value : "ai";
-    if(val === "ai"){
-      aiOptions.style.display = "block";
-      readyOptions.style.display = "none";
-    }else{
-      aiOptions.style.display = "none";
-      readyOptions.style.display = "block";
-      populateReadyTexts();
-    }
-  });
-});
-
-(function initTextMode(){
-  const selected = document.querySelector('input[name="textMode"]:checked');
-  const val = selected ? selected.value : "ai";
-  if(val === "ai"){
-    aiOptions.style.display = "block";
-    readyOptions.style.display = "none";
-  }else{
-    aiOptions.style.display = "none";
-    readyOptions.style.display = "block";
-  }
-  populateReadyTexts();
-})();
-
-/* ========= TEMEL METİN İSTATİSTİK HESABI ========= */
-function computeBasicTextStats(){
-  if(!rawText) return null;
-  const arr = rawText
-    .replace(/[^\wğüşöçıİĞÜŞÖÇ]/g," ")
-    .split(/\s+/)
-    .filter(Boolean);
-
-  const total = arr.length;
-  if(total === 0) return null;
-
-  const chars = arr.reduce((s,w)=>s + w.length, 0);
-  const avg   = (chars / total).toFixed(2);
-
-  return { total, chars, avg };
-}
-
-/* ========= SERBEST OKUMA SAYAÇ FONKSİYONLARI ========= */
-function resetFreeTimer(){
-  freeReadingStart = null;
-  freeElapsedMs = 0;
-  if(freeTimerInterval){
-    clearInterval(freeTimerInterval);
-    freeTimerInterval = null;
-  }
-}
-
-function stopFreeTimerKeepElapsed(){
-  if(freeTimerInterval){
-    clearInterval(freeTimerInterval);
-    freeTimerInterval = null;
-  }
-  freeReadingStart = null;
-}
-
-function updateFreeTimerDisplay(){
-  const stats = computeBasicTextStats();
-  const seconds = Math.floor(freeElapsedMs / 1000);
-  if(!stats){
-    wordStats.innerHTML =
-      `Toplam: 0<br>` +
-      `Hız: 0 kelime/dk<br>` +
-      `Süre: ${seconds} sn`;
-    return;
-  }
-  wordStats.innerHTML =
-    `Toplam: ${stats.total}<br>` +
-    `Hız: -<br>` +
-    `Süre: ${seconds} sn`;
-}
-
-function showFreeFinalStats(){
-  const stats = computeBasicTextStats();
-  if(!stats || freeElapsedMs <= 0){
-    wordStats.innerHTML =
-      `Toplam: ${stats ? stats.total : 0}<br>` +
-      `Hız: 0 kelime/dk<br>` +
-      `Süre: 0 sn`;
-    return;
-  }
-  const seconds = Math.floor(freeElapsedMs / 1000);
-  const minutes = freeElapsedMs / 60000;
-  const wpm = Math.round(stats.total / minutes);
-
-  wordStats.innerHTML =
-    `Toplam: ${stats.total}<br>` +
-    `Hız: ${wpm} kelime/dk<br>` +
-    `Süre: ${seconds} sn`;
-}
-
-/* ========= HIZ MODU SÜRE SAYAÇ FONKSİYONLARI ========= */
-function resetSpeedTimer(){
-  speedReadingStart = null;
-  speedElapsedMs = 0;
-  speedBaseElapsedMs = 0;
-  if(speedTimerInterval){
-    clearInterval(speedTimerInterval);
-    speedTimerInterval = null;
-  }
-}
-
-function updateSpeedTimerDisplay(){
-  const stats = computeBasicTextStats();
-  const seconds = Math.floor(speedElapsedMs / 1000);
-  if(!stats){
-    wordStats.innerHTML =
-      `Toplam: 0<br>` +
-      `Hız: 0 kelime/dk<br>` +
-      `Süre: ${seconds} sn`;
-    return;
-  }
-  const wpm = lastCalculatedWpm || 0;
-  wordStats.innerHTML =
-    `Toplam: ${stats.total}<br>` +
-    `Hız: ${wpm} kelime/dk<br>` +
-    `Süre: ${seconds} sn`;
-}
-
-function startSpeedTimer(){
-  if(speedTimerInterval){
-    clearInterval(speedTimerInterval);
-    speedTimerInterval = null;
-  }
-  if(speedReadingStart === null){
-    speedReadingStart = performance.now();
-  }
-  speedTimerInterval = setInterval(()=>{
-    if(speedReadingStart != null){
-      const now = performance.now();
-      speedElapsedMs = speedBaseElapsedMs + (now - speedReadingStart);
-      updateSpeedTimerDisplay();
-    }
-  }, 200);
-}
-
-function pauseSpeedTimer(){
-  if(speedReadingStart != null){
-    const now = performance.now();
-    speedBaseElapsedMs += (now - speedReadingStart);
-    speedReadingStart = null;
-  }
-  if(speedTimerInterval){
-    clearInterval(speedTimerInterval);
-    speedTimerInterval = null;
-  }
-  speedElapsedMs = speedBaseElapsedMs;
-  updateSpeedTimerDisplay();
-}
-
-function finalizeSpeedTimer(){
-  pauseSpeedTimer();
-}
-
-/* ========= OKUMA MODU (HIZ / SERBEST) ========= */
-function revealAllWords(){
-  words.forEach(w => w.className = "visibleWord");
-}
-
-function hideAllWords(){
-  words.forEach(w => w.className = "hiddenWord");
-}
-
-function setReadModeUI(mode){
-  currentReadMode = mode;
-  resetSpeedTimer();
-
-  if(mode === "speed"){
-    speedOptions.style.display = "block";
-    freeStartBtn.style.display = "none";
-    readingDoneBtn.style.display = "none";
-
-    paused = false;
-    clearTimeout(timeoutId);
-    currentIndex = 0;
-    hideAllWords();
-    resetFreeTimer();
-    calculateWordStats();
-  }else{
-    speedOptions.style.display = "none";
-    freeStartBtn.style.display = "inline-block";
-    readingDoneBtn.style.display = "none";
-
-    paused = false;
-    clearTimeout(timeoutId);
-    currentIndex = 0;
-    hideAllWords();
-    resetFreeTimer();
-
-    const stats = computeBasicTextStats();
-    if(stats){
-      wordStats.innerHTML =
-        `Toplam: ${stats.total}<br>` +
-        `Hız: 0 kelime/dk<br>` +
-        `Süre: 0 sn`;
-    }else{
-      wordStats.innerHTML =
-        `Toplam: 0<br>` +
-        `Hız: 0 kelime/dk<br>` +
-        `Süre: 0 sn`;
-    }
-  }
-}
-
-readModeRadios.forEach(r=>{
-  r.addEventListener("change", ()=>{
-    const selected = document.querySelector('input[name="readMode"]:checked');
-    setReadModeUI(selected ? selected.value : "speed");
-  });
-});
-
-setReadModeUI("speed");
-
-/* Serbest okuma: Okumayı Başlat */
-freeStartBtn.addEventListener("click", ()=>{
-  if(currentReadMode !== "free") return;
-  if(!rawText || !words.length){
-    alert("Önce metin oluşturun veya hazır metin seçin.");
-    return;
-  }
-  revealAllWords();
-  readingDoneBtn.style.display = "inline-block";
-
-  resetFreeTimer();
-  freeReadingStart = performance.now();
-  freeTimerInterval = setInterval(()=>{
-    if(freeReadingStart != null){
-      freeElapsedMs = performance.now() - freeReadingStart;
-      updateFreeTimerDisplay();
-    }
-  }, 200);
-});
-
-/* Ortak "Metin Oluştur" */
-generateTextBtn.onclick = async function(){
-  const selected = document.querySelector('input[name="textMode"]:checked');
-  const selectedMode = selected ? selected.value : "ai";
-  if(selectedMode === "ai"){
-    await generateTextFromAPI();
-  }else{
-    await loadReadyText();
-  }
+  refreshApiStatusCard();
 };
 
-/* ========= YAPAY ZEKA İLE METİN OLUŞTUR ========= */
-async function generateTextFromAPI(){
-  const apiKey = getApiKey();
-  updateApiStatusLine();
+function toggleCodeVisibility(){
+  userCode.type = userCode.type === "password" ? "text" : "password";
+}
 
-  if(!apiKey){
-    alert("API anahtarı kayıtlı değil. Bu sayfadan API anahtarını doğrulayın ve kaydedin.");
-    return;
-  }
+function clearSavedCode(){
+  localStorage.removeItem(STORAGE_KEY);
+  userCode.value = "";
+  msg.textContent = "Kod temizlendi.";
+}
 
-  const ageGroup = ageGroupInput.value;
-  const level    = levelInput.value;
-  const topic    = topicInput.value.trim();
+async function checkUserCode(auto=false){
+  const code = userCode.value.trim();
+  if(!code){ msg.textContent="Kod giriniz"; return; }
 
-  if(!ageGroup || !level || !topic){
-    alert("Yaş aralığı, zorluk seviyesi ve konu giriniz.");
-    return;
-  }
+  msg.textContent = auto ? "Kayıtlı kod kontrol ediliyor..." : "Kontrol ediliyor...";
 
-  stop();
-  resetSpeedTimer();
-  textDisplay.innerHTML = "";
-  questionContainer.innerHTML = "";
-  quizStatsPanel.innerHTML = "Test sonucu yok.";
-  generateStatus.innerText = "Metin oluşturuluyor...";
-  generateStatus.style.color = "black";
-
-  quizPhase = "reading";
-  questionsGenerated = false;
-  currentQuestions = [];
-  readyFileQuestions = [];
-  userAnswers = [];
-  finishBtn.style.display = "none";
-  finishBtn.disabled = false;
-  readingDoneBtn.style.display = "none";
-  resetFreeTimer();
-
-  const levelRules = getTextLevelRules(ageGroup, level);
-
-  const prompt = `
-${ageGroup} yaş aralığındaki bir öğrenci için, "${topic}" konusunda Türkçe bir öğretici metin yaz.
-
-Genel kurallar:
-- Yaklaşık 400–500 kelime olsun.
-- Başlık mutlaka olsun.
-- Markdown formatı kullanma.
-- Liste, madde imi, kod bloğu kullanma.
-- BAŞLIKTA VE METİNDE ASLA '#' KARAKTERİ KULLANMA.
-- Metin normal paragraf yapısında olsun.
-
-Yaş ve zorluk kuralları:
-${levelRules}
-
-En sonda kısa bir kapanış cümlesi yaz.
-`;
-
+  let txt = "";
   try{
-    const res = await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
-      },
-      body:JSON.stringify({
-        model:"gpt-4o-mini",
-        messages:[{role:"user",content:prompt}],
-        max_tokens:900,
-        temperature:0.8
-      })
-    });
-
-    const data = await res.json();
-    let raw = data.choices?.[0]?.message?.content || "";
-    raw = raw.replace(/^#+\s*/gm,"");
-
-    rawText = raw;
-    loadText(rawText);
-
-    if(currentReadMode === "free"){
-      hideAllWords();
-      resetFreeTimer();
-      const stats = computeBasicTextStats();
-      if(stats){
-        wordStats.innerHTML =
-          `Toplam: ${stats.total}<br>` +
-          `Hız: 0 kelime/dk<br>` +
-          `Süre: 0 sn`;
-      }
-      readingDoneBtn.style.display = "none";
-    }else{
-      calculateWordStats();
-      readingDoneBtn.style.display = "none";
-    }
-
-    generateStatus.innerText = "✅ Metin hazır.";
-    generateStatus.style.color = "green";
-  }catch(err){
-    console.error(err);
-    alert("Hata: " + err.message);
-    generateStatus.innerText = "Hata oluştu.";
-    generateStatus.style.color = "red";
-  }
-}
-
-/* ========= HAZIR METİN SORU PARSE ========= */
-function parseQuestionsFromFile(raw){
-  const result = [];
-  if(!raw) return result;
-
-  const lines = raw
-    .split(/\r?\n/)
-    .map(l => l.trim());
-
-  let i = 0;
-  while (i < lines.length) {
-
-    while (i < lines.length && !lines[i]) i++;
-    if (i >= lines.length) break;
-
-    let qLine = lines[i];
-    i++;
-
-    qLine = qLine.replace(/^\d+\)\s*/, "").trim();
-    if (!qLine) continue;
-
-    const opts = [];
-    let optCount = 0;
-
-    while (i < lines.length && optCount < 5) {
-      const line = lines[i];
-      const m = line.match(/^([a-eA-E])\)\s*(.+)$/);
-      if (!m) break;
-
-      const text = m[2].trim();
-      opts.push(text);
-      optCount++;
-      i++;
-    }
-
-    if (opts.length !== 5) {
-      continue;
-    }
-
-    while (i < lines.length && !lines[i]) i++;
-    if (i >= lines.length) break;
-
-    let ansLine = lines[i];
-    let ansMatch = ansLine.match(/^[a-eA-E]$/);
-    let answer = null;
-
-    if (ansMatch) {
-      answer = ansMatch[0].toUpperCase();
-      i++;
-    }
-
-    if (!answer || !["A","B","C","D","E"].includes(answer)) {
-      continue;
-    }
-
-    result.push({
-      q: qLine,
-      options: opts,
-      answer: answer
-    });
-  }
-
-  return result;
-}
-
-/* ========= HAZIR METİN YÜKLE ========= */
-async function loadReadyText(){
-  const sel = readyTextSelect.value;
-  if(!sel){
-    alert("Lütfen listeden bir metin seçiniz.");
+    txt = await fetch(KOD_TXT_URL,{cache:"no-store"}).then(r=>r.text());
+  }catch(e){
+    msg.textContent = "kod.txt okunamadı. İnternet bağlantısını kontrol edin.";
     return;
   }
 
-  stop();
-  resetSpeedTimer();
-  textDisplay.innerHTML = "";
-  questionContainer.innerHTML = "";
-  quizStatsPanel.innerHTML = "Test sonucu yok.";
-  generateStatus.innerText = "Metin yükleniyor...";
-  generateStatus.style.color = "black";
+  const lines = txt.split(/\r?\n/);
 
-  quizPhase = "reading";
-  questionsGenerated = false;
-  currentQuestions = [];
-  readyFileQuestions = [];
-  userAnswers = [];
-  finishBtn.style.display = "none";
-  finishBtn.disabled = false;
-  readingDoneBtn.style.display = "none";
-  resetFreeTimer();
-
-  try{
-    const res = await fetch(sel);
-    const txt = await res.text();
-
-    const marker = "-SORULAR-";
-    let textPart = txt;
-    let questionsPart = "";
-
-    const idx = txt.indexOf(marker);
-    if(idx >= 0){
-      textPart = txt.slice(0, idx).trim();
-      questionsPart = txt.slice(idx + marker.length).trim();
+  for(const l of lines){
+    const p = l.trim().split(/\s+/);
+    if(p[0]===code){
+      localStorage.setItem(STORAGE_KEY, code);
+      overlay.style.display="none";
+      mainContent.style.display="flex";
+      return;
     }
-
-    rawText = textPart;
-    readyFileQuestions = parseQuestionsFromFile(questionsPart);
-
-    loadText(rawText);
-
-    if(currentReadMode === "free"){
-      hideAllWords();
-      const stats = computeBasicTextStats();
-      if(stats){
-        wordStats.innerHTML =
-          `Toplam: ${stats.total}<br>` +
-          `Hız: 0 kelime/dk<br>` +
-          `Süre: 0 sn`;
-      }else{
-        wordStats.innerHTML =
-          `Toplam: 0<br>` +
-          `Hız: 0 kelime/dk<br>` +
-          `Süre: 0 sn`;
-      }
-    }else{
-      calculateWordStats();
-    }
-
-    generateStatus.innerText = "✅ Metin yüklendi.";
-    generateStatus.style.color = "green";
-  }catch(err){
-    console.error(err);
-    alert("Metin yüklenirken hata oluştu: " + err.message);
-    generateStatus.innerText = "Hata oluştu.";
-    generateStatus.style.color = "red";
   }
+  msg.textContent="Kullanıcı kodu hatalı";
 }
 
-/* ========= BLOK OKUMA VERİ YAPISI ========= */
-function loadText(txt){
-  textDisplay.innerHTML = "";
-  words = [];
-  currentIndex = 0;
+/* ===== API OVERLAY ===== */
+function refreshApiStatusCard(){
+  const key = localStorage.getItem(API_STORAGE_KEY);
+  const el = document.getElementById("apiStatusText");
+  if(!el) return;
 
-  txt.split(/\r?\n\s*\r?\n|[\r\n]+/).forEach(line=>{
-    const div = document.createElement("div");
-    div.className = "line";
-    const lineWords = line.trim().split(/\s+/);
-    lineWords.forEach((w,i)=>{
-      if(!w) return;
-      const span = document.createElement("span");
-      span.textContent = w + " ";
-      span.className   = "hiddenWord";
-      span.dataset.isParagraphStart = (i === 0);
-      span.dataset.isSentenceEnd    = /[.!?,;…]$/.test(w);
-      words.push(span);
-      div.appendChild(span);
-    });
-    textDisplay.appendChild(div);
-  });
-}
-
-/* ========= İSTATİSTİK (HIZ MODU – BLOK BAZLI, KISMİ BLOKTA ORANLI) ========= */
-timeInput.addEventListener("input", calculateWordStats);
-blockCountInput.addEventListener("input", calculateWordStats);
-
-function calculateWordStats(){
-  const stats = computeBasicTextStats();
-  if(!stats){
-    wordStats.innerHTML =
-      `Toplam: 0<br>` +
-      `Hız: 0 kelime/dk<br>` +
-      `Süre: 0 sn`;
-    return;
-  }
-
-  const wordsArr = rawText
-    .replace(/[^\wğüşöçıİĞÜŞÖÇ]/g," ")
-    .split(/\s+/)
-    .filter(Boolean);
-
-  if(!wordsArr.length){
-    wordStats.innerHTML =
-      `Toplam: 0<br>` +
-      `Hız: 0 kelime/dk<br>` +
-      `Süre: 0 sn`;
-    return;
-  }
-
-  const X = +timeInput.value || 300; // ms
-  const desiredBlocks = Math.min(3, Math.max(1, parseInt(blockCountInput.value, 10) || 1));
-
-  let totalTimeMs = 0;
-  let idx = 0;
-
-  while(idx < wordsArr.length){
-    const blockWords = wordsArr.slice(idx, idx + desiredBlocks);
-    const actualBlocks = blockWords.length;
-    if(actualBlocks === 0) break;
-
-    let charCount = 0;
-    blockWords.forEach(w => { charCount += w.length; });
-
-    // Oranlı süre: tam blok  X ms, 1/3 blok  X*(1/3) ms gibi
-    const fraction = actualBlocks / desiredBlocks;
-    let baseMs = X * fraction;
-
-    const targetLetters = 5 * actualBlocks; // her blok ~5 harf
-    // Eski mantığın blok uyarlaması:
-    let tBlock = baseMs - ((targetLetters - charCount) * baseMs / 10) * 1.2;
-    if(tBlock < 1) tBlock = 1;
-
-    totalTimeMs += tBlock;
-    idx += desiredBlocks;
-  }
-
-  const minutes = totalTimeMs / 60000;
-  const wpm = minutes > 0 ? Math.round(stats.total / minutes) : 0;
-  lastCalculatedWpm = wpm;
-
-  wordStats.innerHTML =
-    `Toplam: ${stats.total}<br>` +
-    `Hız: ${wpm} kelime/dk<br>` +
-    `Süre: 0 sn`;
-}
-
-/* ========= BLOK SİSTEMİ (EKRANDA GÖSTERİRKEN – ORANLI SÜRE) ========= */
-function showNextWord(){
-  if(currentReadMode !== "speed") return;
-  if(paused) return;
-
-  if(currentIndex >= words.length){
-    if(!questionsGenerated && quizPhase === "reading" && currentReadMode === "speed"){
-      questionsGenerated = true;
-      quizPhase = "questions";
-
-      finalizeSpeedTimer();
-
-      setTimeout(async ()=>{
-        const selected = document.querySelector('input[name="textMode"]:checked');
-        const selectedMode = selected ? selected.value : "ai";
-
-        if(selectedMode === "ai"){
-          await generateQuestionsForText();
-          renderQuestions();
-        }else{
-          currentQuestions = readyFileQuestions || [];
-          userAnswers = new Array(currentQuestions.length).fill(null);
-          renderQuestions();
-        }
-
-        hideAllWords();
-        textDisplay.innerHTML = "";
-        readingDoneBtn.style.display = "none";
-
-        if(currentQuestions && currentQuestions.length){
-          finishBtn.style.display = "inline-block";
-          finishBtn.disabled = false;
-        }
-      }, 300);
-    }
-    return;
-  }
-
-  words.forEach(w=>w.className="hiddenWord");
-
-  const desiredBlocks = Math.min(3, parseInt(blockCountInput.value,10) || 1);
-  const blockWords = [];
-  let displayed = 0;
-
-  // İlk kelime
-  let first = words[currentIndex];
-  first.className = "visibleWord";
-  blockWords.push(first);
-  displayed = 1;
-
-  // Satır/cümle/paragraf kırılmasına göre 2. ve 3. kelimeleri ekle
-  for(let i=1; i<desiredBlocks; i++){
-    if(currentIndex + i >= words.length) break;
-
-    const prev = words[currentIndex + i - 1];
-    const next = words[currentIndex + i];
-
-    const sentenceEnd   = prev.dataset.isSentenceEnd === "true";
-    const paragraphStart= next.dataset.isParagraphStart === "true";
-    const sameLine      = prev.offsetTop === next.offsetTop;
-
-    if(sentenceEnd || paragraphStart || !sameLine) break;
-
-    next.className = "visibleWord";
-    blockWords.push(next);
-    displayed++;
-  }
-
-  const X = +timeInput.value || 300;
-  const actualBlocks = blockWords.length;
-  let totalChars = 0;
-  blockWords.forEach(w=>{
-    totalChars += w.textContent.trim().length;
-  });
-
-  // ÖRNEK: desired=3, X=300
-  // actual=3 -> baseMs=300
-  // actual=1 -> baseMs=100
-  const fraction = actualBlocks / desiredBlocks;
-  let baseMs = X * fraction;
-
-  const targetLetters = 5 * actualBlocks;
-  let tBlock;
-  if(totalChars > 0){
-    tBlock = baseMs - ((targetLetters - totalChars) * baseMs / 10) * 1.2;
-    if(tBlock < 1) tBlock = 1;
+  if(key && key.trim().length > 10){
+    // Anahtarı tam göstermeyelim
+    const masked = key.trim().slice(0, 4) + "..." + key.trim().slice(-4);
+    el.textContent = "Kayıtlı ( " + masked + " ) — Değiştirmek için tıklayın.";
   }else{
-    tBlock = baseMs;
+    el.textContent = "Kayıtlı değil — Eklemek için tıklayın.";
   }
-
-  currentIndex += displayed;
-
-  timeoutId = setTimeout(()=>{
-    blockWords.forEach(w=>w.className="hiddenWord");
-    showNextWord();
-  }, tBlock);
 }
 
-/* ========= OKUMA BUTONLARI ========= */
-function start(){
-  if(currentReadMode !== "speed"){
-    alert("Serbest okuma modundasınız. Metni okuyup 'Okumayı Başlat' ve ardından 'Okuma Bitti' butonlarını kullanın.");
+function openApiOverlay(){
+  apiMsg.textContent = "";
+  apiKeyInput.value = "";
+  apiKeyInput.type = "password";
+  apiOverlay.style.display = "flex";
+}
+
+function closeApiOverlay(){
+  apiOverlay.style.display = "none";
+  refreshApiStatusCard();
+}
+
+function closeApiOverlayOnBg(e){
+  if(e.target === apiOverlay){
+    closeApiOverlay();
+  }
+}
+
+function toggleApiVisibility(){
+  apiKeyInput.type = apiKeyInput.type === "password" ? "text" : "password";
+}
+
+function fillSavedApiToInput(){
+  const key = localStorage.getItem(API_STORAGE_KEY) || "";
+  if(!key){
+    apiMsg.textContent = "Kayıtlı API anahtarı bulunamadı.";
     return;
   }
-  if(!words.length){
-    alert("Önce metin oluşturun veya hazır metin seçin.");
+  apiKeyInput.value = key;
+  apiMsg.textContent = "Kayıtlı anahtar kutuya getirildi. İstersen değiştirip kaydedebilirsin.";
+}
+
+function saveApiKey(){
+  const key = (apiKeyInput.value || "").trim();
+
+  if(!key){
+    apiMsg.textContent = "API anahtarı boş olamaz.";
     return;
   }
-  paused = false;
-  startSpeedTimer();
-  showNextWord();
-}
-function pause(){
-  if(currentReadMode !== "speed") return;
-  paused = true;
-  clearTimeout(timeoutId);
-  pauseSpeedTimer();
-}
-function stop(){
-  if(currentReadMode !== "speed"){
-    return;
-  }
-  paused = false;
-  clearTimeout(timeoutId);
-  currentIndex = 0;
-  hideAllWords();
-  resetSpeedTimer();
-}
-
-startBtn.onclick = start;
-pauseBtn.onclick = pause;
-stopBtn.onclick  = stop;
-
-/* ========= SERBEST OKUMA: OKUMA BİTTİ ========= */
-readingDoneBtn.addEventListener("click", async ()=>{
-  if(currentReadMode !== "free") return;
-  if(!rawText){
-    alert("Önce metin oluşturun veya hazır metin seçin.");
-    return;
-  }
-  if(quizPhase !== "reading") return;
-
-  if(freeReadingStart != null){
-    freeElapsedMs = performance.now() - freeReadingStart;
-  }
-  stopFreeTimerKeepElapsed();
-  showFreeFinalStats();
-
-  readingDoneBtn.style.display = "none";
-  hideAllWords();
-  textDisplay.innerHTML = "";
-
-  quizPhase = "questions";
-
-  if(!currentQuestions.length){
-    const selected = document.querySelector('input[name="textMode"]:checked');
-    const selectedMode = selected ? selected.value : "ai";
-
-    if(selectedMode === "ai"){
-      await generateQuestionsForText();
-    }else{
-      currentQuestions = readyFileQuestions || [];
-      userAnswers = new Array(currentQuestions.length).fill(null);
-    }
-  }
-
-  renderQuestions();
-  if(currentQuestions && currentQuestions.length){
-    finishBtn.style.display = "inline-block";
-    finishBtn.disabled = false;
-  }
-});
-
-/* ========= SORU SİSTEMİ ========= */
-finishBtn.addEventListener("click", ()=>{
-  if(quizPhase !== "questions") return;
-  evaluateQuiz();
-  quizPhase = "finished";
-  finishBtn.disabled = true;
-});
-
-function shuffleOptionsAndFixAnswer(q){
-  const answerLetter = (q.answer || "").toString().trim().toUpperCase();
-  const correctIdx = ANSWER_LETTERS.indexOf(answerLetter);
-
-  if(correctIdx < 0) return;
-  if(!Array.isArray(q.options) || q.options.length !== 5) return;
-
-  const packed = q.options.map((t, i) => ({ t, i }));
-
-  for(let i = packed.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [packed[i], packed[j]] = [packed[j], packed[i]];
-  }
-
-  q.options = packed.map(x => x.t);
-
-  const newCorrectPos = packed.findIndex(x => x.i === correctIdx);
-  q.answer = ANSWER_LETTERS[newCorrectPos];
-}
-
-async function generateQuestionsForText(){
-  const apiKey = getApiKey();
-  updateApiStatusLine();
-
-  if(!apiKey){
-    alert("API anahtarı kayıtlı değil. Bu sayfadan API anahtarını doğrulayın ve kaydedin.");
-  questionContainer.innerHTML = "";
+  if(!key.startsWith("sk-") || key.length < 20){
+    apiMsg.textContent = "API anahtarı formatı şüpheli görünüyor. (sk-... ile başlamalı)";
     return;
   }
 
-  if(!rawText){
-    questionContainer.innerHTML = "";
-    return;
-  }
-
-  questionContainer.innerHTML = "Sorular hazırlanıyor...";
-
-  const ageGroup   = ageGroupInput.value;
-  const level      = levelInput.value;
-  const levelRules = getQuestionLevelRules(ageGroup, level);
-
-  const prompt = `
-${ageGroup || "belirsiz"} yaş aralığındaki bir öğrenci için, aşağıdaki metne göre Türkçe 10 adet okuduğunu anlama sorusu hazırla.
-
-Genel kurallar:
-- Her soru için A, B, C, D ve E şıkları olsun.
-- Şıklar kısa ve net olsun.
-- Cevaplar sadece metne dayalı olsun.
-- Doğru şık harfleri mümkün olduğunca eşit dağılmış olsun; 10 soruda her harf (A,B,C,D,E) tercihen 2 kere doğru cevap olsun.
-
-Yaş ve zorluk kuralları:
-${levelRules}
-
-Çıkış kesinlikle sadece JSON olsun, JSON dışında açıklama yazma.
-
-Metin:
-"""${rawText}"""
-
-JSON formatı tam olarak şöyle olsun:
-{
-  "questions": [
-    {
-      "q": "Soru metni",
-      "options": ["A) ...","B) ...","C) ...","D) ...","E) ..."],
-      "answer": "C"
-    }
-  ]
-}
-`;
-
-  try{
-    const res = await fetch("https://api.openai.com/v1/chat/completions",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
-      },
-      body:JSON.stringify({
-        model:"gpt-4o-mini",
-        messages:[{role:"user",content:prompt}],
-        max_tokens:1200,
-        temperature:0.7
-      })
-    });
-
-    const data = await res.json();
-    let text = data.choices?.[0]?.message?.content || "";
-
-    const idx = text.indexOf("{");
-    if(idx > 0) text = text.slice(idx);
-
-    const obj = JSON.parse(text);
-    currentQuestions = obj.questions || [];
-    userAnswers = new Array(currentQuestions.length).fill(null);
-
-    currentQuestions.forEach(q=>{
-      if(Array.isArray(q.options)){
-        q.options = q.options.map(t =>
-          t.replace(/^[A-E]\)\s*/i,"").trim()
-        );
-      }
-    });
-
-    currentQuestions.forEach(q => shuffleOptionsAndFixAnswer(q));
-
-  }catch(err){
-    console.error(err);
-    alert("Sorular oluşturulurken hata oluştu: " + err.message);
-    questionContainer.innerHTML = "Sorular yüklenemedi.";
-  }
+  localStorage.setItem(API_STORAGE_KEY, key);
+  apiMsg.textContent = "API anahtarı kaydedildi.";
+  refreshApiStatusCard();
 }
 
-function renderQuestions(){
-  questionContainer.innerHTML = "";
-  if(!currentQuestions || !currentQuestions.length){
-    questionContainer.innerHTML = "Gösterilecek soru bulunamadı.";
-    return;
-  }
-
-  const letters = ["A","B","C","D","E"];
-
-  currentQuestions.forEach((qObj, qi)=>{
-    const qDiv = document.createElement("div");
-    qDiv.className = "question";
-
-    const p = document.createElement("p");
-    p.textContent = (qi+1) + ") " + (qObj.q || "");
-    qDiv.appendChild(p);
-
-    const optsDiv = document.createElement("div");
-    optsDiv.className = "options";
-
-    (qObj.options || []).forEach((optText, oi)=>{
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "optionBtn";
-      btn.textContent = letters[oi] + ") " + optText;
-      btn.dataset.questionIndex = qi;
-      btn.dataset.optionIndex   = oi;
-
-      btn.addEventListener("click", ()=>{
-        const siblings = optsDiv.querySelectorAll(".optionBtn");
-        siblings.forEach(s=>s.classList.remove("selected"));
-        btn.classList.add("selected");
-        userAnswers[qi] = oi;
-      });
-
-      optsDiv.appendChild(btn);
-    });
-
-    qDiv.appendChild(optsDiv);
-    questionContainer.appendChild(qDiv);
-  });
+function clearApiKey(){
+  localStorage.removeItem(API_STORAGE_KEY);
+  apiKeyInput.value = "";
+  apiMsg.textContent = "API anahtarı silindi.";
+  refreshApiStatusCard();
 }
 
-function evaluateQuiz(){
-  if(!currentQuestions || !currentQuestions.length) return;
-
-  const letters = ["A","B","C","D","E"];
-  let correctCount = 0;
-  let wrongCount   = 0;
-
-  const questionDivs = questionContainer.querySelectorAll(".question");
-
-  currentQuestions.forEach((qObj, qi)=>{
-    const answerLetter = (qObj.answer || "").toString().trim().toUpperCase();
-    const correctIdx   = letters.indexOf(answerLetter);
-    const qDiv         = questionDivs[qi];
-    if(!qDiv) return;
-
-    const buttons = qDiv.querySelectorAll(".optionBtn");
-    buttons.forEach((btn, oi)=>{
-      btn.classList.remove("correct","wrong","selected");
-      if(oi === correctIdx){
-        btn.classList.add("correct");
-      }
-    });
-
-    const userIdx = userAnswers[qi];
-    if(userIdx === null || userIdx === undefined){
-      wrongCount++;
-    }else{
-      if(userIdx === correctIdx){
-        correctCount++;
-      }else{
-        wrongCount++;
-        const wrongBtn = buttons[userIdx];
-        if(wrongBtn) wrongBtn.classList.add("wrong");
-      }
-    }
-  });
-
-  quizStatsPanel.innerHTML =
-    `Doğru: ${correctCount}<br>` +
-    `Yanlış: ${wrongCount}`;
-}
+/* İstersen diğer sayfalarda okumak için:
+   const apiKey = localStorage.getItem("OPENAI_API_KEY");
+*/
 </script>
 
 </body>
