@@ -3,624 +3,238 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Metin Çalışması (Blok Okuma)</title>
+  <title>Hızlı Okuma ve Alıştırmalar</title>
 
   <style>
     *,*::before,*::after{box-sizing:border-box;}
+
     body{
-      font-family:Arial, sans-serif;
-      margin:0;
-      height:100vh;
+      font-family: Arial, sans-serif;
       background:#f5f5f5;
-    }
-
-    #container{
       display:flex;
       height:100vh;
-      width:100%;
+      margin:0;
     }
 
-    /* SOL PANEL */
-    #settings{
-      width:300px;
-      background:#fff;
-      border-right:1px solid #ddd;
-      display:flex;
-      flex-direction:column;
-      height:100vh;
-    }
-    #settingsContent{
+    #mainContent{
+      display:none;
       flex:1;
-      overflow:auto;
-      padding:14px;
     }
 
-    /* ANA ALAN */
-    #main{
+    .left{
       flex:1;
       display:flex;
-      flex-direction:column;
-      height:100vh;
-    }
-    #topBar{
-      background:#fff;
-      border-bottom:1px solid #ddd;
-      padding:12px 14px;
-      display:flex;
+      justify-content:center;
       align-items:center;
-      justify-content:space-between;
-      gap:12px;
+      background:#fff;
+      border-right:2px solid #ddd;
+      padding:20px;
     }
-    #topBar h1{
-      font-size:16px;
-      margin:0;
-    }
-    #topBar .hint{
-      font-size:12px;
-      color:#666;
-      margin:0;
+    .left img{
+      max-width:100%;
+      max-height:80%;
+      object-fit:contain;
     }
 
-    #content{
+    .right{
       flex:1;
-      padding:14px;
-      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:14px;
+      padding:20px;
     }
 
     .card{
+      width:min(420px, 92%);
       background:#fff;
       border:1px solid #ddd;
       border-radius:10px;
-      padding:12px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.04);
-      margin-bottom:12px;
-    }
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    label{
-      display:block;
-      font-size:12px;
-      color:#555;
-      margin:8px 0 6px;
-    }
-    select, input[type="text"], input[type="number"], textarea{
-      width:100%;
-      border:1px solid #ccc;
-      border-radius:8px;
-      padding:9px 10px;
-      font-size:14px;
-      background:#fff;
-    }
-    textarea{
-      min-height:160px;
-      resize:vertical;
-    }
-
-    button{
-      border:none;
-      border-radius:8px;
-      padding:10px 12px;
-      font-weight:700;
+      padding:14px 16px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
       cursor:pointer;
+      transition:.1s;
     }
-    .btnPrimary{ background:#2563eb; color:#fff; }
-    .btnSoft{ background:#e5e7eb; color:#111827; }
-    .btnDanger{ background:#ef4444; color:#fff; }
-    .btnWide{ width:100%; }
-
-    .muted{ color:#6b7280; font-size:12px; line-height:1.35; }
-    .status{ font-size:12px; min-height:16px; color:#111827; }
-
-    /* API DURUM KUTUSU (sol üst) */
-    #apiBox{
-      background:#fff;
-      border:1px solid #ddd;
-      border-radius:10px;
-      padding:12px;
-      margin-bottom:12px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.04);
+    .card:hover{
+      transform:translateY(-1px);
+      box-shadow:0 6px 14px rgba(0,0,0,0.08);
     }
-    #apiTitle{
-      font-weight:800;
-      font-size:14px;
-      margin-bottom:6px;
+    .card h3{
+      margin:0 0 6px 0;
+      font-size:16px;
     }
-    #apiStatus{
-      font-size:12px;
-      color:#555;
-      line-height:1.35;
-      min-height:18px;
-      margin-bottom:10px;
-    }
-    #btnApiChange{
-      width:100%;
-      background:#2563eb;
-      color:#fff;
-    }
-
-    /* OKUMA ALANI */
-    #readerBox{
-      display:none;
-    }
-    #readerWord{
-      font-size:28px;
-      font-weight:800;
-      text-align:center;
-      padding:22px 10px;
-      border:2px solid #e5e7eb;
-      border-radius:14px;
-      background:#fff;
-      letter-spacing:.3px;
-    }
-    #readerMeta{
-      margin-top:10px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      font-size:12px;
+    .card p{
+      margin:0;
+      font-size:13px;
       color:#555;
     }
 
-    /* API DEĞİŞTİR OVERLAY */
-    #apiOverlay{
+    /* OVERLAY */
+    #overlay{
       position:fixed;
       inset:0;
       background:rgba(0,0,0,.55);
-      display:none;
+      display:flex;
       justify-content:center;
       align-items:center;
-      z-index:99999;
+      z-index:9999;
     }
-    #apiOverlayBox{
-      width:min(560px,92%);
+    #overlayBox{
+      width:min(520px,92%);
       background:#fff;
       border-radius:12px;
       padding:18px;
     }
-    .apiRowTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      margin-bottom:12px;
-    }
-    .apiH{
-      font-weight:900;
-      font-size:16px;
-      margin-bottom:4px;
-    }
-    .apiHint{
-      font-size:12px;
-      color:#6b7280;
-      line-height:1.35;
-    }
-    .apiClose{
-      cursor:pointer;
-      padding:6px 10px;
-      border-radius:8px;
-      background:#f3f4f6;
-      user-select:none;
-    }
-    .apiInputWrap{
+
+    .code-wrapper{
       position:relative;
     }
-    .apiInputWrap input{
+    .code-wrapper input{
       width:100%;
       padding:10px 44px 10px 10px;
-      font-size:14px;
+      font-size:16px;
       border-radius:8px;
       border:1px solid #ccc;
       box-sizing:border-box;
     }
-    #toggleApi{
+    #toggleCode{
       position:absolute;
       right:12px;
       top:50%;
       transform:translateY(-50%);
       cursor:pointer;
       opacity:.6;
-      user-select:none;
     }
-    .apiBtnRow{
+
+    .btnRow{
       display:flex;
-      justify-content:flex-end;
       gap:10px;
+      justify-content:flex-end;
       margin-top:10px;
-      flex-wrap:wrap;
     }
-    #apiMsg{
-      margin-top:10px;
+    button{
+      padding:10px 12px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    #btnCheck{background:#2563eb;color:#fff}
+    #btnReset{background:#e5e7eb}
+
+    #msg{
+      margin-top:8px;
       font-size:13px;
       min-height:18px;
-      color:#111827;
     }
   </style>
 </head>
 
 <body>
 
-<div id="container">
-  <!-- SOL -->
-  <aside id="settings">
-    <div id="settingsContent">
+<!-- KOD GİRİŞ -->
+<div id="overlay">
+  <div id="overlayBox">
+    <h2>Kullanıcı Kodu</h2>
+    <p>Devam etmek için kullanıcı kodunu giriniz.</p>
 
-      <!-- API Durumu (sol üst) -->
-      <div id="apiBox">
-        <div id="apiTitle">API Durumu</div>
-        <div id="apiStatus">Kontrol ediliyor...</div>
-        <button id="btnApiChange" type="button" onclick="openApiOverlay()">API değiştir</button>
-      </div>
-
-      <div class="card">
-        <div style="font-weight:800; margin-bottom:8px;">Metin Üret</div>
-
-        <label>Seviye</label>
-        <select id="level">
-          <option value="ilkokul">İlkokul</option>
-          <option value="ortaokul" selected>Ortaokul</option>
-          <option value="lise">Lise</option>
-        </select>
-
-        <label>Zorluk</label>
-        <select id="difficulty">
-          <option value="kolay">Kolay</option>
-          <option value="orta" selected>Orta</option>
-          <option value="zor">Zor</option>
-        </select>
-
-        <label>Konu</label>
-        <input id="topic" type="text" placeholder="Örn: Hücreler, insan kas yapısı, fotosentez...">
-
-        <label>Yaklaşık kelime</label>
-        <input id="targetWords" type="number" min="150" max="1200" value="500">
-
-        <div class="row" style="margin-top:10px;">
-          <button class="btnPrimary btnWide" type="button" onclick="generateText()">YZ ile Metin Oluştur</button>
-        </div>
-
-        <div id="genStatus" class="status" style="margin-top:10px;"></div>
-        <div class="muted" style="margin-top:8px;">
-          Token/limit biterse: <b>API değiştir</b> ile Y hesabının anahtarını gir.
-        </div>
-      </div>
-
-      <div class="card">
-        <div style="font-weight:800; margin-bottom:8px;">Okuma Ayarları</div>
-
-        <label>Blok (kelime)</label>
-        <select id="blockSize">
-          <option value="1">1</option>
-          <option value="2" selected>2</option>
-          <option value="3">3</option>
-        </select>
-
-        <label>Hız (ms / blok)</label>
-        <input id="speedMs" type="number" min="80" max="2000" value="300">
-
-        <div class="row" style="margin-top:10px;">
-          <button class="btnPrimary" type="button" onclick="startReading()">Başlat</button>
-          <button class="btnSoft" type="button" onclick="pauseResume()"><span id="pauseBtnText">Duraklat</span></button>
-          <button class="btnSoft" type="button" onclick="stopReading()">Durdur</button>
-        </div>
-
-        <div id="readStatus" class="status" style="margin-top:10px;"></div>
-      </div>
-
-    </div>
-  </aside>
-
-  <!-- SAĞ -->
-  <main id="main">
-    <div id="topBar">
-      <div>
-        <h1>Metin Çalışması</h1>
-        <p class="hint">Blok okuma + (opsiyonel) YZ ile metin üretme</p>
-      </div>
-      <button class="btnSoft" type="button" onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/'">Ana Sayfa</button>
+    <div class="code-wrapper">
+      <input type="password" id="userCode" placeholder="Kullanıcı kodu">
+      <span id="toggleCode" onclick="toggleCodeVisibility()">👁</span>
     </div>
 
-    <div id="content">
-      <div class="card">
-        <div style="font-weight:800; margin-bottom:8px;">Metin</div>
-        <textarea id="textArea" placeholder="Hazır metin yapıştırabilir veya soldan YZ ile üretebilirsin."></textarea>
-        <div class="muted" style="margin-top:8px;">
-          Not: Bu sayfa, API anahtarını tarayıcıda (localStorage) saklar. GitHub’a gömmez.
-        </div>
-      </div>
-
-      <div class="card" id="readerBox">
-        <div style="font-weight:800; margin-bottom:10px;">Okuma</div>
-        <div id="readerWord">Hazır</div>
-        <div id="readerMeta">
-          <div>İlerleme: <span id="progress">0/0</span></div>
-          <div>Durum: <span id="readerState">Beklemede</span></div>
-        </div>
-      </div>
+    <div class="btnRow">
+      <button id="btnReset" onclick="clearSavedCode()">Sıfırla</button>
+      <button id="btnCheck" onclick="checkUserCode()">Giriş</button>
     </div>
-  </main>
+
+    <div id="msg"></div>
+  </div>
 </div>
 
-<!-- API DEĞİŞTİR OVERLAY -->
-<div id="apiOverlay" onclick="closeApiOverlayOnBg(event)">
-  <div id="apiOverlayBox">
-    <div class="apiRowTop">
-      <div>
-        <div class="apiH">API Anahtarını Değiştir</div>
-        <div class="apiHint">
-          X hesabında token bittiyse, Y hesabının anahtarını girip kaydet.
-        </div>
-      </div>
-      <div class="apiClose" onclick="closeApiOverlay()">✕</div>
+<!-- ANA SAYFA -->
+<div id="mainContent">
+  <div class="left">
+    <img src="https://KronosEgitim.github.io/HizliOkuma/Logo.jpg"
+         onerror="this.style.display='none'">
+  </div>
+
+  <div class="right">
+
+    <!-- 1 -->
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/goz.html'">
+      <h3>Göz Kası Çalışması</h3>
+      <p>Göz kaslarını güçlendiren odak ve takip egzersizleri.</p>
     </div>
 
-    <div class="apiInputWrap">
-      <input type="password" id="apiKeyInput" placeholder="sk-...">
-      <span id="toggleApi" onclick="toggleApiVisibility()">👁</span>
+    <!-- 2 -->
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/kelime.html'">
+      <h3>Kelime Çalışması</h3>
+      <p>Kelime tanıma, hız ve algı geliştirme çalışmaları.</p>
     </div>
 
-    <div class="apiBtnRow">
-      <button type="button" class="btnSoft" onclick="clearApiKey()">Sil</button>
-      <button type="button" class="btnPrimary" onclick="saveApiKey()">Kaydet</button>
+    <!-- 3 -->
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/blok.html'">
+      <h3>Metin Çalışması</h3>
+      <p>Blok okuma ve metinle hız kazanma alıştırmaları.</p>
     </div>
 
-    <div id="apiMsg"></div>
+    <!-- 4 -->
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/hafiza.html'">
+      <h3>Hafıza Oyunu</h3>
+      <p>Kısa süreli hafıza ve görsel hatırlama oyunu.</p>
+    </div>
+
   </div>
 </div>
 
 <script>
-/* =========================
-   API KEY (X -> Y) SWITCH
-   ========================= */
-const API_STORAGE_KEY = "OPENAI_API_KEY";
+const KOD_TXT_URL = "https://KronosEgitim.github.io/HizliOkuma/kod.txt";
+const STORAGE_KEY = "USER_CODE";
 
-function getApiKey(){
-  return (localStorage.getItem(API_STORAGE_KEY) || "").trim();
-}
-
-function refreshApiStatusBox(){
-  const el = document.getElementById("apiStatus");
-  const key = getApiKey();
-  if(key){
-    const masked = key.slice(0,4) + "..." + key.slice(-4);
-    el.textContent = "Aktif: " + masked;
-  }else{
-    el.textContent = "Kayıtlı değil (YZ metin üretimi çalışmaz).";
+window.onload = () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    userCode.value = saved;
+    checkUserCode(true);
   }
+};
+
+function toggleCodeVisibility(){
+  userCode.type = userCode.type === "password" ? "text" : "password";
 }
 
-function openApiOverlay(){
-  document.getElementById("apiMsg").textContent = "";
-  const inp = document.getElementById("apiKeyInput");
-  inp.value = "";
-  inp.type = "password";
-  document.getElementById("apiOverlay").style.display = "flex";
-}
-function closeApiOverlay(){
-  document.getElementById("apiOverlay").style.display = "none";
-  refreshApiStatusBox();
-}
-function closeApiOverlayOnBg(e){
-  if(e.target.id === "apiOverlay") closeApiOverlay();
-}
-function toggleApiVisibility(){
-  const inp = document.getElementById("apiKeyInput");
-  inp.type = (inp.type === "password") ? "text" : "password";
-}
-function saveApiKey(){
-  const inp = document.getElementById("apiKeyInput");
-  const msg = document.getElementById("apiMsg");
-  const key = (inp.value || "").trim();
-
-  if(!key){
-    msg.textContent = "API anahtarı boş olamaz.";
-    return;
-  }
-  if(!key.startsWith("sk-") || key.length < 20){
-    msg.textContent = "Anahtar formatı şüpheli (sk-... olmalı).";
-    return;
-  }
-
-  localStorage.setItem(API_STORAGE_KEY, key);
-  msg.textContent = "Kaydedildi. Yeni anahtar aktif.";
-  refreshApiStatusBox();
-}
-function clearApiKey(){
-  localStorage.removeItem(API_STORAGE_KEY);
-  document.getElementById("apiKeyInput").value = "";
-  document.getElementById("apiMsg").textContent = "Silindi.";
-  refreshApiStatusBox();
+function clearSavedCode(){
+  localStorage.removeItem(STORAGE_KEY);
+  userCode.value = "";
+  msg.textContent = "Kod temizlendi.";
 }
 
-/* =========================
-   METİN ÜRET (OpenAI Responses API)
-   ========================= */
-async function generateText(){
-  const apiKey = getApiKey();
-  const genStatus = document.getElementById("genStatus");
+async function checkUserCode(auto=false){
+  const code = userCode.value.trim();
+  if(!code){ msg.textContent="Kod giriniz"; return; }
 
-  if(!apiKey){
-    genStatus.textContent = "API anahtarı yok. Sol üstten 'API değiştir' ile ekle.";
-    return;
-  }
+  msg.textContent = auto ? "Kayıtlı kod kontrol ediliyor..." : "Kontrol ediliyor...";
 
-  const level = document.getElementById("level").value;
-  const difficulty = document.getElementById("difficulty").value;
-  const topic = (document.getElementById("topic").value || "").trim();
-  const targetWords = Number(document.getElementById("targetWords").value || 500);
+  const txt = await fetch(KOD_TXT_URL,{cache:"no-store"}).then(r=>r.text());
+  const lines = txt.split(/\r?\n/);
 
-  if(!topic){
-    genStatus.textContent = "Konu giriniz.";
-    return;
-  }
-
-  genStatus.textContent = "Metin oluşturuluyor...";
-
-  const prompt =
-`Türkçe yaz.
-Seviye: ${level}
-Zorluk: ${difficulty}
-Konu: ${topic}
-Uzunluk: yaklaşık ${targetWords} kelime.
-
-Sadece METNİ ver. Başlık koyma. Soru üretme.`;
-
-  try{
-    const res = await fetch("https://api.openai.com/v1/responses", {
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer " + apiKey
-      },
-      body: JSON.stringify({
-        model: "gpt-5-mini",
-        input: prompt
-      })
-    });
-
-    const data = await res.json();
-
-    if(!res.ok){
-      const msg = (data && data.error && data.error.message) ? data.error.message : "Bilinmeyen hata.";
-      genStatus.textContent = "Hata: " + msg;
-
-      // Kota / token bitti gibi durumlarda API değiştir hatırlat
-      if(String(msg).toLowerCase().includes("quota") || String(msg).toLowerCase().includes("insufficient") || res.status === 429){
-        genStatus.textContent += "  (Token/kota olabilir. 'API değiştir' ile Y hesabına geç.)";
-      }
+  for(const l of lines){
+    const p = l.trim().split(/\s+/);
+    if(p[0]===code){
+      localStorage.setItem(STORAGE_KEY, code);
+      overlay.style.display="none";
+      mainContent.style.display="flex";
       return;
     }
-
-    // Çıktıyı olabildiğince sağlam çek
-    let text = "";
-    if(typeof data.output_text === "string" && data.output_text.trim()){
-      text = data.output_text.trim();
-    }else if(Array.isArray(data.output)){
-      // output içinden message/text parçalarını topla (farklı formatlara dayanıklı)
-      const parts = [];
-      for(const item of data.output){
-        if(item && item.type === "message" && Array.isArray(item.content)){
-          for(const c of item.content){
-            if(c && (c.type === "output_text" || c.type === "text") && c.text) parts.push(c.text);
-          }
-        }
-      }
-      text = parts.join("\n").trim();
-    }
-
-    if(!text){
-      genStatus.textContent = "Metin alınamadı (boş çıktı).";
-      return;
-    }
-
-    document.getElementById("textArea").value = text;
-    genStatus.textContent = "Tamam.";
-  }catch(e){
-    genStatus.textContent = "İstek başarısız. İnternet / CORS / anahtar kontrolü yap.";
   }
+  msg.textContent="Kullanıcı kodu hatalı";
 }
-
-/* =========================
-   BLOK OKUMA (Basit)
-   ========================= */
-let tokens = [];
-let idx = 0;
-let timer = null;
-let paused = false;
-
-function tokenizeText(raw){
-  // Paragrafları/boşlukları normalize et
-  const text = (raw || "").replace(/\s+/g, " ").trim();
-  if(!text) return [];
-  // kelimeler
-  return text.split(" ");
-}
-
-function buildBlocks(words, blockSize){
-  const blocks = [];
-  for(let i=0;i<words.length;i+=blockSize){
-    blocks.push(words.slice(i,i+blockSize).join(" "));
-  }
-  return blocks;
-}
-
-function startReading(){
-  stopReading();
-
-  const raw = document.getElementById("textArea").value;
-  const words = tokenizeText(raw);
-
-  if(words.length === 0){
-    document.getElementById("readStatus").textContent = "Metin boş.";
-    return;
-  }
-
-  const blockSize = Number(document.getElementById("blockSize").value || 2);
-  tokens = buildBlocks(words, blockSize);
-  idx = 0;
-  paused = false;
-  document.getElementById("pauseBtnText").textContent = "Duraklat";
-
-  document.getElementById("readerBox").style.display = "block";
-  document.getElementById("readerState").textContent = "Okuyor";
-  tick();
-}
-
-function tick(){
-  if(paused) return;
-
-  const speedMs = Number(document.getElementById("speedMs").value || 300);
-
-  if(idx >= tokens.length){
-    document.getElementById("readerWord").textContent = "Bitti";
-    document.getElementById("readerState").textContent = "Tamamlandı";
-    document.getElementById("progress").textContent = tokens.length + "/" + tokens.length;
-    document.getElementById("readStatus").textContent = "Okuma tamamlandı.";
-    timer = null;
-    return;
-  }
-
-  document.getElementById("readerWord").textContent = tokens[idx];
-  document.getElementById("progress").textContent = (idx+1) + "/" + tokens.length;
-  idx++;
-
-  timer = setTimeout(tick, speedMs);
-}
-
-function pauseResume(){
-  if(!tokens || tokens.length === 0){
-    document.getElementById("readStatus").textContent = "Önce 'Başlat' ile okuma başlat.";
-    return;
-  }
-  paused = !paused;
-  document.getElementById("pauseBtnText").textContent = paused ? "Devam" : "Duraklat";
-  document.getElementById("readerState").textContent = paused ? "Duraklatıldı" : "Okuyor";
-  if(!paused){
-    tick();
-  }
-}
-
-function stopReading(){
-  if(timer) clearTimeout(timer);
-  timer = null;
-  tokens = [];
-  idx = 0;
-  paused = false;
-  document.getElementById("pauseBtnText").textContent = "Duraklat";
-  document.getElementById("readerState").textContent = "Beklemede";
-  document.getElementById("progress").textContent = "0/0";
-  document.getElementById("readerWord").textContent = "Hazır";
-}
-
-/* =========================
-   INIT
-   ========================= */
-document.addEventListener("DOMContentLoaded", () => {
-  refreshApiStatusBox();
-});
 </script>
 
 </body>
