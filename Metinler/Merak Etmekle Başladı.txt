@@ -1,0 +1,95 @@
+Merak Etmekle Başladı
+
+Her şey basit bir soruyla başladı: “Neden böyle?” O gün otobüs durağında beklerken, elektronik tabeladaki saatle kolumdaki saat arasında tam 2 dakika 30 saniyelik bir fark olduğunu fark ettim. Aynı anda bakıyordum, ama aynı zamanı göstermiyorlardı. Çevremdekiler için bu önemsiz bir ayrıntıydı; benim içinse görmezden gelinemeyecek bir uyumsuzluktu.
+
+Eve döndüğümde saatleri karşılaştırdım. Telefonum, bilgisayarım ve mutfaktaki dijital saat… Üçü de birbirinden farklıydı. İnternette kısa bir araştırma yaptım ve zamanın cihazlara “kendiliğinden” gelmediğini öğrendim. Metinde aktarılan bilgiye göre, birçok cihaz saati ağ üzerinden güncelliyor ve bu işlem sırasında oluşan yaklaşık 0,2 saniyelik gecikme, zamanla birikerek dakika düzeyinde farklara yol açabiliyor. Yani benim gördüğüm 2 dakika 30 saniyelik sapma, küçük gecikmelerin üst üste binmiş hâliydi.
+
+Merakım burada bitmedi. Aynı hafta mutfakta bir deney yaptım. Kaynattığım suyun soğuma süresini ölçtüm: 1 litre su, oda sıcaklığında 23 °C’den 50 °C’ye düşmek için 14 dakika sürdü. Ertesi gün aynı miktar suyu, bu kez metal yerine cam bir kapta soğuttum. Süre 18 dakikaya çıktı. Metindeki açıklamaya göre kapların ısı iletkenliği, enerjinin ortama aktarılma hızını doğrudan etkiliyordu. Benim için artık “cam mı metal mi” sorusu, sadece estetik değil, fiziksel bir farktı.
+
+Bir başka merak noktası da telefonumun piliydi. Gün içinde şarjımın öğleden sonra hızla düştüğünü fark ediyordum. Metinde verilen bilgiye göre, lityum-iyon pillerde %20’nin altına düşmek hücre içi kimyasal yapıyı zorlayabiliyor ve uzun vadede kapasite kaybına yol açıyordu. Denemek için bir hafta boyunca pili %20–%80 aralığında tuttum. Sonraki hafta aynı kullanımda şarjın daha yavaş tükendiğini gözlemledim. Küçük bir merak, alışkanlığımı değiştirmişti.
+
+Son olarak, markette aldığım yoğurdun kapağındaki tarihe takıldım. Aynı marka, farklı partilerde farklı son kullanma süreleri koyuyordu. Metne göre bunun nedeni, üretimden sonra yapılan mikrobiyolojik testlerde bakteri çoğalmasının 5–60 °C aralığında hızlanması ve bu yüzden soğuk zincirin 4 °C civarında tutulmasının zorunlu olmasıydı. Tarih, rastgele değil; sıcaklık–mikroorganizma ilişkisine göre belirleniyordu. Buzdolabımın ayar düğmesi, artık benim için sadece bir sayı değildi.
+
+O gün şunu anladım: Büyük keşifler, çoğu zaman küçük bir “neden?” ile başlar. Saatteki bir fark, kaptaki bir dakika, pildeki bir yüzde… Merak etmek; ölçmeye, karşılaştırmaya ve sonunda davranışlarımızı değiştirmeye götürür. Bilimle aramızdaki bağ, laboratuvarda değil; günlük hayatta fark ettiğimiz bu küçük ayrıntılarda kurulur. Ve çoğu şey, gerçekten de merak etmekle başlar.
+
+-SORULAR-
+
+Metne göre anlatıcının ilk dikkatini çeken zaman farkı tam olarak ne kadardır?
+a) 1 dakika 20 saniye
+b) 2 dakika
+c) 2 dakika 30 saniye
+d) 3 dakika
+e) 5 dakika
+c
+
+Cihazlardaki saat farkının birikmesine neden olan gecikme metinde yaklaşık kaç saniye olarak verilmiştir?
+a) 0,02
+b) 0,2
+c) 2
+d) 20
+e) 0,5
+b
+
+Aynı miktar suyun metal kapta 23 °C’den 50 °C’ye düşmesi ne kadar sürmüştür?
+a) 10 dakika
+b) 12 dakika
+c) 14 dakika
+d) 16 dakika
+e) 18 dakika
+c
+
+Cam kapta yapılan ikinci denemede aynı sıcaklık düşüşü kaç dakikada gerçekleşmiştir?
+a) 12
+b) 14
+c) 16
+d) 18
+e) 20
+d
+
+Metne göre bu iki deney arasındaki sürenin farklı olmasının temel nedeni hangisidir?
+a) Kapların ısı iletkenliğinin farklı olması
+b) Su miktarının azalması
+c) Oda sıcaklığının değişmesi
+d) Termometrenin hatalı ölçmesi
+e) Kaynama süresinin uzaması
+a
+
+Pil kullanımında kapasite kaybını azaltmak için metinde önerilen aralık hangisidir?
+a) %0–%100
+b) %10–%90
+c) %20–%80
+d) %30–%70
+e) %40–%60
+c
+
+Anlatıcı bu aralığı bir hafta uyguladıktan sonra neyi gözlemlemiştir?
+a) Telefonun daha hızlı şarj olduğunu
+b) İnternet hızının yükseldiğini
+c) Ekran parlaklığının arttığını
+d) Cihazın ısınmasının durduğunu
+e) Şarjın daha yavaş tükendiğini
+e
+
+Metinde mikroorganizma çoğalmasının hızlandığı sıcaklık aralığı hangisi olarak verilmiştir?
+a) 0–10 °C
+b) 2–20 °C
+c) 5–60 °C
+d) 10–40 °C
+e) 20–80 °C
+c
+
+Bu bilgiye dayanarak buzdolabı için önerilen sıcaklık değeri metinde nasıl belirtilmiştir?
+a) 0 °C
+b) 2 °C
+c) 3 °C
+d) 4 °C
+e) 5 °C
+d
+
+Metnin sonunda “merak etmek” için vurgulanan temel işlev hangisidir?
+a) Ölçmeye, karşılaştırmaya ve davranışları değiştirmeye götürmek
+b) Sadece deney yapmak
+c) Yalnızca bilgi edinmek
+d) Büyük keşifleri beklemek
+e) Hataları görmezden gelmek
+a
