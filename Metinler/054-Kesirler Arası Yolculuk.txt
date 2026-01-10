@@ -1,0 +1,114 @@
+Kesirler Arası Yolculuk
+
+Defterimin başlığı bugün şuydu: “Kesirler Arası Yolculuk.” Öğretmen, kesirlerin yalnızca sayıları bölmek için değil; karşılaştırmak, paylaştırmak ve oran kurmak için birlikte kullanıldığını söyledi. Ben de bunu üç günlük durumla test edip her adımı defterime yazdım.
+
+İlk durak mutfaktı. Bir tarifte un miktarı 3/4 su bardağı yazıyordu. Evdeki ölçü kabı ise 1/8’lik çizgilere ayrılmıştı. Defterime şu dönüşümü yazdım:
+3/4 = 6/8
+Yani bardağı 6 çizgiye kadar doldurmam gerekiyordu. Yanına şu notu düştüm: “Payda eşitlemeden ölçü okunmuyor.”
+
+İkinci durak paylaşım oldu. Bir çikolatanın 2/3’ünü kardeşimle paylaştık; ben 1/2, o 1/3 aldı. Defterimde önce karşılaştırmayı yaptım:
+1/2 = 3/6, 1/3 = 2/6
+Sonra toplamı kontrol ettim:
+3/6 + 2/6 = 5/6
+Ama elimizde 2/3 vardı:
+2/3 = 4/6
+Defterime kırmızıyla şunu yazmışım: “Paylaştırma hatası: 5/6 ≠ 4/6.” Hata, payları eşitlemeden bölüşmekten kaynaklanmıştı.
+
+Üçüncü durak zaman planıydı. Ödevimi 1/4 saatte, tekrarımı 3/8 saatte bitirdim. Toplam süreyi bulmak için paydaları eşitledim:
+1/4 = 2/8
+2/8 + 3/8 = 5/8 saat
+Yanına şu notu düştüm: “Toplama için ortak payda şart.”
+
+Dördüncü durak hızdı. Bir parkuru ilk günün 3/5’inde, ikinci günün 2/5’inde tamamladım. Toplamda parkurun ne kadarını bitirdiğimi yazdım:
+3/5 + 2/5 = 5/5 = 1
+Defterimde şu cümle vardı: “Paylar aynıysa doğrudan topla; bütünlüğü gör.”
+
+Beşinci ve son durakta oran kullandım. Bir karışımda kırmızı boya 1/2, mavi boya 1/4 oranındaydı. Karışımın boyaya ayrılan toplam payını hesapladım:
+1/2 + 1/4 = 2/4 + 1/4 = 3/4
+Kalan kısmın ne olduğunu da çıkardım:
+1 − 3/4 = 1/4
+Defterimdeki not: “Kesirler, bütünü parça parça okumayı sağlar.”
+
+Sayfanın altına genel değerlendirmemi yazdım: Kesirler arasında yolculuk, payda eşitlemeden karşılaştırmaya, toplama–çıkarma yapmadan bütünü görmeye uzanan bir süreçtir. Hangi adımı atladığımı, sonucun neden yanlış çıktığını defterimdeki küçük eşitsizlikler gösterdi. Kesirler tek başına sayı değildir; ilişki kurar, oran anlatır ve bütünü parçalardan yeniden inşa eder.
+
+-SORULAR-
+
+Tarif örneğinde 3/4 su bardağının 1/8’lik ölçü kabında kaç çizgiye karşılık geldiği defterde nasıl bulunmuştur?
+a) 3/4 = 4/8
+b) 3/4 = 5/8
+c) 3/4 = 6/8
+d) 3/4 = 7/8
+e) 3/4 = 3/8
+c
+
+Bu dönüşüm için deftere yazılan not hangisidir?
+a) “Payda eşitlemeden ölçü okunmuyor.”
+b) “Paylar aynıysa doğrudan topla.”
+c) “Toplama için ortak payda şart.”
+d) “Bütünü görmek için çıkarma yap.”
+e) “Oran kurmadan karşılaştırma olmaz.”
+a
+
+Çikolata paylaşımında karşılaştırma yapılırken 1/2 ve 1/3 hangi eşdeğer kesirlere çevrilmiştir?
+a) 2/4 ve 3/6
+b) 3/6 ve 2/6
+c) 4/6 ve 2/6
+d) 3/8 ve 2/8
+e) 5/6 ve 4/6
+b
+
+Bu paylaşımda elde edilen toplam hangi kesir olarak hesaplanmış ve neden yanlış olduğu belirtilmiştir?
+a) 4/6, çünkü 2/3’e eşit değildir
+b) 2/3, çünkü 4/6’ya eşittir
+c) 3/6, çünkü 2/3’ten küçüktür
+d) 5/6, çünkü 2/3 (4/6) değildir
+e) 1, çünkü bütün edilmiştir
+d
+
+Zaman planında 1/4 saat ile 3/8 saat toplanmadan önce 1/4 hangi kesre çevrilmiştir?
+a) 1/8
+b) 2/8
+c) 3/8
+d) 4/8
+e) 5/8
+b
+
+Bu iki sürenin toplamı metne göre kaç saat olmuştur?
+a) 1/2
+b) 3/4
+c) 3/8
+d) 5/8
+e) 7/8
+d
+
+Parkur örneğinde 3/5 ve 2/5 toplandığında elde edilen sonuç metinde nasıl ifade edilmiştir?
+a) 4/5
+b) 5/5
+c) 3/10
+d) 1/5
+e) 6/5
+b
+
+Bu adım için deftere yazılan not hangisidir?
+a) “Toplama için ortak payda şart.”
+b) “Payda eşitlemeden ölçü okunmuyor.”
+c) “Oran kurmadan karşılaştırma olmaz.”
+d) “Bütünü görmek için çıkarma yap.”
+e) “Paylar aynıysa doğrudan topla; bütünlüğü gör.”
+e
+
+Karışım örneğinde 1/2 + 1/4 toplamı metinde hangi kesir olarak bulunmuştur?
+a) 2/4
+b) 3/4
+c) 4/4
+d) 1/2
+e) 1/4
+b
+
+Aynı örnekte boyaya ayrılmayan kalan kısım defterde nasıl hesaplanmıştır?
+a) 1 − 3/4 = 1/4
+b) 3/4 − 1
+c) 1/4 + 3/4
+d) 1/2 − 1/4
+e) 2/4 − 1/4
+a
