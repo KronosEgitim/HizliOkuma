@@ -1,0 +1,113 @@
+Sayı Doğrusunda Kaybolmak
+
+Defterimin başlığı bugün biraz ironikti: “Sayı Doğrusunda Kaybolmak.” Öğretmen, sayı doğrusunun yalnızca sayıları dizmek için değil; yönü, mesafeyi ve karşılaştırmayı görmek için bir harita olduğunu söyledi. Ben de bunu küçük yolculuklarla denemeye karar verdim.
+
+İlk durak sıfırdı. Defterime büyük bir 0 çizdim ve sağını pozitif, solunu negatif olarak işaretledim. Sonra başlangıç noktası olarak −2’yi seçtim. Sağ tarafa doğru 5 birim ilerledim. Defterimde işlem şöyleydi:
+−2 + 5 = 3
+Yanına şu notu yazdım: “Sağa gitmek, toplama gibidir.” Başladığım yerin neresi olduğunu bilmezsem, vardığım yeri de doğru okuyamayacağımı fark ettim.
+
+İkinci durakta yönü tersine çevirdim. Bu kez 4 noktasından başladım ve 7 birim sola gittim:
+4 − 7 = −3
+Defter notum: “Sola gitmek, çıkarma gibidir.” Sağ–sol karıştığında, sonuç da şaşırtıcı olabiliyordu.
+
+Üçüncü örnek mesafe ölçmekti. Defterimde iki nokta belirledim: −5 ve 2. Aralarındaki uzaklığı sayarak buldum:
+2 − (−5) = 7 birim
+Yanına şunu yazdım: “Mesafe, yönü değil; iki nokta arasındaki farkı gösterir.” Yani sayı doğrusunda ne kadar yol aldığımı bulmak için işaretlere değil, aradaki açıklığa bakmam gerekiyordu.
+
+Dördüncü denemede karşılaştırma yaptım. Defterime −1, −4 ve 3 yazdım. Sıralamayı şu şekilde kurdum:
+−4 < −1 < 3
+Yanına: “Negatiflerde, mutlak değeri büyük olan daha soldadır,” notunu düştüm. Önce işaretlere, sonra büyüklüklere bakmadan doğru sıralama yapılamıyordu.
+
+Beşinci durakta adımları karıştırdım. 1’den başlayıp önce 4 birim sola, sonra 2 birim sağa gittim. Defterimde yol şöyle görünüyordu:
+1 − 4 = −3
+−3 + 2 = −1
+Yanına şu cümleyi yazmışım: “Adımların sırası, varış noktasını değiştirir.” Aynı sayıların farklı sırada kullanımı beni bambaşka bir noktaya götürüyordu.
+
+Son olarak “kaybolma”yı fark ettim. Bir arkadaşımın defterinde şu yol vardı: −2’den başlayıp 3 birim sola, sonra 5 birim sağa gitmek. Benim defterimde ise şu işlem yazıyordu:
+−2 − 3 = −5
+−5 + 5 = 0
+Ama arkadaşım sonucu +2 bulmuştu. Hatanın nerede olduğunu not ettim: “Yönü değil, yalnızca sayıyı düşünürsen sayı doğrusunda kaybolursun.”
+
+Sayfanın altına genel değerlendirmemi yazdım: Sayı doğrusu bir cetvel değil, bir yol haritasıdır. Nereden başladığını, hangi yöne gittiğini ve kaç birim ilerlediğini bilmezsen, sayılar seni doğru yere götürmez. Kaybolmamak için önce başlangıcı işaretle, sonra yönü belirle, en sonunda mesafeyi say. Matematikte yön kaybolursa, sonuç da kaybolur.
+
+-SORULAR-
+
+İlk örnekte başlangıç noktası ve varılan nokta hangileridir?
+a) 0 → 5
+b) −2 → 3
+c) 3 → −2
+d) −5 → 2
+e) 2 → −5
+b
+
+Bu hareket için deftere yazılan yorum hangisidir?
+a) “Sola gitmek, çıkarma gibidir.”
+b) “Mesafe yönü gösterir.”
+c) “Sağa gitmek, toplama gibidir.”
+d) “Adımların sırası önemsizdir.”
+e) “Negatifler her zaman küçüktür.”
+c
+
+İkinci örnekte 4’ten 7 birim sola gidildiğinde varılan sonuç kaçtır?
+a) −3
+b) 3
+c) 11
+d) −11
+e) 1
+a
+
+Bu adım için deftere düşülen not hangisidir?
+a) “Sağa gitmek, toplama gibidir.”
+b) “Mutlak değer işareti siler.”
+c) “Mesafe yönü değil farkı gösterir.”
+d) “Sola gitmek, çıkarma gibidir.”
+e) “Sıralama sağdan sola yapılır.”
+d
+
+−5 ile 2 arasındaki mesafe metne göre kaç birimdir?
+a) 3
+b) 5
+c) 6
+d) 7
+e) 9
+d
+
+Bu mesafe hesabı için deftere yazılan ifade hangisidir?
+a) “Mesafe, yönü değil; iki nokta arasındaki farkı gösterir.”
+b) “Negatiflerde mutlak değeri küçük olan soldadır.”
+c) “Sağa gitmek her zaman büyütür.”
+d) “Sola gitmek her zaman küçültür.”
+e) “Mesafe işaretle bulunur.”
+a
+
+Karşılaştırma örneğinde doğru sıralama hangisidir?
+a) −1 < −4 < 3
+b) 3 < −1 < −4
+c) 3 < −4 < −1
+d) −1 < 3 < −4
+e) −4 < −1 < 3
+e
+
+Beşinci örnekte 1’den başlayıp 4 birim sola, sonra 2 birim sağa gidildiğinde varılan nokta kaçtır?
+a) −3
+b) −2
+c) −1
+d) 0
+e) 1
+c
+
+Bu örnek için deftere yazılan temel çıkarım hangisidir?
+a) “Adımların sırası, varış noktasını değiştirir.”
+b) “Mesafe yönü belirler.”
+c) “Negatifler pozitiftir.”
+d) “Sıfır en küçük sayıdır.”
+e) “Toplama her zaman artırır.”
+a
+
+Son örnekte arkadaşın hatası metinde nasıl açıklanmıştır?
+a) Başlangıç noktasını yanlış seçmesi
+b) Birimleri yanlış sayması
+c) Yönü değil, yalnızca sayıyı düşünmesi
+d) Mutlak değeri kullanması
+e) Çarpma yapması
+c
