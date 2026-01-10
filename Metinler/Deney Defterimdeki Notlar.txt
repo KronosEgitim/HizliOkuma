@@ -1,0 +1,95 @@
+Deney Defterimdeki Notlar
+
+Defterimin kapağını her açtığımda aynı cümleyi görüyorum: “Gözlem yazılmadıysa deney yapılmamıştır.” Bu sayfa, yalnızca sonuçları değil; ayrıntıları, süreleri ve küçük farkları kaydetmem gerektiğini hatırlatıyor. Bugün, defterimdeki üç deney notunu yeniden okudum ve her birinin günlük hayatımdaki karşılığını fark ettim.
+
+İlk not mutfaktan. Su ısıtırken farklı kapların etkisini ölçmüştüm. Aynı miktarda, 1 litre suyu iki ayrı kapta kaynattım. Çelik kapta kaynama 6 dakika 40 saniye, cam kapta ise 8 dakika 10 saniye sürdü. Altına şu notu düşmüşüm: “Kap malzemesi, ısıyı iletme hızını değiştiriyor.” O gün için küçük bir deneydi; ama artık ocakta hangi kabı kullandığımın enerji tüketimini bile etkilediğini biliyorum.
+
+İkinci sayfa telefonumla ilgiliydi. Pilin hangi aralıkta kullanıldığında daha verimli olduğunu merak etmiştim. Bir hafta boyunca şarjı %5’e kadar düşürüp %100’e kadar doldurdum. Ertesi hafta ise %20–%80 arasında tuttum. Defterimde, ikinci haftada akşam saatlerinde pil yüzdesinin ortalama %12 daha yüksek kaldığı yazıyor. Yanına da şu cümleyi eklemişim: “Kimya, alışkanlığı değiştirir.” Artık şarjım bitmeden kabloya uzanıyorum.
+
+Üçüncü not, evdeki buzdolabıyla ilgiliydi. Aynı yoğurt markasını iki farklı sıcaklık ayarında sakladım. İlk gün buzdolabı 7 °C, ikinci gün 4 °C olarak ayarlıydı. Üçüncü gün kapak açıldığında, 7 °C’de tutulan yoğurdun yüzeyinde hafif bir koku oluştuğunu, 4 °C’de tutulanın ise değişmediğini yazmışım. Metindeki açıklamaya göre bazı mikroorganizmalar 5–60 °C aralığında daha hızlı çoğalıyor; yani sıcaklık yalnızca bir sayı değil, biyolojik bir eşik.
+
+Defterimdeki en kısa ama en çarpıcı not ise bir ölçüm hatasına aitti. Tartıda un ölçerken terazinin bir seferinde 3 gram eksik tarttığını fark etmiştim. İlk denemede hamur daha sert, ikinci denemede daha yumuşaktı. Yanına “küçük hata, büyük fark” yazmışım. O günden sonra ölçü kaplarını iki kez kontrol etmeye başladım.
+
+Bu sayfaları yeniden okurken şunu fark ettim: Deney defterim, yalnızca bilimsel merakın değil, günlük yaşamın da bir kaydı. Dakikalar, dereceler, yüzdeler ve gramlar… Hepsi alışkanlıklarıma yön vermiş. Büyük keşifler yapmasam bile, küçük ölçülerle daha bilinçli davranmayı öğrenmişim. Benim için bilim, artık kitaplarda değil; defterimdeki notlarda ve hayatımın içinde.
+
+-SORULAR-
+
+Çelik kapta 1 litre suyun kaynama süresi defterde nasıl kaydedilmiştir?
+a) 6 dakika 10 saniye
+b) 6 dakika 40 saniye
+c) 7 dakika
+d) 8 dakika 10 saniye
+e) 5 dakika 50 saniye
+b
+
+Aynı miktar suyun cam kapta kaynaması kaç dakika kaç saniye sürmüştür?
+a) 7 dakika 30 saniye
+b) 8 dakika
+c) 8 dakika 10 saniye
+d) 6 dakika 40 saniye
+e) 9 dakika
+c
+
+Metne göre bu iki kaynama süresi arasındaki farkın temel nedeni hangisidir?
+a) Kap malzemesinin ısı iletkenliği
+b) Oda sıcaklığı
+c) Ocağın gücü
+d) Suyun başlangıç sıcaklığı
+e) Su miktarının değişmesi
+a
+
+İlk hafta yapılan pil denemesinde şarj hangi aralıkta kullanılmıştır?
+a) %10–%90
+b) %20–%80
+c) %30–%70
+d) %5–%100
+e) %0–%100
+d
+
+İkinci haftada uygulanan şarj aralığı hangisidir?
+a) %5–%100
+b) %10–%90
+c) %20–%80
+d) %30–%70
+e) %40–%60
+c
+
+Metne göre ikinci haftanın sonunda akşam saatlerinde pil yüzdesi ortalama ne kadar daha yüksek kalmıştır?
+a) %5
+b) %8
+c) %10
+d) %12
+e) %15
+d
+
+Yoğurt deneyinde ilk gün buzdolabı kaç dereceye ayarlanmıştır?
+a) 2 °C
+b) 4 °C
+c) 5 °C
+d) 7 °C
+e) 10 °C
+d
+
+İkinci gün yapılan ayar kaç derece olarak verilmiştir?
+a) 3 °C
+b) 4 °C
+c) 6 °C
+d) 7 °C
+e) 8 °C
+b
+
+Metne göre mikroorganizmaların daha hızlı çoğaldığı sıcaklık aralığı hangisidir?
+a) 0–10 °C
+b) 2–20 °C
+c) 5–60 °C
+d) 10–40 °C
+e) 20–80 °C
+c
+
+Un ölçümündeki hata defterde kaç gram olarak belirtilmiştir?
+a) 3 g
+b) 5 g
+c) 7 g
+d) 10g
+e) 12 g
+a
