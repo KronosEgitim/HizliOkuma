@@ -92,4 +92,5 @@ b) Yalnızca ekonomik kazanç yaratması
 c) Davranışları, alışkanlıkları ve zaman düzenini değiştirebilmesi
 d) Büyük makinelerden daha pahalı olması
 e) Sadece modayı etkilemesi
+
 c
