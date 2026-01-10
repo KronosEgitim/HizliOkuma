@@ -1,0 +1,113 @@
+Bir Cümlenin Öğeleri Arasında
+
+Bugün defterimin başlığı şuydu: “Bir Cümlenin Öğeleri Arasında.” Öğretmen, cümlenin yalnızca kelimelerden değil; özne, yüklem, nesne ve tümleçler arasındaki ilişkiden oluştuğunu söyledi. Ben de bunu küçük bir “dil deneyi”ne dönüştürdüm.
+
+İlk olarak basit bir cümle yazdım:
+“Ali kitabı okudu.”
+Altını çizerek ayırdım: “Ali” özneydi, “okudu” yüklem, “kitabı” nesne. Sonra aynı kelimeleri farklı bir dizilişle kullandım:
+“Kitabı Ali okudu.”
+Öğeler değişmemişti ama vurgu değişmişti. Defterime şu notu düştüm: “Öğeler aynı kalsa bile yer değişince anlamın ağırlık merkezi kayıyor.”
+
+İkinci denemede tümleçleri ekledim:
+“Ali akşam kütüphanede kitabı okudu.”
+Bu cümlede zaman (“akşam”) ve yer (“kütüphanede”) zarf tümleciydi. Ama bir de şunu yazdım:
+“Akşam kütüphanede Ali kitabı okudu.”
+Bu kez vurgu, eylemin kim tarafından yapıldığından çok, nerede ve ne zaman yapıldığına kaymıştı. Defterime: “Tümleçler, sahneyi kurar,” diye yazdım.
+
+Sonra nesneyi çıkardım:
+“Ali okudu.”
+Cümle hâlâ gramer olarak doğruydu ama neyin okunduğu belirsizdi. Yanına not aldım: “Nesne, eylemi somutlaştırır.” Yani özne ve yüklem tek başına bir iskelet oluşturuyor, nesne ise o iskelete içerik kazandırıyordu.
+
+Bir başka örnekte dolaylı tümleci inceledim:
+“Ali kitabı öğretmenine verdi.”
+Burada “öğretmenine” dolaylı tümleçti. Aynı cümleyi şöyle yazdım:
+“Ali öğretmenine kitabı verdi.”
+Anlam değişmedi ama odak noktası değişti. Defterimde şu cümle vardı: “Dolaylı tümleç, eylemin yönünü gösterir.”
+
+En çok dikkatimi çeken deneme ise yüklemi sona almadan yaptığım değişiklikti:
+“Okudu Ali kitabı.”
+Cümle kulağa alışılmadık geliyordu ama öğeler hâlâ yerindeydi. Buradan şu sonucu çıkardım: “Türkçede öğeler esnektir; anlamı belirleyen yalnızca sıra değil, görevdir.”
+
+Sayfanın altına genel bir değerlendirme yazdım: Bir cümlenin anlamı, tek tek kelimelerde değil; bu kelimelerin üstlendiği görevler arasındaki ilişkide ortaya çıkar. Özne kimdir, yüklem neyi bildirir, nesne eylemi neye bağlar, tümleçler nerede ve nasıl olduğunu gösterir… Bir cümleyi gerçekten anlamak, kelimelerin arasına değil; öğelerin arasına bakmakla başlar.
+
+-SORULAR-
+
+Metinde “Ali kitabı okudu.” cümlesinde nesne olarak belirtilen öğe hangisidir?
+a) Ali
+b) okudu
+c) kitabı
+d) akşam
+e) kütüphanede
+c
+
+“Kitabı Ali okudu.” örneği metinde hangi sonuçla ilişkilendirilmiştir?
+a) Öğelerin görev değiştirmesi
+b) Vurgunun yer değiştirmesi
+c) Cümlenin yanlış hâle gelmesi
+d) Zaman bilgisinin eklenmesi
+e) Yüklemin belirsizleşmesi
+b
+
+“Ali akşam kütüphanede kitabı okudu.” cümlesinde zarf tümleci olarak verilen iki unsur hangileridir?
+a) Ali – kitabı
+b) okudu – Ali
+c) okudu – kütüphanede
+d) kitabı – öğretmenine
+e) akşam – kütüphanede
+e
+
+Metne göre “Tümleçler, sahneyi kurar” ifadesi hangi işlevle ilişkilidir?
+a) Yüklemin çekimini belirlemekle
+b) Cümlenin zaman ve yer çerçevesini vermekle
+c) Özneyle nesneyi ayırmakla
+d) Eylemi belirsizleştirmekle
+e) Cümleyi soru hâline getirmekle
+b
+
+“Ali okudu.” örneğiyle ilgili olarak metinde vurgulanan temel eksiklik nedir?
+a) Nesnenin çıkarılması nedeniyle eylemin belirsizleşmesi
+b) Zarf tümlecinin olmaması
+c) Yüklemin bulunmaması
+d) Özne hatası
+e) Dolaylı tümlecin eksikliği
+a
+
+“Ali kitabı öğretmenine verdi.” cümlesinde dolaylı tümleç olarak belirtilen öğe hangisidir?
+a) Ali
+b) kitabı
+c) verdi
+d) öğretmenine
+e) akşam
+d
+
+Metne göre dolaylı tümlecin temel işlevi nasıl ifade edilmiştir?
+a) Eylemi somutlaştırmak
+b) Eylemin yönünü göstermek
+c) Zamanı belirlemek
+d) Vurguyu yükleme vermek
+e) Cümleyi uzatmak
+b
+
+“Okudu Ali kitabı.” örneğiyle ilgili olarak metinde çıkarılan sonuç hangisidir?
+a) Cümlenin artık yanlış olduğu
+b) Öğelerin görev değiştirdiği
+c) Türkçede öğelerin esnek olduğu ve görevin sıradan daha belirleyici olduğu
+d) Nesnenin kaldırıldığı
+e) Yüklemin anlamını yitirdiği
+c
+
+Metnin sonunda, bir cümlenin anlamının nerede ortaya çıktığı özellikle nasıl vurgulanmıştır?
+a) Kelimelerin tek tek anlamlarında
+b) Yalnızca yüklemde
+c) Noktalama işaretlerinde
+d) Söz diziminde
+e) Öğelerin arasındaki ilişkide
+e
+
+Aşağıdakilerden hangisi metinde doğrudan kullanılan bir defter notudur?
+a) “Kelimeler anlamı tek başına taşır.”
+b) “Nesne, eylemi somutlaştırır.”
+c) “Yüklem her zaman sonda olmalıdır.”
+d) “Dolaylı tümleç yalnızca kişiyi gösterir.”
+e) “Zarf tümleci yalnızca zamanı bildirir.”
+b
