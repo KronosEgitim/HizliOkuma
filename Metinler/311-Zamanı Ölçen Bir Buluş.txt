@@ -14,82 +14,82 @@ Kutuyu kapattığımda şunu düşündüm: Zamanı ölçen bu buluşlar, yalnız
 
 -SORULAR-
 
-Metne göre kutudan ilk çıkan zaman ölçme aracı hangisidir?
-a) Kum saati
-b) Mekanik saat
-c) Güneş saati
-d) Atom saati
-e) Dijital saat
+Metinde kum saatinin deniz yolculuklarında birlikte düzenlediği iki unsur hangileridir?
+a) Yön ve nöbet
+b) Yön ve hız
+c) Nöbet ve rüzgâr
+d) Hız ve derinlik
+e) Hız ve yakıt
 a
 
-Kum saatinin gemilerde kullanılma amacı metinde nasıl açıklanmıştır?
-a) Hava durumunu tahmin etmek
-b) Yön ve nöbet değişimlerini zamana göre ayarlamak
-c) Harita çizmek
-d) Derinlik ölçmek
-e) Yıldızları izlemek
+Metne göre kum saati hangi zaman birimini ölçmek üzere tasarlanmamıştır?
+a) Yaklaşık yarım saat
+b) Dakika
+c) Belirli bir süre aralığı
+d) Kumun akış süresi
+e) Nöbet değişimine denk gelen süre
 b
 
-Metinde kum saatinin ölçmek üzere tasarlandığı süre yaklaşık olarak ne kadardır?
-a) 5 dakika
-b) 10 dakika
-c) 15 dakika
-d) 30 dakika
-e) 60 dakika
-d
-
-Güneş saatiyle ilgili olarak metinde belirtilen temel sınırlılık hangisidir?
-a) Yalnızca kapalı alanlarda çalışması
-b) Sadece geceleri kullanılabilmesi
-c) Bulutlu havalarda ve geceleri işe yaramaması
-d) Dakikayı ölçememesi
-e) Sadece denizciler tarafından kullanılması
-c
-
-Mekanik saatlerin şehir yaşamına getirdiği yenilik metinde nasıl ifade edilmiştir?
-a) Herkesin farklı zamanı kullanması
-b) Zamanın yalnızca kişisel bir tahmin olması
-c) Zamanın tamamen rastgele olması
-d) Sadece bilim insanlarının zamanı ölçebilmesi
-e) Şehirde yaşayanların aynı zamanı paylaşması
+Güneş saatiyle ilgili olarak metinde geçen ve kullanımını sınırlayan iki koşul birlikte hangisidir?
+a) Kapalı alanlar ve rüzgâr
+b) Dağlık alanlar ve deniz
+c) Soğuk hava ve yağmur
+d) Kış ayları ve sis
+e) Geceler ve bulutlu günler
 e
 
-Metne göre mekanik saatler zamanı hangi birimlere ayırabilmiştir?
-a) Gün ve hafta
-b) Saat, dakika ve saniye
-c) Ay ve yıl
-d) Mevsim ve dönem
-e) Yalnızca saat
+“Zaman vardı ama herkes için her an okunabilir değildi.” ifadesi metinde hangi araç için söylenmektedir?
+a) Kum saati
+b) Mekanik saat
+c) Atom saati
+d) Güneş saati
+e) Dijital saat
+d
+
+Mekanik saatle ilgili olarak metinde birlikte verilen iki özellik hangileridir?
+a) Taşınabilir olması ve gece çalışması
+b) Dişliler–yaylar içermesi ve zamanı parçalara ayırması
+c) Gölgeyle çalışması ve kulelere yerleştirilmesi
+d) Atom titreşimlerine dayanması ve saniyeyi tanımlaması
+e) Kumla çalışması ve yarım saat ölçmesi
 b
 
-Atom saatinde zamanın ölçülmesi hangi temele dayandırılmıştır?
-a) Kum tanelerinin akışına
-b) Güneş ışığının açısına
-c) Dişlilerin dönüş hızına
-d) Belirli bir atomun titreşim sayısına
-e) Elektrik akımının gücüne
-d
-
-Metinde bir saniyenin atom saatinde nasıl tanımlandığı belirtilmiştir?
-a) Belirli sayıda atom titreşimine eşit kabul edilerek
-b) Dünya’nın dönüş süresine göre
-c) Bir dakikanın altmışta biri olarak
-d) Güneş’in gökyüzündeki konumuna göre
-e) Mekanik salınımların hızına göre
-a
-
-Zaman ölçme araçlarının insanların günlük yaşamına etkilerinden biri metinde hangisi olarak verilmiştir?
-a) Hava durumunu değiştirmesi
-b) Yalnızca bilimsel deneyleri etkilemesi
-c) Randevuların ve ders başlangıçlarının düzenlenmesi
-d) Sadece denizcilikte kullanılması
-e) Yalnızca geçmişi kaydetmesi
+Metne göre mekanik saatlerin şehir yaşamına etkisi hangi somut sonuçla ifade edilmiştir?
+a) Kişisel zaman tahminlerinin artması
+b) Deney sürelerinin uzaması
+c) Şehirde yaşayanların aynı zamanı paylaşması
+d) Geceleri zamanın okunabilir hâle gelmesi
+e) Denizcilikte kullanımın yaygınlaşması
 c
 
-Metnin sonunda “zamanı ölçen bir buluş” için hangi temel anlam vurgulanmaktadır?
+Atom saatinde zamanın ölçümü, metne göre hangi şeye bağlanmıştır?
+a) Güneş ışığının açısına
+b) Kum tanelerinin akışına
+c) Dişlilerin dönüş hızına
+d) Belirli bir atomun titreşim sayısına
+e) Mekanik salınımların periyoduna
+d
+
+Metinde “bir saniye” atom saati bağlamında nasıl tanımlanmıştır?
+a) Belirli sayıda atom titreşimine eşit kabul edilerek
+b) Gölgenin belirli bir konuma gelmesi olarak
+c) Kumun boğazdan tamamen geçmesi olarak
+d) Dünya’nın dönüşünün küçük bir parçası olarak
+e) Dişlinin bir turu olarak
+a
+
+Aşağıdakilerden hangisi metinde, zaman ölçüm araçlarının günlük yaşama etkileri arasında birlikte sayılan örneklerden biridir?
+a) Enerji tüketimi ve maliyet
+b) Hava durumu ve yol güvenliği
+c) Sağlık takibi ve spor ölçümleri
+d) Tarım planlaması ve hasat
+e) Randevular ve trenlerin kalkışı
+e
+
+Metnin son cümlesinde “zamanı ölçen bir buluş” için yüklenen özgül anlam hangisidir?
 a) Zamanı durdurmak
 b) Zamanı kısaltmak
-c) Zamanı yok etmek
-d) Hayatın ritmini düzenlemek
-e) Zamanı gizlemek
-d
+c) Hayatın ritmini ölçmek
+d) Zamanı gizlemek
+e) Zamanı yok etmek
+c
