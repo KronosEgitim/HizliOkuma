@@ -1,0 +1,112 @@
+Negatif Sayıların Dünyası
+
+Defterimin başlığı bugün biraz ürkütücüydü: “Negatif Sayıların Dünyası.” Öğretmen, negatif sayıların “yokluk” değil; referans noktasının altını gösterdiğini söylediğinde, bunu günlük örneklerle anlamaya karar verdim. Her adımı defterime not ettim.
+
+İlk örnek termometreden geldi. Sabah hava −3 °C idi. Öğleye doğru sıcaklık +2 °C oldu. Defterime önce farkı yazdım:
+(+2) − (−3) = 5
+Yanına şu notu düştüm: “Negatiften pozitife geçiş, iki işaretin arasındaki mesafedir.” Yani sıcaklık beş derece artmıştı.
+
+İkinci durak banka hesabıydı. Hesabımda −120 TL borç vardı. O gün 200 TL yatırdım. Defterimde işlemi şöyle gösterdim:
+(−120) + 200 = 80
+Yanına: “Negatif, borcu temsil eder; üzerine eklenen pozitif, borcu kapatır,” diye yazdım. Hesabım borçtan çıkıp artıya geçmişti.
+
+Üçüncü örnek asansördü. Zemin katı 0 kabul ettim. Bodrum −2, üçüncü kat +3 idi. Bodrumdan üçüncü kata çıktığımda kat sayısını şöyle hesapladım:
+(+3) − (−2) = 5 kat
+Defterimde şu cümle vardı: “Sıfır referanstır; aşağısı negatif, yukarısı pozitiftir.”
+
+Dördüncü denemede sayı doğrusunu kullandım. Defterime −4, −1, 0, +2, +5 sayılarını yazdım ve sıraladım:
+−4 < −1 < 0 < +2 < +5
+Yanına: “Negatiflerde, mutlak değeri büyük olan daha küçüktür,” notunu düştüm. Yani −4, −1’den küçüktü.
+
+Beşinci durak işlem kurallarıydı. Şu iki işlemi özellikle yazdım:
+(−3) + (−5) = −8
+(−3) × (−5) = +15
+Defterimdeki not: “Toplamada işaret korunur; çarpmada iki negatif pozitife döner.” Aynı sayılar, farklı işlemlerde bambaşka sonuçlar veriyordu.
+
+Son örnekte mutlak değeri inceledim. Defterime şunu yazdım:
+|−7| = 7, |+7| = 7
+Yanına: “Mutlak değer, işareti siler; yalnızca uzaklığı gösterir.” Yani sayı doğrusu üzerindeki mesafe, yönünden bağımsızdı.
+
+Sayfanın altına genel değerlendirmemi ekledim: Negatif sayılar, eksiyi değil; yönü anlatır. Borcu, aşağıyı, sıfırın altını, geçmişi… Kuralları öğrendiğimde, bu dünyanın korkutucu değil; aksine düzenli olduğunu gördüm. Negatif sayılar, matematiğin karanlık tarafı değil; dengenin diğer yarısıdır.
+
+-SORULAR-
+
+Termometre örneğinde sıcaklık −3 °C’den +2 °C’ye çıktığında defterde yazılan işlem hangisidir?
+a) (+2) − (−3) = 5
+b) (−3) − (+2) = −5
+c) (−3) + (+2) = −1
+d) (+2) + (−3) = −5
+e) (−2) − (−3) = 1
+a
+
+Bu örnek için deftere düşülen not hangisidir?
+a) “Mutlak değer işareti siler.”
+b) “İki negatif pozitife döner.”
+c) “Sıfır en büyük sayıdır.”
+d) “Negatif, borcu temsil eder.”
+e) “Negatiften pozitife geçiş, iki işaretin arasındaki mesafedir.”
+d
+
+Banka hesabında −120 TL borca 200 TL eklendiğinde sonuç metne göre kaçtır?
+a) −320
+b) −80
+c) 80
+d) 120
+e) 200
+c
+
+Asansör örneğinde bodrum −2’den üçüncü kata +3 çıkış kaç kat olarak hesaplanmıştır?
+a) 4
+b) 5
+c) 6
+d) 7
+e) 8
+b
+
+Bu hesap için defterde yazılan yorum hangisidir?
+a) “Negatifler her zaman küçüktür.”
+b) “Pozitifler borcu gösterir.”
+c) “İki negatif her zaman pozitiftir.”
+d) “Mutlak değer yönü siler.”
+e) “Sıfır referanstır; aşağısı negatif, yukarısı pozitiftir.”
+e
+
+Sayı doğrusu örneğinde verilen sıralama hangisidir?
+a) −1 < −4 < 0 < +2 < +5
+b) −4 < −1 < 0 < +2 < +5
+c) 0 < −1 < −4 < +2 < +5
+d) −4 < 0 < −1 < +2 < +5
+e) +5 < +2 < 0 < −1 < −4
+b
+
+Bu sıralama için deftere yazılan not hangisidir?
+a) “Negatiflerde, mutlak değeri büyük olan daha küçüktür.”
+b) “Mutlak değeri küçük olan daha küçüktür.”
+c) “Pozitifler her zaman negatiftir.”
+d) “Sıfır en küçüktür.”
+e) “İşaretler toplanmaz.”
+a
+
+Metinde verilen işlem kurallarından hangisi çarpma için özellikle vurgulanmıştır?
+a) Negatif + negatif = pozitif
+b) Negatif − negatif = negatif
+c) Negatif × negatif = pozitif
+d) Pozitif × negatif = pozitif
+e) Negatif ÷ negatif = negatif
+c
+
+|−7| ve |+7| için defterde yapılan çıkarım hangisidir?
+a) Mutlak değer sayıyı büyütür
+b) Mutlak değer işareti değiştirir
+c) Mutlak değer her zaman sıfır yapar
+d) Mutlak değer negatifi yok eder
+e) Mutlak değer işareti siler, yalnızca uzaklığı gösterir
+e
+
+Metnin sonunda negatif sayılar için yapılan genel değerlendirme hangisidir?
+a) Matematiğin gereksiz kısmı olduğu
+b) Yalnızca borcu gösterdiği
+c) Eksiyi değil, yönü ve dengeyi anlattığı
+d) Sadece işlemleri zorlaştırdığı
+e) Günlük hayatta kullanılmadığı
+c
