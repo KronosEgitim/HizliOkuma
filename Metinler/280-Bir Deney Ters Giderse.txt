@@ -1,0 +1,95 @@
+Bir Deney Ters Giderse
+
+O gün laboratuvara büyük bir heyecanla girdim. Amacım, iki çözeltiyi belirli oranlarda karıştırarak ısı açığa çıkan basit bir kimyasal tepkime gözlemlemekti. Defterimde her adım önceden yazılıydı: kullanılacak maddeler, ölçümler ve beklenen sonuç. Masanın üzerine dereceli silindir, termometre ve iki etiketli şişe yerleştirdim. Her şey kontrolüm altındaymış gibi görünüyordu.
+
+İlk adımda, birinci çözeltiden 25 mililitre ölçtüm ve behere aktardım. İkinci çözeltiden ise 10 mililitre ekledim. Termometreyi karışımın içine yerleştirip beklemeye başladım. Deney kâğıdına göre birkaç saniye içinde sıcaklığın artması gerekiyordu. Ancak ne beşinci saniyede ne de onuncu saniyede bir değişim oldu. Sıvı aynı renkte, aynı sıcaklıktaydı.
+
+Önce ölçüm hatası yaptığımı düşündüm. Termometreyi kontrol ettim, doğru çalışıyordu. Ardından etiketlere baktım: Şişelerden biri, planladığımdan farklı bir madde içeriyordu. Aynı renkte oldukları için karıştırdığım çözeltilerden biri yanlıştı. Deney “başarısız” olmuştu ama bu başarısızlık, beklediğimden daha öğreticiydi.
+
+Karışımı dökmedim. Aksine, neyin değiştiğini anlamak için defterime ayrıntılı notlar aldım: “Sıcaklık değişimi gözlenmedi. Kullanılan ikinci çözelti planlanandan farklı.” Daha sonra doğru şişeyi alıp deneyi yeniden kurdum. Bu kez yine 25 mililitre birinci çözeltiden, ardından doğru maddeden 10 mililitre ekledim. Termometredeki sıvı bu defa birkaç saniye içinde yükselmeye başladı. Beklenen ısı artışı gerçekleşmişti.
+
+İki deneme arasındaki tek fark, kullanılan maddenin türüydü. Miktarlar aynıydı, ortam aynıydı, ölçüm araçları aynıydı. Yanlış olan yalnızca bir ayrıntıydı ama sonucu tamamen değiştirmişti. O an şunu fark ettim: Bilimde “ters giden” bir deney, çoğu zaman hatayı gizlemez, tam tersine onu görünür kılar.
+
+Dersi bitirdiğimde defterimde iki ayrı deney vardı: biri başarısız, diğeri başarılı. Ama benim için asıl değerli olan, ilk denemeydi. Çünkü ancak yanlış olanı incelediğimde doğruyu anlayabildim. Bir deney ters gittiğinde sonuçlar çöpe atılmaz; dikkatle incelenir, karşılaştırılır ve yeniden denenir. Bilim, kusursuz adımlarla değil, hatalardan öğrenilen küçük düzeltmelerle ilerler.
+
+-SORULAR-
+
+Metne göre deneyin başında kullanılan ölçüm miktarları hangileridir?
+a) 20 ml – 20 ml
+b) 25 ml – 10 ml
+c) 15 ml – 15 ml
+d) 30 ml – 5 ml
+e) 10 ml – 25 ml
+b
+
+Öğrenci ilk denemede sıcaklık değişimini ne zaman gözlemlememiştir?
+a) Yalnızca ilk saniyede
+b) Beşinci ve onuncu saniyede de değişim olmamıştır
+c) Yalnızca on beşinci saniyede
+d) Sadece deneyin sonunda
+e) Sadece ilk dakikada
+b
+
+Deneyin başarısız olmasının metinde belirtilen temel nedeni hangisidir?
+a) Termometrenin bozuk olması
+b) Ortam sıcaklığının düşük olması
+c) Yanlış maddenin kullanılması
+d) Ölçümün fazla yapılması
+e) Beherin kirli olması
+c
+
+Öğrenci başarısız denemeden sonra karışım için ne yapmıştır?
+a) Hemen dökmüştür
+b) Yeniden ölçüm yapmadan devam etmiştir
+c) Deneyi tamamen bırakmıştır
+d) Ayrıntılı notlar almıştır
+e) Termometreyi değiştirmiştir
+d
+
+İkinci denemede ilk denemeden farklı olan tek unsur metne göre hangisidir?
+a) Kullanılan miktarlar
+b) Ölçüm aracı
+c) Ortam koşulları
+d) Kullanılan maddenin türü
+e) Deney süresi
+d
+
+Doğru madde kullanıldığında termometrede hangi sonuç gözlemlenmiştir?
+a) Sıcaklık düşmüştür
+b) Sıcaklık sabit kalmıştır
+c) Birkaç saniye içinde yükselmiştir
+d) Ani bir patlama olmuştur
+e) Renk değişimi görülmüştür
+c
+
+Metne göre iki deneme arasındaki karşılaştırma öğrenciye neyi göstermiştir?
+a) Miktarların önemsiz olduğunu
+b) Küçük bir ayrıntının sonucu tamamen değiştirebildiğini
+c) Ölçüm araçlarının gereksiz olduğunu
+d) Deneylerin tekrar edilemeyeceğini
+e) Başarısızlığın önemsiz olduğunu
+b
+
+Öğrenci “ters giden” deney hakkında hangi yorumu yapmaktadır?
+a) Bilimde tamamen işe yaramazdır
+b) Sonuçlar gizlenmelidir
+c) Hatanın görünür hâle gelmesini sağlar
+d) Deneyin iptal edilmesi gerekir
+e) Yalnızca şanssızlıktır
+c
+
+Metinde, başarısız denemenin öğrenci için asıl değerli olmasının nedeni nedir?
+a) Daha hızlı sonuç vermesi
+b) Doğru sonucu tahmin ettirmesi
+c) Yanlışı inceleyerek doğruyu anlamasını sağlaması
+d) Daha az malzeme gerektirmesi
+e) Öğretmenin onu övmesi
+c
+
+Yazarın metnin sonunda bilime dair vurguladığı temel düşünce hangisidir?
+a) Bilim yalnızca doğru sonuçlarla ilerler
+b) Hatalar görmezden gelinmelidir
+c) Bilim, hatalardan öğrenilen küçük düzeltmelerle ilerler
+d) Deneyler asla tekrarlanmamalıdır
+e) Başarısızlıklar bilimin dışında tutulmalıdır
+c
