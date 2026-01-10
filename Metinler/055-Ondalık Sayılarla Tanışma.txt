@@ -1,0 +1,113 @@
+Ondalık Sayılarla Tanışma
+
+Defterimin başlığı bugün şuydu: “Ondalık Sayılarla Tanışma.” Öğretmen, kesirlerin günlük hayatta çoğu zaman ondalık gösterimle karşımıza çıktığını söylediğinde, bunu küçük denemelerle anlamaya karar verdim. Her örnekte kesirden ondalığa geçişi ve bu geçişin neyi değiştirdiğini not ettim.
+
+İlk karşılaşmam para üzerindeydi. Bir kalemin fiyatı 3,50 TL yazıyordu. Bunu kesre çevirdim:
+3,50 = 3 + 50/100 = 3 + 1/2 = 3,5
+Defterime şu notu yazdım: “Ondalıkta virgülden sonrası, paydası 10’un katı olan kesirdir.” Aynı ürünü 3,5 TL olarak görmek, hesabı zihnimde daha hızlı yapmamı sağladı.
+
+İkinci örnek ölçü kabındandı. Tarifimde 0,25 litre süt gerekiyordu. Bunu kesirle düşündüm:
+0,25 = 25/100 = 1/4
+Yanına: “Ondalık → kesir dönüşümünde basamak sayısı paydayı belirler,” diye not aldım. Dörtte bir bardakla ölçmek, 0,25 yazısını görmekten daha somut gelmişti.
+
+Üçüncü denemede karşılaştırma yaptım. Defterime iki uzunluk yazdım: 0,6 metre ve 0,58 metre. Önce eşit basamakta yazdım:
+0,60 ve 0,58
+Sonra karşılaştırdım: 0,60 > 0,58. Notum: “Ondalıkları karşılaştırırken önce virgülden sonraki basamakları hizala.” Aynı işlemi kesirle yapsaydım daha uzun sürecekti.
+
+Dördüncü örnek toplamaydı. Markette iki ürünün ağırlıkları 1,2 kg ve 0,35 kg idi. Defterimde basamakları eşitledim:
+1,20 + 0,35 = 1,55 kg
+Yanına şu cümleyi yazmışım: “Toplama için virgüller alt alta gelmeli.” Ondalıklar, tartıdaki sonucu tek satırda görmemi sağlamıştı.
+
+Beşinci durakta çıkarma yaptım. Bir şişede 2,0 litre meyve suyu vardı. 0,75 litre içtim.
+2,00 − 0,75 = 1,25 litre
+Defter notum: “Çıkarma yaparken eksik basamak sıfırla tamamlanır.” Kalan miktarı 1,25 olarak görmek, ne kadar içtiğimi daha net gösteriyordu.
+
+Son örnekte çarpma ve bölmeyi denedim. Bir kumaşın metresi 0,4 m idi. 3 parça kestim:
+0,4 × 3 = 1,2 m
+Aynı kumaşı 1,2 m olarak 3 kişiye eşit paylaştırdım:
+1,2 ÷ 3 = 0,4 m
+Defterime: “Ondalıklar, kesirlerdeki oranı doğrudan görünür kılar,” diye yazdım.
+
+Sayfanın altına genel değerlendirmemi ekledim: Ondalık sayılar, kesirlerin günlük hayattaki dilidir. Parada, ölçüde, tartıda ve paylaşımda kesirleri virgülle sadeleştirir. Basamakları hizalamayı, gerektiğinde sıfır eklemeyi ve kesirle bağlantısını kurmayı öğrendiğimde, sayılar yalnızca hesap değil; anlam taşımaya başladı.
+
+-SORULAR-
+
+Metinde 3,50 TL fiyatı kesre çevrilirken hangi eşitlik yazılmıştır?
+a) 3,50 = 35/10
+b) 3,50 = 3 + 50/100 = 3 + 1/2
+c) 3,50 = 7/2
+d) 3,50 = 3 + 5/10
+e) 3,50 = 350/10
+b
+
+Bu dönüşüm için deftere düşülen not hangisidir?
+a) “Toplama için virgüller alt alta gelmeli.”
+b) “Ondalıkları karşılaştırırken basamakları hizala.”
+c) “Ondalıkta virgülden sonrası, paydası 10’un katı olan kesirdir.”
+d) “Eksik basamak sıfırla tamamlanır.”
+e) “Oranlar çarpma ile bulunur.”
+c
+
+0,25 litre örneğinde ondalık sayı hangi kesre çevrilmiştir?
+a) 1/2
+b) 1/3
+c) 1/4
+d) 2/5
+e) 3/10
+c
+
+Bu dönüşüm için metinde verilen kural hangisidir?
+a) “Virgüller alt alta gelmeli.”
+b) “Basamak sayısı paydayı belirler.”
+c) “Paylar eşitse doğrudan topla.”
+d) “Eksik basamak sıfırla tamamlanır.”
+e) “Kesirler her zaman büyüktür.”
+b
+
+0,6 m ile 0,58 m karşılaştırılırken defterde önce hangi adım yapılmıştır?
+a) Kesre çevirme
+b) Çarpma
+c) Toplama
+d) Bölme
+e) Basamakları eşitleyip 0,60 ve 0,58 yazma
+e
+
+Bu karşılaştırmanın sonucu metinde nasıl verilmiştir?
+a) 0,58 > 0,6
+b) 0,60 < 0,58
+c) 0,60 = 0,58
+d) 0,60 > 0,58
+e) 0,6 = 0,58
+d
+
+Ağırlık örneğinde 1,2 kg ile 0,35 kg toplanırken hangi işlem yazılmıştır?
+a) 1,20 + 0,35 = 1,55
+b) 1,2 + 0,35 = 1,45
+c) 12 + 35 = 47
+d) 1,2 + 0,35 = 1,75
+e) 1,20 + 0,30 = 1,50
+a
+
+Bu toplama için deftere yazılan not hangisidir?
+a) “Basamak sayısı paydayı belirler.”
+b) “Eksik basamak sıfırla tamamlanır.”
+c) “Ondalıkları karşılaştırırken hizala.”
+d) “Toplama için virgüller alt alta gelmeli.”
+e) “Payda eşitlemeden ölçü okunmaz.”
+d
+
+Çıkarma örneğinde 2,00 − 0,75 işleminin sonucu metne göre kaçtır?
+a) 1,15
+b) 1,20
+c) 1,25
+d) 1,30
+e) 0,75
+c
+
+Son örnekte 0,4 × 3 ve ardından 1,2 ÷ 3 işlemleriyle defterde hangi genel sonuca varılmıştır?
+a) “Ondalıklar kesirlerden daha zordur.”
+b) “Çarpma her zaman büyütür.”
+c) “Ondalıklar yalnızca parayla kullanılır.”
+d) “Bölme sonucu her zaman küçültür.”
+e) “Ondalıklar, kesirlerdeki oranı doğrudan görünür kılar.”
+e
