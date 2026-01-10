@@ -1,0 +1,95 @@
+Zamanı Ölçen Bir Buluş
+
+O gün, okul kütüphanesinin arka raflarında dolaşırken tozlu bir kutu dikkatimi çekti. Üzerinde solmuş bir etiket vardı: “Zaman Ölçüm Araçları.” Kutuyu açtığımda, içinden eski bir kum saati çıktı. Camdan yapılmış iki hazne, ortada dar bir boğazla birbirine bağlıydı. İçindeki ince kum, sessizce üstten alta akıyordu. O an fark ettim: İnsanlar zamanı görmek istemiş, onu somut bir şeye dönüştürmeye çalışmıştı.
+
+Kum saatinin yanında kısa bir not vardı. Notta, bu aracın deniz yolculuklarında kullanıldığı yazıyordu. Gemilerde, belirli aralıklarla kum saati çevrilir ve geçen süreye göre yön, hız ve nöbet değişimleri ayarlanırdı. Bu saat, dakikayı değil; yaklaşık yarım saatlik bir süreyi ölçmek üzere tasarlanmıştı. Zaman, küçük tanelerin düzenli akışıyla izleniyordu.
+
+Aynı kutunun içinde bir de çizim buldum: Gölgesi yere düşen bir çubuk… Bu bir güneş saatiydi. Notlara göre, çubuğun gölgesinin konumu, günün hangi vaktinde olunduğunu gösteriyordu. Ancak bu yöntem yalnızca güneşli havalarda işe yarıyordu. Bulutlu bir günde ya da geceleri zaman ölçülemezdi. Yani zaman vardı ama herkes için her an okunabilir değildi.
+
+Sayfaları karıştırırken daha gelişmiş bir düzenekle karşılaştım: mekanik saat çizimi. Dişliler, yaylar ve düzenli salınım yapan bir parça… Bu sistem, zamanı parçalara ayırabiliyordu: saat, dakika, hatta saniye. Notlarda, mekanik saatlerin kulelere yerleştirildiği ve şehirde yaşayanların aynı zamanı paylaşmasını sağladığı yazıyordu. Artık zaman, kişisel bir tahmin değil; ortak bir ölçüydü.
+
+Kutunun en altından modern bir şema çıktı: atom saati. Burada zaman, ne kum tanelerine ne de gölgelere bağlıydı. Belirli bir atomun titreşim sayısı esas alınıyor ve saniye bu titreşimlere göre tanımlanıyordu. Notta, bir saniyenin belirli sayıda atom titreşimine eşit kabul edildiği yazıyordu. Böylece zaman ölçümü, doğanın değişmeyen bir özelliğine bağlanmıştı.
+
+Kutuyu kapattığımda şunu düşündüm: Zamanı ölçen bu buluşlar, yalnızca saat yapmamıştı. İnsanların randevularını, trenlerin kalkışını, derslerin başlangıcını ve hatta bilimsel deneylerin süresini düzenlemişti. Zaman akmaya devam ediyordu; fakat onu ölçebilen araçlar sayesinde insanlar aynı anı paylaşabiliyor, geçmişi kaydedip geleceği planlayabiliyordu. Zamanı ölçen bir buluş, aslında hayatın ritmini de ölçüyordu.
+
+-SORULAR-
+
+Metne göre kutudan ilk çıkan zaman ölçme aracı hangisidir?
+a) Kum saati
+b) Mekanik saat
+c) Güneş saati
+d) Atom saati
+e) Dijital saat
+a
+
+Kum saatinin gemilerde kullanılma amacı metinde nasıl açıklanmıştır?
+a) Hava durumunu tahmin etmek
+b) Yön ve nöbet değişimlerini zamana göre ayarlamak
+c) Harita çizmek
+d) Derinlik ölçmek
+e) Yıldızları izlemek
+b
+
+Metinde kum saatinin ölçmek üzere tasarlandığı süre yaklaşık olarak ne kadardır?
+a) 5 dakika
+b) 10 dakika
+c) 15 dakika
+d) 30 dakika
+e) 60 dakika
+d
+
+Güneş saatiyle ilgili olarak metinde belirtilen temel sınırlılık hangisidir?
+a) Yalnızca kapalı alanlarda çalışması
+b) Sadece geceleri kullanılabilmesi
+c) Bulutlu havalarda ve geceleri işe yaramaması
+d) Dakikayı ölçememesi
+e) Sadece denizciler tarafından kullanılması
+c
+
+Mekanik saatlerin şehir yaşamına getirdiği yenilik metinde nasıl ifade edilmiştir?
+a) Herkesin farklı zamanı kullanması
+b) Zamanın yalnızca kişisel bir tahmin olması
+c) Zamanın tamamen rastgele olması
+d) Sadece bilim insanlarının zamanı ölçebilmesi
+e) Şehirde yaşayanların aynı zamanı paylaşması
+e
+
+Metne göre mekanik saatler zamanı hangi birimlere ayırabilmiştir?
+a) Gün ve hafta
+b) Saat, dakika ve saniye
+c) Ay ve yıl
+d) Mevsim ve dönem
+e) Yalnızca saat
+b
+
+Atom saatinde zamanın ölçülmesi hangi temele dayandırılmıştır?
+a) Kum tanelerinin akışına
+b) Güneş ışığının açısına
+c) Dişlilerin dönüş hızına
+d) Belirli bir atomun titreşim sayısına
+e) Elektrik akımının gücüne
+d
+
+Metinde bir saniyenin atom saatinde nasıl tanımlandığı belirtilmiştir?
+a) Belirli sayıda atom titreşimine eşit kabul edilerek
+b) Dünya’nın dönüş süresine göre
+c) Bir dakikanın altmışta biri olarak
+d) Güneş’in gökyüzündeki konumuna göre
+e) Mekanik salınımların hızına göre
+a
+
+Zaman ölçme araçlarının insanların günlük yaşamına etkilerinden biri metinde hangisi olarak verilmiştir?
+a) Hava durumunu değiştirmesi
+b) Yalnızca bilimsel deneyleri etkilemesi
+c) Randevuların ve ders başlangıçlarının düzenlenmesi
+d) Sadece denizcilikte kullanılması
+e) Yalnızca geçmişi kaydetmesi
+c
+
+Metnin sonunda “zamanı ölçen bir buluş” için hangi temel anlam vurgulanmaktadır?
+a) Zamanı durdurmak
+b) Zamanı kısaltmak
+c) Zamanı yok etmek
+d) Hayatın ritmini düzenlemek
+e) Zamanı gizlemek
+d
