@@ -1,0 +1,117 @@
+Bir Problemin Çözüm Yolu
+
+Defterimin başlığı bugün şuydu: “Bir Problemin Çözüm Yolu.” Öğretmen, bir problemi çözmenin yalnızca işlem yapmak olmadığını; anlamak, planlamak, uygulamak ve kontrol etmekten oluşan bir yolculuk olduğunu söyledi. Bunu tek bir problem üzerinde adım adım denemeye karar verdim ve her aşamayı defterime yazdım.
+
+Problemim şuydu:
+“Bir kırtasiyede bir kalem 8 TL, bir defter 12 TL’dir. Ayşe 3 kalem ve 2 defter alıyor, kasaya 60 TL veriyor. Kaç TL para üstü alır?”
+
+1. Adım: Anlama
+Önce neyin sorulduğunu altını çizerek belirledim: para üstü. Verilenleri daire içine aldım: kalem 8 TL, defter 12 TL, 3 kalem, 2 defter, 60 TL. Defterime şunu yazdım: “Ne aradığımı bilmezsem, işlemler beni yanıltır.”
+
+2. Adım: Planlama
+Önce her ürünün toplamını, sonra genel toplamı bulmam gerektiğini yazdım. Defterimde plan şu sıradaydı:
+(3 × kalem fiyatı) + (2 × defter fiyatı) → toplam ödeme → 60 TL’den çıkar.
+
+3. Adım: Uygulama
+Kalemler: 3 × 8 = 24 TL
+Defterler: 2 × 12 = 24 TL
+Toplam: 24 + 24 = 48 TL
+Para üstü: 60 − 48 = 12 TL
+Yanına şu notu düşmüşüm: “Aynı türleri önce grupla, sonra topla.”
+
+4. Adım: Kontrol
+Sonucu geri yerine koydum: Eğer alışveriş 48 TL ise ve 60 TL verdiysem, 12 TL kalmalıydı. Defterimdeki kontrol cümlesi: “Sonucu, problemin başına geri koyabiliyorsam doğrudur.”
+
+Aynı yöntemi ikinci bir problemde de denedim:
+“Bir kitap 15 TL, bir dergi 5 TL’dir. Mehmet 2 kitap ve 4 dergi alıyor, 50 TL veriyor. Kaç TL para üstü alır?”
+
+Planı değiştirmeden uyguladım:
+Kitaplar: 2 × 15 = 30 TL
+Dergiler: 4 × 5 = 20 TL
+Toplam: 30 + 20 = 50 TL
+Para üstü: 50 − 50 = 0 TL
+Defterimde şu cümle vardı: “Aynı çözüm yolu, farklı sayılarla da çalışıyorsa yöntem doğrudur.”
+
+Sayfanın altına genel değerlendirmemi yazdım: Bir problem, doğru işlemi bilmekten önce doğru yolu izlemeyi ister. Anlamadan yapılan işlem, rastgele bir denemedir; plan kurmadan yapılan hesap, şanstır; kontrol edilmeden bırakılan sonuç ise eksiktir. Çözüm, sayıların değil; adımların uyumuyla ortaya çıkar.
+
+-SORULAR-
+
+İlk problemde defterde “ne aradığımı bilmezsem…” notu hangi aşamayla ilişkilendirilmiştir?
+a) Planlama
+b) Uygulama
+c) Kontrol
+d) Anlama
+e) Sonuç yazma
+d
+
+İlk problemde kalemlerin toplam fiyatı metinde kaç TL olarak hesaplanmıştır?
+a) 16
+b) 20
+c) 24
+d) 30
+e) 36
+c
+
+Defterlerin toplam fiyatı metne göre kaç TL’dir?
+a) 12
+b) 18
+c) 20
+d) 24
+e) 30
+d
+
+Bu iki tutar toplandığında alışverişin toplam bedeli metinde kaç TL olarak verilmiştir?
+a) 42
+b) 44
+c) 46
+d) 48
+e) 50
+d
+
+Ayşe’nin aldığı para üstü metne göre kaç TL’dir?
+a) 8
+b) 10
+c) 12
+d) 14
+e) 16
+c
+
+İlk problemde “Aynı türleri önce grupla, sonra topla.” notu hangi adımla ilişkilendirilmiştir?
+a) Anlama
+b) Uygulama
+c) Planlama
+d) Kontrol
+e) Sonuç karşılaştırma
+b
+
+Kontrol aşaması metinde nasıl açıklanmıştır?
+a) Sonucu yuvarlamak
+b) Sonucu tahminle karşılaştırmak
+c) Sayıları sadeleştirmek
+d) Başka bir işlem yöntemi denemek
+e) Sonucu problemin başına geri koymak
+c
+
+İkinci problemde kitapların toplam bedeli kaç TL olarak hesaplanmıştır?
+a) 15
+b) 20
+c) 25
+d) 30
+e) 35
+d
+
+Aynı problemde dergilerin toplamı metne göre kaç TL’dir?
+a) 10
+b) 15
+c) 20
+d) 25
+e) 30
+c
+
+Metnin sonunda çözüm yolu için yapılan genel değerlendirme hangisidir?
+a) Çözümün, adımların uyumuyla ortaya çıktığı
+b) Önemli olan yalnızca doğru işlemi bilmektir
+c) Sonucun büyük olması önemli değildir
+d) Kontrol aşamasının gereksiz olduğu
+e) Her problem için farklı yol gerektiği
+a
