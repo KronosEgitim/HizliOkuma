@@ -52,11 +52,13 @@
 <body>
   <div class="controls">
     <!-- LİSTE SEÇİMİ -->
-    <label>Kelime listesi:
+    <label>Kelime uzunluğu:
       <select id="sourceSelect">
-        <option value="1hece">1 heceliler</option>
-        <option value="2hece">2 heceliler</option>
-        <option value="3hece">3 heceliler</option>
+        <option value="5harf">5 harfliler</option>
+        <option value="6harf">6 harfliler</option>
+        <option value="7harf">7 harfliler</option>
+        <option value="8harf">8 harfliler</option>
+        <option value="9harf">9 harfliler</option>
       </select>
     </label>
     <button type="button" onclick="loadWordsFromServer()">Yükle</button>
@@ -102,14 +104,17 @@
     const inputArea = document.getElementById('inputArea');
     const userInput = document.getElementById('userInput');
     const resultDiv = document.getElementById('result');
-
     const sourceSelect = document.getElementById('sourceSelect');
 
-    // Sunucudaki TXT dosyalarının adresleri
+    // GitHub Kelimeler dizini (RAW link)
+    const BASE_URL = "https://raw.githubusercontent.com/KronosEgitim/HizliOkuma/main/Kelimeler/";
+
     const SOURCES = {
-      "1hece": "https://ilhantopaloglu.github.io/HizliOkuma/1heceliler.txt",
-      "2hece": "https://ilhantopaloglu.github.io/HizliOkuma/2heceliler.txt",
-      "3hece": "https://ilhantopaloglu.github.io/HizliOkuma/3heceliler.txt"
+      "5harf": BASE_URL + "5harfliler.txt",
+      "6harf": BASE_URL + "6harfliler.txt",
+      "7harf": BASE_URL + "7harfliler.txt",
+      "8harf": BASE_URL + "8harfliler.txt",
+      "9harf": BASE_URL + "9harfliler.txt"
     };
 
     async function loadWordsFromServer() {
@@ -124,7 +129,13 @@
         const res = await fetch(url + "?_t=" + Date.now()); // cache kırmak için
         if (!res.ok) throw new Error("Dosya okunamadı: " + res.status);
         const text = await res.text();
-        words = text.split(/\s+/).filter(Boolean);
+
+        // Dosyada kelimeler ALT ALTA
+        words = text
+          .split(/\r?\n/)
+          .map(w => w.trim())
+          .filter(w => w.length > 0);
+
         words = shuffleArray(words);
         currentIndex = 0;
         alert("Kelime listesi yüklendi. Toplam kelime: " + words.length);
