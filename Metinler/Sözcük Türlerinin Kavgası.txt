@@ -1,0 +1,117 @@
+Sözcük Türlerinin Kavgası
+
+Defterimin yeni sayfasına büyük harflerle şu başlığı attım: “Sözcük Türlerinin Kavgası.” Öğretmen, sözcüklerin yalnızca anlamlarıyla değil, cümlede üstlendikleri görevle tür kazandığını söylemişti. Ben de bunu bir tartışma gibi kurgulayıp her türün neyi savunduğunu not etmeye karar verdim.
+
+İlk sözü isim aldı. “Ben olmadan nesneleri adlandıramazsınız,” diye yazdım. Şu cümleyi örnek aldım:
+“Kitap masada.”
+Burada “kitap” ve “masa” isimdi. Defterime notum şuydu: “İsim, varlığa ad verir.” Aynı sözcüğü başka bir görevde kullandım:
+“Kitap oku.”
+Bu kez “kitap” nesne olmuştu ama türü değişmemişti. Yanına: “Görev değişir, tür kalır,” diye yazdım.
+
+Sırada sıfat vardı. “Ben ismin önüne geçerim,” diyordu. Örneğim:
+“Kırmızı kalem masada.”
+“Kırmızı” sözcüğü, “kalem”i niteliyordu. Defterime: “Sıfat, ismi daraltır,” notunu düştüm. Aynı sözcüğü yalnız kullandım:
+“Kırmızı masada.”
+Bu cümlede “kırmızı”, artık bir varlığın adı gibi duruyordu. Yanına şu notu ekledim: “Sıfat, isimleşebilir.”
+
+Zamir araya girdi: “İsimlerin yerine ben geçerim.” Örneğim:
+“Ali geldi. O oturdu.”
+Burada “o”, “Ali”nin yerini tutuyordu. Defterimde: “Zamir, adın boşluğunu doldurur.” Ancak şunu da yazdım:
+“O gün geldi.”
+Bu cümlede “o” artık bir varlığın yerini tutmuyor, “gün”ü belirtiyordu. Yanına: “Aynı sözcük, bağlama göre zamir de sıfat da olabilir,” notunu düştüm.
+
+Sonra zarf konuştu: “Ben fiilin yanındayım.” Örneğim:
+“Ali hızlı koştu.”
+“Hızlı” burada fiili niteliyordu. Ama bir de şunu yazdım:
+“Hızlı tren geldi.”
+Bu cümlede “hızlı”, artık fiili değil, “tren”i niteliyordu. Defterime: “Aynı sözcük, fiili etkilerse zarf, ismi etkilerse sıfat,” diye kaydettim.
+
+Edat ise tartışmaya en kısa cümlelerle katıldı:
+“Ali gibi çalışkan.”
+“Gibi” tek başına anlam taşımıyordu; “Ali” ile “çalışkan” arasında ilişki kuruyordu. Defterimde: “Edat, tek başına değil; birlikte anlamlıdır,” yazıyordu. Aynı şeyi bağlaç için de denedim:
+“Ali ve Ayşe geldi.”
+“Ve” yalnızca iki öğeyi bağlamıştı. Yanına: “Bağlaç, bağlar ama cümlenin ögesi olmaz,” notunu düştüm.
+
+Sayfanın altına kavgayı şöyle özetledim: Sözcük türleri, kelimenin sözlükteki kimliğinden çok, cümledeki işleviyle belirlenir. Aynı kelime bir cümlede isim, başka bir cümlede sıfat, bir diğerinde zarf olabilir. Bu yüzden sözcük türleri arasında asıl tartışma “ne olduğumuz” değil, “nerede ve nasıl kullanıldığımız” üzerinedir.
+
+-SORULAR-
+
+Metinde “Kitap masada.” cümlesine dayanarak isim için yapılan özgül tanım hangisidir?
+a) “Fiili niteler.”
+b) “Varlığa ad verir.”
+c) “İki öğeyi bağlar.”
+d) “Zaman bildirir.”
+e) “Tek başına anlam taşımaz.”
+b
+
+“Kitap oku.” örneğiyle ilgili olarak deftere düşülen not hangisidir?
+a) “Sıfat, isimleşebilir.”
+b) “Zamir, adın boşluğunu doldurur.”
+c) “Görev değişir, tür kalır.”
+d) “Bağlaç, bağlar ama öge olmaz.”
+e) “Edat, tek başına anlamlıdır.”
+c
+
+“Kırmızı kalem masada.” cümlesinde “kırmızı” için metinde kullanılan ifade hangisidir?
+a) “Fiili niteler.”
+b) “Bağ kurar.”
+c) “Adın yerini tutar.”
+d) “Zamanı bildirir.”
+e) “İsmi daraltır.”
+e
+
+“Kırmızı masada.” örneği metinde hangi sonuçla ilişkilendirilmiştir?
+a) Sıfatın fiile bağlanması
+b) Sıfatın bağlaç olması
+c) Sıfatın zamire dönüşmesi
+d) Sıfatın isimleşmesi
+e) Sıfatın edatlaşması
+d
+
+“Ali geldi. O oturdu.” cümleleri için zamirle ilgili defter notu hangisidir?
+a) “Adın boşluğunu doldurur.”
+b) “Fiili niteler.”
+c) “İsmi daraltır.”
+d) “Bağ kurar.”
+e) “Zamanı sınar.”
+a
+
+Metne göre “O gün geldi.” cümlesindeki “o” sözcüğünün türü hangi nedenle farklıdır?
+a) Çünkü fiili nitelemektedir
+b) Çünkü bir ismin yerini tutmaktadır
+c) Çünkü “gün”ü belirterek sıfat görevi üstlenmektedir
+d) Çünkü bağlaçtır
+e) Çünkü edattır
+c
+
+“Ali hızlı koştu.” ile “Hızlı tren geldi.” karşılaştırmasında metinde çıkarılan temel kural hangisidir?
+a) Aynı sözcük her zaman aynı türdedir
+b) Fiili etkilerse zarf, ismi etkilerse sıfattır
+c) Zarf ve sıfat aynı görevde kullanılır
+d) Zarf yalnızca zaman bildirir
+e) Sıfat fiili etkiler
+b
+
+“Ali gibi çalışkan.” örneğinde “gibi” için metinde yapılan tespit hangisidir?
+a) Tek başına anlamlı olduğu
+b) İki fiili bağladığı
+c) İsimleştiği
+d) Tek başına anlam taşımadığı, birlikte anlam kazandığı
+e) Zarf olduğu
+d
+
+“Ali ve Ayşe geldi.” cümlesindeki “ve” için deftere yazılan ifade hangisidir?
+a) “Bağlar ama cümlenin ögesi olmaz.”
+b) “Fiili niteler.”
+c) “İsmi daraltır.”
+d) “Adın boşluğunu doldurur.”
+e) “Zaman bildirir.”
+a
+
+Metnin sonunda sözcük türleriyle ilgili yapılan genel değerlendirme hangisidir?
+a) Türler yalnızca sözlükteki anlamla belirlenir
+b) Türler kelimenin köküne göre değişmez
+c) Türler cümledeki işlevle belirlenir
+d) Türler yalnızca isim ve fiilden ibarettir
+e) Türler bağlaçlara göre değişir
+c
