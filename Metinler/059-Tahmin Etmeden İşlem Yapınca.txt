@@ -1,0 +1,114 @@
+Tahmin Etmeden İşlem Yapınca
+
+Defterimin başlığı bugün şuydu: “Tahmin Etmeden İşlem Yapınca.” Öğretmen, hesap yapmadan önce yaklaşık sonucu düşünmenin hataları yakalamak için bir kontrol kapısı olduğunu söyledi. Ben de tahmin yapmadan çözdüğüm örnekleri ve sonradan fark ettiğim hataları tek tek not etmeye karar verdim.
+
+İlk örnek alışverişti. Üç ürün aldım: 19,8 TL, 24,6 TL ve 15,7 TL. Kasada aceleyle topladım:
+19,8 + 24,6 + 15,7 = 59,1 TL
+Ama fişte 60,1 TL yazıyordu. Defterime dönüp işlemi tekrar yaptım:
+19,8 + 24,6 = 44,4
+44,4 + 15,7 = 60,1
+İlk hesapta 1 TL eksik bulmuştum. Yanına şu notu yazdım: “Önce tahmin etseydim (≈20+25+16≈61), 59’un düşük olduğunu fark ederdim.”
+
+İkinci örnek bölmeydi. 378 ÷ 6 işlemini zihinden yaptım ve 56 yazdım. Sonra kontrol ettim:
+6 × 56 = 336 (yanlış)
+Doğruyu yeniden hesapladım:
+378 ÷ 6 = 63 çünkü 6 × 63 = 378.
+Defterimdeki not: “Tahmin: 360 ÷ 6 = 60 → sonuç 60’a yakın olmalıydı; 56 şüpheliydi.”
+
+Üçüncü denemede çarpmayı karıştırdım. 48 × 19 için hızla 48 × 20 = 960 deyip 1 çıkararak 959 yazmışım. Oysa doğru hesap:
+48 × 19 = 48 × (20 − 1) = 960 − 48 = 912
+Aradaki fark 47 idi. Yanına şunu ekledim: “Yaklaştırma yaptım ama geri dönüşü yanlış uyguladım; tahmin doğruydu, düzeltme hatalıydı.”
+
+Dördüncü örnek ondalık toplamaydı. 2,75 + 3,8 işlemini 6,45 diye yazmışım. Sonra basamakları eşitleyip kontrol ettim:
+2,75 + 3,80 = 6,55
+Defter notum: “Tahmin: 2,75≈3, 3,8≈4 → 3+4≈7; 6,45 zaten düşük görünmeliydi.”
+
+Beşinci durakta yüzdeler vardı. Bir indirimde %25’i 80 TL’den çıkarmam gerekiyordu. Hızla 80 − 20 = 60 yazmışım. Oysa:
+%25 = 1/4 → 80 ÷ 4 = 20 → 80 − 20 = 60
+Bu sefer sonuç doğruydu ama notum şuydu: “Doğruya tesadüfen ulaştım; yöntem net olmalı.” Aynı türde %12 indirimde hataya düştüm: 80 − 12 = 68 yazmışım; oysa %12 = 0,12 → 80 × 0,12 = 9,6 → 80 − 9,6 = 70,4. Yanına kırmızıyla: “Tahmin etmeden çıkarma yaptım; yüzdeyi miktarla karıştırdım.”
+
+Son olarak kendime bir kural yazdım:
+1) Önce yaklaşık düşün. 2) Sonra işlemi yap. 3) Sonucu tahminle karşılaştır.
+Defterimin altındaki cümle şuydu: “Tahmin yapmadan işlem, doğru çıksa bile güvensizdir; yanlış çıktığında ise fark edilmez.”
+
+-SORULAR-
+
+İlk örnekte alışveriş toplamı aceleyle kaç TL bulunmuştur?
+a) 58,1
+b) 59,1
+c) 60,1
+d) 61,0
+e) 62,1
+b
+
+Aynı örnekte fişte yazan doğru toplam kaç TL’dir?
+a) 59,1
+b) 59,9
+c) 60,1
+d) 60,9
+e) 61,1
+c
+
+Bu hata için deftere yazılan tahmin cümlesinde kullanılan yaklaşık değerler hangileridir?
+a) 20 + 25 + 15
+b) 19 + 25 + 16
+c) 20 + 24 + 16
+d) 20 + 25 + 16
+e) 19 + 24 + 15
+d
+
+Bölme örneğinde 378 ÷ 6 işlemi ilk olarak kaç bulunmuştur?
+a) 56
+b) 60
+c) 62
+d) 63
+e) 64
+a
+
+Bu sonuç neden metne göre “şüpheli” sayılmıştır?
+a) Çarpım kontrolü yapılmadığı için
+b) Tahminin 360 ÷ 6 = 60 olması ve sonucun 60’a yakın görünmemesi nedeniyle
+c) Bölme kuralı yanlış olduğu için
+d) Sonucun tek sayı olması nedeniyle
+e) Basamak hatası olduğu için
+b
+
+48 × 19 işleminde yapılan yanlış sonuç ve doğru sonuç arasındaki fark kaçtır?
+a) 24
+b) 36
+c) 47
+d) 48
+e) 52
+c
+
+Ondalık toplama örneğinde 2,75 + 3,8 için önce bulunan yanlış sonuç hangisidir?
+a) 6,45
+b) 6,50
+c) 6,55
+d) 6,65
+e) 6,75
+a
+
+Bu işlem için metinde verilen tahmin hangisidir?
+a) 2 + 4 ≈ 6
+b) 2,5 + 3,5 ≈ 6
+c) 3 + 3,8 ≈ 6,8
+d) 2,75 + 4 ≈ 6,75
+e) 3 + 4 ≈ 7
+e
+
+Yüzde örneklerinde %12 indirim için doğru çıkarılan miktar metne göre kaçtır?
+a) 8
+b) 9
+c) 9,6
+d) 10
+e) 12
+c
+
+Metnin sonunda yazılan üç adımlı kuralın ilk adımı hangisidir?
+a) İşlemi yap
+b) Sonucu yaz
+c) Sonucu yuvarla
+d) Önce yaklaşık düşün
+e) Çarpma ile kontrol et
+d
