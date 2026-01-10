@@ -1,0 +1,99 @@
+Bilimin Günlük Hayatımıza Etkileri
+
+Bilimi çoğu zaman galaksiler, atomlar ya da başka gezegenlerle ilişkilendiririz. Oysa sabah uyandığımız andan gece uyuyana kadar yaptığımız pek çok iş, görünmez bilimsel kurallara dayanır. Kullandığımız araçların çoğu, farkında olmadan uyguladığımız küçük ama kesin hesapların sonucudur.
+
+Örneğin evdeki su tesisatı. Musluğu açtığımızda suyun belirli bir hızla ve sürekli akması, basınç–çap ilişkisine dayanır. Metinde verilen örnekte, standart bir ev tesisatında boru çapının 12 milimetreden 8 milimetreye düşürülmesi hâlinde, aynı basınçta akan su miktarının belirgin biçimde azaldığı belirtilir. Bu nedenle banyo ve mutfak hatlarında çap seçimi, yalnızca malzeme değil, akışkanlar mekaniği hesabıdır.
+
+Benzer bir durum asansörlerde karşımıza çıkar. Metne göre modern asansörlerde kabin ağırlığı, karşı ağırlıkla dengelenir ve motor yalnızca fark kadar yük taşır. Örnekte, 600 kg’lık bir kabin için yaklaşık 400 kg’lık karşı ağırlık kullanıldığı ve böylece enerji tüketiminin önemli ölçüde düştüğü anlatılır. Yani her kat çıktığımızda “az elektrik harcanması”, basit bir denge hesabının sonucudur.
+
+Günlük hayatta en sık dokunduğumuz alanlardan biri de telefonlarımızın pilleridir. Metinde, lityum-iyon pillerin tamamen boşaltılıp tekrar şarj edilmesinin pil ömrünü kısalttığı; bu yüzden ideal kullanım aralığının %20–%80 arasında tutulması gerektiği vurgulanır. Telefonun “şarjım çabuk bitiyor” şikâyeti, aslında elektrokimyanın nasıl çalıştığıyla doğrudan ilgilidir.
+
+Navigasyon uygulamaları da bilimin gündelik bir uzantısıdır. Metindeki örneğe göre, konum hesaplamasında kullanılan sinyallerin uydudan telefona ulaşması yaklaşık 0,07 saniye sürer ve bu küçük gecikme bile konumun birkaç metre sapmasına neden olabilir. Bu yüzden yazılımlar, sinyal gecikmesini düzeltmek için ek hesaplamalar yapar. Yani haritada doğru sokakta görünmemiz, saniyenin yüzde biri düzeyindeki fizik hesaplarına bağlıdır.
+
+Market alışverişinde bile bilim vardır. Metin, paketli gıdalardaki son kullanma tarihinin rastgele belirlenmediğini; örneğin süt ürünlerinde mikroorganizma çoğalmasının 5–60 °C aralığında hızlandığını ve bu yüzden soğuk zincirin 4 °C civarında tutulduğunu açıklar. Buzdolabının içindeki sayı, mikrobiyolojinin doğrudan hayata geçmiş hâlidir.
+
+Hatta gözlük camları bile bilimle şekillenir. Metindeki örnekte, yansıma önleyici kaplamaların ışığın belirli dalga boylarını söndürme prensibine göre üretildiği ve bu sayede camdan yansıyan ışığın yaklaşık %8’den %1’in altına indirildiği belirtilir. “Gözüm daha az yoruluyor” dediğimizde, aslında optik fiziğin sonucunu yaşıyoruz.
+
+Kısacası bilim yalnızca uzak yıldızları anlamak için değil; musluktan akan suyun miktarından asansörün harcadığı elektriğe, telefon pilimizin ömründen buzdolabındaki sıcaklığa kadar uzanan bir yaşam ağı kurar. Büyük keşifler, çoğu zaman küçük sayılara dönüşür. Ve bu sayılar, her gün dokunduğumuz hayatı sessizce düzenler.
+
+-SORULAR-
+
+Metne göre su tesisatında boru çapının 12 mm’den 8 mm’ye düşmesi hangi sonucu doğurur?
+a) Basıncı artırır
+b) Suyun sıcaklığını düşürür
+c) Suyu daha hızlı ısıtır
+d) Borunun dayanımını artırır
+e) Akan su miktarını belirgin biçimde azaltır
+e
+
+Asansör örneğinde, 600 kg’lık kabin için kullanılan karşı ağırlık yaklaşık kaç kilogramdır?
+a) 200 kg
+b) 300 kg
+c) 400 kg
+d) 500 kg
+e) 600 kg
+c
+
+Metne göre karşı ağırlık sisteminin temel amacı hangisidir?
+a) Enerji tüketimini azaltmak
+b) Motoru tamamen devre dışı bırakmak
+c) Kabini daha hızlı hareket ettirmek
+d) Güvenliği mekanik kilitle sağlamak
+e) Asansörü sessiz çalıştırmak
+a
+
+Telefon pillerinin ideal kullanım aralığı metinde nasıl verilmiştir?
+a) %0–%100
+b) %10–%90
+c) %20–%80
+d) %30–%70
+e) %40–%60
+c
+
+Metne göre pilin tamamen boşaltılıp tekrar şarj edilmesi neye yol açar?
+a) Daha hızlı dolmasına
+b) Isınmasının azalmasına
+c) Enerji kaybının sıfırlanmasına
+d) Kapasitesinin artmasına
+e) Ömrünün kısalmasına
+e
+
+Navigasyon uygulamalarında sinyalin uydudan telefona ulaşma süresi yaklaşık kaç saniye olarak verilmiştir?
+a) 0,7
+b) 0,07
+c) 0,007
+d) 0,7 ms
+e) 1,0
+b
+
+Bu gecikmenin düzeltilmemesi durumunda ortaya çıkabilecek hata metinde nasıl ifade edilmiştir?
+a) Saat farkı oluşması
+b) Pil tüketiminin artması
+c) Haritanın donması
+d) Konumun birkaç metre sapması
+e) İnternet bağlantısının kopması
+d
+
+Süt ürünlerinde mikroorganizma çoğalmasının hızlandığı sıcaklık aralığı metinde hangisi olarak verilmiştir?
+a) 0–10 °C
+b) 2–20 °C
+c) 5–60 °C
+d) 10–40 °C
+e) 20–80 °C
+c
+
+Bu bilgiye dayanarak buzdolabı sıcaklığı için önerilen değer metinde nasıl belirtilmiştir?
+a) 0 °C
+b) 2 °C
+c) 4 °C
+d) 6 °C
+e) 8 °C
+c
+
+Yansıma önleyici gözlük camlarında, yansıyan ışık oranı metne göre yaklaşık hangi değerden hangi değerin altına düşürülmüştür?
+a) %20 → %5
+b) %15 → %3
+c) %10 → %2
+d) %8 → %1’in altı
+e) %5 → %0
+d
