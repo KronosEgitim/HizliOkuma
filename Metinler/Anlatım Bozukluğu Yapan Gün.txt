@@ -1,0 +1,111 @@
+Anlatım Bozukluğu Yapan Gün
+
+Defterimin başlığı bugün biraz ironikti: “Anlatım Bozukluğu Yapan Gün.” Türkçe dersinde öğretmen, bir cümlenin yalnızca doğru sözcüklerle değil, doğru ilişkilerle kurulması gerektiğini söyledi. Ben de gün içinde karşılaştığım cümleleri not ederek hangi tür anlatım bozuklukları yaptığımı incelemeye karar verdim.
+
+İlk örnek sabah attığım mesajdı:
+“Sana yarın gelmeyeceğim gelirim.”
+Cümleyi tekrar okuyunca çelişkiyi fark ettim. Aynı anda hem “gelmeyeceğim” hem “gelirim” demiştim. Defterime şu notu yazdım: “Anlamca çelişen ifadeler birlikte kullanılmış.” Yanına düzeltmesini ekledim: “Sana yarın gelmeyeceğim.”
+
+İkinci notu e-postamdan aldım:
+“Toplantıya herkes katıldı, yalnız Ayşe hariç.”
+Burada da gereksiz bir tekrar vardı. “Yalnız” ile “hariç” aynı işlevi görüyordu. Defterime: “Gereksiz sözcük kullanımı (tekrar)” yazdım ve düzeltmeyi ekledim: “Toplantıya herkes katıldı, Ayşe hariç.”
+
+Üçüncü örnek, aceleyle yazdığım bir cümleydi:
+“Bu kitabı hem beğendim hem de okudum.”
+İlk bakışta doğru gibiydi ama “beğenmek” eyleminin “okumadan” gerçekleşemeyeceğini düşündüğümde, “hem… hem de” bağlacının yanlış bir eşleme kurduğunu fark ettim. Defterime: “Bağlaç yanlış eşleme yapıyor,” diye not aldım. Düzeltme olarak şunu yazdım: “Bu kitabı okudum ve beğendim.”
+
+Dördüncü cümle raporumdan çıktı:
+“Şirketimiz kaliteyi artırmak ve müşteri memnuniyetini sağlanacaktır.”
+Burada yüklem uyumsuzluğu vardı; “artırmak” mastar, “sağlanacaktır” çekimli fiildi. Defterime: “Yüklem uyumsuzluğu (paralellik bozukluğu)” yazdım. Düzeltme: “Şirketimiz kaliteyi artıracak ve müşteri memnuniyetini sağlayacaktır.”
+
+Beşinci örnekte özne belirsizleşmişti:
+“Sınavı kazanmak için çok çalıştı, ailesi de sevindi.”
+Kim çalıştı? Öğrenci mi, aile mi? Defterime: “Özne belirsizliği” notunu düştüm. Düzeltme olarak: “Öğrenci sınavı kazanmak için çok çalıştı, ailesi de sevindi.”
+
+Son olarak noktalama kaynaklı bir bozukluk yakaladım:
+“Geldiğinde bekliyordum seni.”
+Vurgu yanlış yerdeydi ve anlam kayıyordu. Defterime: “Söz dizimi bozukluğu (vurgu kayması)” yazdım. Düzeltme: “Geldiğinde seni bekliyordum.”
+
+Sayfanın altına genel değerlendirmemi ekledim: Anlatım bozukluğu, çoğu zaman bilgiyi değil; ilişkiyi bozar. Çelişki, gereksiz tekrar, yanlış bağlaç, yüklem uyumsuzluğu, özne belirsizliği ve söz dizimi hatası… Hepsi, anlatmak istediğim şeyi bulanıklaştırıyor. O gün şunu öğrendim: Doğru kelimeleri seçmek yetmez; onları doğru bağlamak gerekir.
+
+-SORULAR-
+
+“Sana yarın gelmeyeceğim gelirim.” cümlesi için deftere yazılan anlatım bozukluğu türü hangisidir?
+a) Anlamca çelişen ifadelerin birlikte kullanılması
+b) Yüklem uyumsuzluğu
+c) Gereksiz sözcük kullanımı
+d) Özne belirsizliği
+e) Söz dizimi bozukluğu
+a
+
+“Toplantıya herkes katıldı, yalnız Ayşe hariç.” örneğinde bozukluğun nedeni metinde nasıl açıklanmıştır?
+a) Yanlış bağlaç kullanımı
+b) Gereksiz sözcük kullanımı (tekrar)
+c) Yüklem uyumsuzluğu
+d) Özne eksikliği
+e) Anlam daralması
+b
+
+“Bu kitabı hem beğendim hem de okudum.” cümlesinde anlatım bozukluğuna yol açan unsur hangisidir?
+a) Yüklemlerin farklı zamanda olması
+b) Özne eksikliği
+c) “Hem… hem de” bağlacının yanlış eşleme yapması
+d) Gereksiz sözcük kullanımı
+e) Noktalama hatası
+c
+
+“Şirketimiz kaliteyi artırmak ve müşteri memnuniyetini sağlanacaktır.” cümlesindeki bozukluk türü metinde nasıl adlandırılmıştır?
+a) Söz dizimi bozukluğu
+b) Anlamca çelişki
+c) Yanlış bağlaç kullanımı
+d) Özne belirsizliği
+e) Yüklem uyumsuzluğu (paralellik bozukluğu)
+e
+
+Bu cümlenin metinde verilen doğru biçimi hangisidir?
+a) Şirketimiz kaliteyi artırmak ve müşteri memnuniyetini sağlamak istiyor.
+b) Şirketimiz kaliteyi artırdı ve müşteri memnuniyetini sağlayacaktır.
+c) Şirketimiz kaliteyi artıracak ve müşteri memnuniyetini sağlayacaktır.
+d) Şirketimiz kaliteyi artırmakla müşteri memnuniyetini sağlayacaktır.
+e) Şirketimiz kaliteyi artırmak, müşteri memnuniyetini sağlanacaktır.
+c
+
+“Sınavı kazanmak için çok çalıştı, ailesi de sevindi.” cümlesindeki anlatım bozukluğu metinde hangi başlıkla açıklanmıştır?
+a) Yanlış bağlaç
+b) Söz dizimi bozukluğu
+c) Gereksiz sözcük
+d) Özne belirsizliği
+e) Anlamca çelişki
+d
+
+Bu örneğin metinde verilen düzeltilmiş hâli hangisidir?
+a) Sınavı kazanmak için ailesi çok çalıştı, öğrenci sevindi.
+b) Öğrenci sınavı kazanmak için çok çalıştı, ailesi de sevindi.
+c) Sınavı kazanmak için çok çalıştı, ailesi de mutlu oldu.
+d) Öğrenci çok çalıştı, sınavı kazandı ve ailesi sevindi.
+e) Sınavı kazanmak için çok çalıştı, ailesi de onunla gurur duydu.
+b
+
+“Geldiğinde bekliyordum seni.” örneğinde tespit edilen bozukluk türü hangisidir?
+a) Söz dizimi bozukluğu (vurgu kayması)
+b) Anlam daralması
+c) Gereksiz sözcük
+d) Yüklem uyumsuzluğu
+e) Yanlış bağlaç
+a
+
+Bu cümlenin metinde önerilen doğru biçimi hangisidir?
+a) Geldiğinde seni bekliyorum.
+b) Geldiğinde seni bekliyordum.
+c) Seni bekliyordum geldiğinde.
+d) Geldiğimde seni bekliyordum.
+e) Geldiğinde bekledim seni.
+b
+
+Metnin sonunda anlatım bozukluğu için yapılan genel değerlendirme hangisidir?
+a) Bilgiyi yanlış vermesi
+b) Kelime sayısını artırması
+c) İlişkileri bozarak anlamı bulanıklaştırması
+d) Yalnızca yazım kurallarını etkilemesi
+e) Sadece noktalama ile ilgili olması
+c
