@@ -100,12 +100,14 @@ let timeoutId = null;
 const sourceSelect = document.getElementById('sourceSelect');
 
 /* 🔥 Yeni kaynaklar: HizliOkuma/Kelimeler dizini */
+const BASE = "https://kronosegitim.github.io/HizliOkuma/Kelimeler/";
+
 const SOURCES = {
-  "5harf": "https://ilhantopaloglu.github.io/HizliOkuma/Kelimeler/5harfliler.txt",
-  "6harf": "https://ilhantopaloglu.github.io/HizliOkuma/Kelimeler/6harfliler.txt",
-  "7harf": "https://ilhantopaloglu.github.io/HizliOkuma/Kelimeler/7harfliler.txt",
-  "8harf": "https://ilhantopaloglu.github.io/HizliOkuma/Kelimeler/8harfliler.txt",
-  "9harf": "https://ilhantopaloglu.github.io/HizliOkuma/Kelimeler/9harfliler.txt"
+  "5harf": BASE + "5harfliler.txt",
+  "6harf": BASE + "6harfliler.txt",
+  "7harf": BASE + "7harfliler.txt",
+  "8harf": BASE + "8harfliler.txt",
+  "9harf": BASE + "9harfliler.txt"
 };
 
 // 🔥 100 ms aralıklı süre yuvarlama
@@ -311,3 +313,4 @@ clearCanvas();
 
 </body>
 </html>
+
