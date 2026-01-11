@@ -291,7 +291,7 @@ body{
 
     <div id="wordStats">
       Toplam: 0<br>
-      Hız: 0 kelime/dk<br>
+      Hız: 0 kelime/dk (0 ms/kelime)<br>
       Süre: 0 sn
     </div>
     <div id="quizStatsPanel">
@@ -319,6 +319,13 @@ body{
     window.location.href = "AnaSayfa.html";
   }
 })();
+
+/* ========= HIZ SATIRI FORMAT (kelime/dk + ms/kelime) ========= */
+function formatSpeedLine(wpm){
+  const safeWpm = Math.max(0, parseInt(wpm, 10) || 0);
+  const msPerWord = safeWpm > 0 ? Math.round(60000 / safeWpm) : 0;
+  return `Hız: ${safeWpm} kelime/dk (${msPerWord} ms/kelime)`;
+}
 
 /* ========= API ANAHTARI DURUMU ========= */
 function getApiKey(){
@@ -686,7 +693,7 @@ function updateFreeTimerDisplay(){
   if(!stats){
     wordStats.innerHTML =
       `Toplam: 0<br>` +
-      `Hız: 0 kelime/dk<br>` +
+      `${formatSpeedLine(0)}<br>` +
       `Süre: ${seconds} sn`;
     return;
   }
@@ -701,7 +708,7 @@ function showFreeFinalStats(){
   if(!stats || freeElapsedMs <= 0){
     wordStats.innerHTML =
       `Toplam: ${stats ? stats.total : 0}<br>` +
-      `Hız: 0 kelime/dk<br>` +
+      `${formatSpeedLine(0)}<br>` +
       `Süre: 0 sn`;
     return;
   }
@@ -711,7 +718,7 @@ function showFreeFinalStats(){
 
   wordStats.innerHTML =
     `Toplam: ${stats.total}<br>` +
-    `Hız: ${wpm} kelime/dk<br>` +
+    `${formatSpeedLine(wpm)}<br>` +
     `Süre: ${seconds} sn`;
 }
 
@@ -732,14 +739,14 @@ function updateSpeedTimerDisplay(){
   if(!stats){
     wordStats.innerHTML =
       `Toplam: 0<br>` +
-      `Hız: 0 kelime/dk<br>` +
+      `${formatSpeedLine(0)}<br>` +
       `Süre: ${seconds} sn`;
     return;
   }
   const wpm = lastCalculatedWpm || 0;
   wordStats.innerHTML =
     `Toplam: ${stats.total}<br>` +
-    `Hız: ${wpm} kelime/dk<br>` +
+    `${formatSpeedLine(wpm)}<br>` +
     `Süre: ${seconds} sn`;
 }
 
@@ -817,12 +824,12 @@ function setReadModeUI(mode){
     if(stats){
       wordStats.innerHTML =
         `Toplam: ${stats.total}<br>` +
-        `Hız: 0 kelime/dk<br>` +
+        `${formatSpeedLine(0)}<br>` +
         `Süre: 0 sn`;
     }else{
       wordStats.innerHTML =
         `Toplam: 0<br>` +
-        `Hız: 0 kelime/dk<br>` +
+        `${formatSpeedLine(0)}<br>` +
         `Süre: 0 sn`;
     }
   }
@@ -953,7 +960,7 @@ En sonda kısa bir kapanış cümlesi yaz.
       if(stats){
         wordStats.innerHTML =
           `Toplam: ${stats.total}<br>` +
-          `Hız: 0 kelime/dk<br>` +
+          `${formatSpeedLine(0)}<br>` +
           `Süre: 0 sn`;
       }
       readingDoneBtn.style.display = "none";
@@ -1088,12 +1095,12 @@ async function loadReadyText(){
       if(stats){
         wordStats.innerHTML =
           `Toplam: ${stats.total}<br>` +
-          `Hız: 0 kelime/dk<br>` +
+          `${formatSpeedLine(0)}<br>` +
           `Süre: 0 sn`;
       }else{
         wordStats.innerHTML =
           `Toplam: 0<br>` +
-          `Hız: 0 kelime/dk<br>` +
+          `${formatSpeedLine(0)}<br>` +
           `Süre: 0 sn`;
       }
     }else{
@@ -1143,7 +1150,7 @@ function calculateWordStats(){
   if(!stats){
     wordStats.innerHTML =
       `Toplam: 0<br>` +
-      `Hız: 0 kelime/dk<br>` +
+      `${formatSpeedLine(0)}<br>` +
       `Süre: 0 sn`;
     return;
   }
@@ -1156,7 +1163,7 @@ function calculateWordStats(){
   if(!wordsArr.length){
     wordStats.innerHTML =
       `Toplam: 0<br>` +
-      `Hız: 0 kelime/dk<br>` +
+      `${formatSpeedLine(0)}<br>` +
       `Süre: 0 sn`;
     return;
   }
@@ -1194,7 +1201,7 @@ function calculateWordStats(){
 
   wordStats.innerHTML =
     `Toplam: ${stats.total}<br>` +
-    `Hız: ${wpm} kelime/dk<br>` +
+    `${formatSpeedLine(wpm)}<br>` +
     `Süre: 0 sn`;
 }
 
@@ -1405,7 +1412,7 @@ async function generateQuestionsForText(){
 
   if(!apiKey){
     alert("API anahtarı kayıtlı değil. Bu sayfadan API anahtarını doğrulayın ve kaydedin.");
-  questionContainer.innerHTML = "";
+    questionContainer.innerHTML = "";
     return;
   }
 
