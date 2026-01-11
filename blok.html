@@ -192,6 +192,11 @@ body{
         <h3>1) API Durumu</h3>
         <div id="apiStatusLine" style="font-weight:bold;margin-bottom:6px;"></div>
 
+        <!-- ✅ Yeni: API kodu değiştir -->
+        <button class="secondary" id="apiChangeBtn" type="button" style="display:none;margin-bottom:6px;">
+          API kodu değiştir
+        </button>
+
         <div id="apiEntry" style="display:none;">
           <input id="apiKeyInput" type="password" placeholder="OpenAI API anahtarı (sk-...)" style="width:100%;margin-bottom:6px;box-sizing:border-box;">
           <button class="primary" id="apiSaveBtn" type="button">API Doğrula ve Kaydet</button>
@@ -338,6 +343,46 @@ const apiKeyInput   = document.getElementById("apiKeyInput");
 const apiSaveBtn    = document.getElementById("apiSaveBtn");
 const apiSaveStatus = document.getElementById("apiSaveStatus");
 
+/* ✅ Yeni: Değiştir butonu + edit modu */
+const apiChangeBtn  = document.getElementById("apiChangeBtn");
+let apiEditMode = false;
+
+function setApiEditMode(on){
+  apiEditMode = !!on;
+
+  if(apiEditMode){
+    // düzenleme modu: giriş alanını aç
+    if(apiEntry) apiEntry.style.display = "block";
+    if(apiChangeBtn){
+      apiChangeBtn.style.display = "block";
+      apiChangeBtn.textContent = "İptal";
+    }
+    if(apiSaveStatus){
+      apiSaveStatus.textContent = "";
+      apiSaveStatus.style.color = "black";
+    }
+    apiStatusLine.textContent = "🔄 API değiştiriliyor...";
+    apiStatusLine.style.color = "orange";
+
+    // Eski key'i input'a yazmak istemiyorsan aşağıdaki 2 satırı silebilirsin:
+    const key = getApiKey();
+    if(apiKeyInput && key) apiKeyInput.value = key;
+
+    // İstersen daha güvenli: input boş gelsin:
+    // if(apiKeyInput) apiKeyInput.value = "";
+
+    if(apiKeyInput) apiKeyInput.focus();
+  }else{
+    updateApiStatusLine(); // normal moda dön
+  }
+}
+
+if(apiChangeBtn){
+  apiChangeBtn.addEventListener("click", ()=>{
+    setApiEditMode(!apiEditMode);
+  });
+}
+
 async function verifyApiKey(key){
   const res = await fetch("https://api.openai.com/v1/models", {
     headers: { "Authorization": "Bearer " + key }
@@ -347,7 +392,11 @@ async function verifyApiKey(key){
 
 async function handleApiSave(){
   const key = (apiKeyInput.value || "").trim();
-  apiSaveStatus.textContent = "";
+  if(apiSaveStatus){
+    apiSaveStatus.textContent = "";
+    apiSaveStatus.style.color = "black";
+  }
+
   if(!key || key.length < 10){
     apiSaveStatus.textContent = "Lütfen geçerli bir anahtar girin.";
     apiSaveStatus.style.color = "red";
@@ -364,11 +413,16 @@ async function handleApiSave(){
       localStorage.setItem("USER_API_KEY", key);
       apiSaveStatus.textContent = "✅ API geçerli ve kaydedildi.";
       apiSaveStatus.style.color = "green";
+
+      // ✅ Kaydedince edit modundan çık
+      apiEditMode = false;
       updateApiStatusLine();
     }else{
       localStorage.removeItem("USER_API_KEY");
       apiSaveStatus.textContent = "❌ API geçersiz. Lütfen tekrar deneyin.";
       apiSaveStatus.style.color = "red";
+
+      apiEditMode = false;
       updateApiStatusLine();
     }
   }catch(err){
@@ -386,15 +440,30 @@ if(apiSaveBtn){
 
 function updateApiStatusLine(){
   const key = getApiKey();
+
+  // Edit modundayken otomatik ezme yapmayalım
+  if(apiEditMode) return;
+
   if(key && key.trim().length > 10){
     apiStatusLine.textContent = "✅ API kayıtlı";
     apiStatusLine.style.color = "green";
+
+    // Kayıtlıyken giriş alanını gizle, değiştir butonunu göster
     if(apiEntry) apiEntry.style.display = "none";
+    if(apiChangeBtn){
+      apiChangeBtn.style.display = "block";
+      apiChangeBtn.textContent = "API kodu değiştir";
+    }
+
+    // İstersen input'a yaz (maskeli)
     if(apiKeyInput) apiKeyInput.value = key;
   }else{
     apiStatusLine.textContent = "❌ API kayıtlı değil";
     apiStatusLine.style.color = "red";
+
+    // Kayıtlı değilken giriş alanı açık, değiştir butonu kapalı
     if(apiEntry) apiEntry.style.display = "block";
+    if(apiChangeBtn) apiChangeBtn.style.display = "none";
   }
 }
 updateApiStatusLine();
@@ -1182,12 +1251,11 @@ function calculateWordStats(){
     let charCount = 0;
     blockWords.forEach(w => { charCount += w.length; });
 
-    // Oranlı süre: tam blok  X ms, 1/3 blok  X*(1/3) ms gibi
+    // Oranlı süre: tam blok X ms, 1/3 blok X*(1/3) ms gibi
     const fraction = actualBlocks / desiredBlocks;
     let baseMs = X * fraction;
 
     const targetLetters = 5 * actualBlocks; // her blok ~5 harf
-    // Eski mantığın blok uyarlaması:
     let tBlock = baseMs - ((targetLetters - charCount) * baseMs / 10) * 1.2;
     if(tBlock < 1) tBlock = 1;
 
@@ -1280,9 +1348,7 @@ function showNextWord(){
     totalChars += w.textContent.trim().length;
   });
 
-  // ÖRNEK: desired=3, X=300
-  // actual=3 -> baseMs=300
-  // actual=1 -> baseMs=100
+  // desired=3, X=300 => actual=1 ise baseMs=100
   const fraction = actualBlocks / desiredBlocks;
   let baseMs = X * fraction;
 
