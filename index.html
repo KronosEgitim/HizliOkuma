@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hızlı Okuma ve Alıştırmalar</title>
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box;}
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#f5f5f5;
+      display:flex;
+      margin:0;
+      min-height:100vh;     /* fallback */
+      min-height:100dvh;    /* iOS Safari doğru yükseklik */
+    }
+
+    /* ANA İÇERİK */
+    #mainContent{
+      display:none;     /* kod doğrulama sonrası açılacak */
+      flex:1;
+      display:flex;
+    }
+
+    /* Desktop: iki sütun */
+    .left,
+    .right{
+      width:50vw;            /* çizgi ortada */
+      padding:20px 48px;     /* orta çizgiden uzaklık */
+    }
+
+    .left{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      background:#fff;
+      border-right:2px solid #ddd;
+    }
+
+    /* LOGO: desktop'ta sabit üst limit, mobilde küçülür */
+    .left img{
+      width:min(480px, 80vw);   /* 480'i geçmez, küçük ekranda küçülür */
+      height:auto;
+      object-fit:contain;
+      display:block;
+    }
+
+    .right{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      gap:14px;
+    }
+
+    .card{
+      width:420px;
+      max-width:100%;
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:10px;
+      padding:14px 16px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
+      cursor:pointer;
+      transition:.1s;
+    }
+    .card:active{ transform:scale(.99); }
+
+    /* OVERLAY */
+    #overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      z-index:9999;
+      padding:16px; /* mobil taşmayı önler */
+    }
+    #overlayBox{
+      width:min(520px,92vw);
+      background:#fff;
+      border-radius:12px;
+      padding:18px;
+    }
+
+    .code-wrapper{ position:relative; }
+    .code-wrapper input{
+      width:100%;
+      padding:10px 44px 10px 10px;
+      font-size:16px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      box-sizing:border-box;
+    }
+    #toggleCode{
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      cursor:pointer;
+      opacity:.6;
+      user-select:none;
+    }
+
+    .btnRow{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+    button{
+      padding:10px 12px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    #btnCheck{background:#2563eb;color:#fff}
+    #btnReset{background:#e5e7eb}
+
+    #msg{
+      margin-top:8px;
+      font-size:13px;
+      min-height:18px;
+    }
+
+    /* ✅ MOBİL DÜZEN: iPhone */
+    @media (max-width: 900px){
+      body{ display:block; }
+
+      #mainContent{
+        flex-direction:column;
+        width:100%;
+      }
+
+      .left,
+      .right{
+        width:100%;
+        padding:18px 16px;
+      }
+
+      .left{
+        justify-content:center;
+        border-right:none;
+        border-bottom:2px solid #ddd;
+      }
+
+      .right{
+        align-items:center;   /* kartlar ortalansın */
+        justify-content:flex-start;
+        padding-top:16px;
+        padding-bottom:28px;
+      }
+
+      .card{
+        width:min(420px, 92vw);  /* ekrana sığ */
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- KOD GİRİŞ -->
+<div id="overlay">
+  <div id="overlayBox">
+    <h2>Kullanıcı Kodu</h2>
+    <p>Devam etmek için kullanıcı kodunu giriniz.</p>
+
+    <div class="code-wrapper">
+      <input type="password" id="userCode" placeholder="Kullanıcı kodu">
+      <span id="toggleCode" onclick="toggleCodeVisibility()">👁</span>
+    </div>
+
+    <div class="btnRow">
+      <button id="btnReset" onclick="clearSavedCode()">Sıfırla</button>
+      <button id="btnCheck" onclick="checkUserCode()">Giriş</button>
+    </div>
+
+    <div id="msg"></div>
+  </div>
+</div>
+
+<!-- ANA SAYFA -->
+<div id="mainContent">
+  <div class="left">
+    <img src="https://KronosEgitim.github.io/HizliOkuma/Logo.jpg"
+         onerror="this.style.display='none'">
+  </div>
+
+  <div class="right">
+
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/goz.html'">
+      <h3>Göz Kası Çalışması</h3>
+      <p>Göz kaslarını güçlendiren odak ve takip egzersizleri.</p>
+    </div>
+
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/kelime.html'">
+      <h3>Kelime Çalışması</h3>
+      <p>Kelime tanıma, hız ve algı geliştirme çalışmaları.</p>
+    </div>
+
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/blok.html'">
+      <h3>Metin Çalışması</h3>
+      <p>Blok okuma ve metinle hız kazanma alıştırmaları.</p>
+    </div>
+
+    <div class="card"
+         onclick="location.href='https://KronosEgitim.github.io/HizliOkuma/hafiza.html'">
+      <h3>Hafıza Oyunu</h3>
+      <p>Kısa süreli hafıza ve görsel hatırlama oyunu.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const KOD_TXT_URL = "https://KronosEgitim.github.io/HizliOkuma/kod.txt";
+const STORAGE_KEY = "USER_CODE";
+
+window.onload = () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    userCode.value = saved;
+    checkUserCode(true);
+  }
+};
+
+function toggleCodeVisibility(){
+  userCode.type = userCode.type === "password" ? "text" : "password";
+}
+
+function clearSavedCode(){
+  localStorage.removeItem(STORAGE_KEY);
+  userCode.value = "";
+  msg.textContent = "Kod temizlendi.";
+}
+
+async function checkUserCode(auto=false){
+  const code = userCode.value.trim();
+  if(!code){ msg.textContent="Kod giriniz"; return; }
+
+  msg.textContent = auto ? "Kayıtlı kod kontrol ediliyor..." : "Kontrol ediliyor...";
+
+  try{
+    const txt = await fetch(KOD_TXT_URL,{cache:"no-store"}).then(r=>r.text());
+    const lines = txt.split(/\r?\n/);
+
+    for(const l of lines){
+      const p = l.trim().split(/\s+/);
+      if(p[0]===code){
+        localStorage.setItem(STORAGE_KEY, code);
+        overlay.style.display="none";
+        mainContent.style.display="flex";
+        return;
+      }
+    }
+    msg.textContent="Kullanıcı kodu hatalı";
+  }catch(e){
+    msg.textContent="Kod dosyası okunamadı (internet/erişim sorunu).";
+  }
+}
+</script>
+
+</body>
+</html>
