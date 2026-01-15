@@ -54,6 +54,7 @@
     <!-- LİSTE SEÇİMİ -->
     <label>Kelime uzunluğu:
       <select id="sourceSelect">
+        <option value="5harf">4 harfliler</option>
         <option value="5harf">5 harfliler</option>
         <option value="6harf">6 harfliler</option>
         <option value="7harf">7 harfliler</option>
@@ -110,6 +111,7 @@
     const BASE_URL = "https://raw.githubusercontent.com/KronosEgitim/HizliOkuma/main/Kelimeler/";
 
     const SOURCES = {
+      "4harf": BASE_URL + "4harfliler.txt",
       "5harf": BASE_URL + "5harfliler.txt",
       "6harf": BASE_URL + "6harfliler.txt",
       "7harf": BASE_URL + "7harfliler.txt",
@@ -280,3 +282,4 @@
   </script>
 </body>
 </html>
+
