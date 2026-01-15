@@ -14,7 +14,7 @@ Malazgirt Savaşı yalnızca bir askeri başarı değil, aynı zamanda siyasi ve
 
 -SORULAR-
 
-Malazgirt Savaşı hangi yıl gerçekleşmiştir?
+Malazgirt Savaşı metne göre hangi yılda gerçekleşmiştir?
 a) 1048
 b) 1071
 c) 1096
@@ -22,7 +22,7 @@ d) 1176
 e) 1453
 b
 
-Malazgirt Savaşı’nda Selçuklu hükümdarı kimdir?
+Metne göre Malazgirt Savaşı’nda Selçuklu ordusunun başında kim vardır?
 a) Tuğrul Bey
 b) Melikşah
 c) Osman Bey
@@ -30,67 +30,66 @@ d) Alparslan
 e) Fatih Sultan Mehmet
 d
 
-Selçukluların Anadolu’ya akınları Bizans’ta neye yol açmıştır?
-a) Büyük tedirginliğe
-b) Ekonomik zenginliğe
-c) Ordu zayıflığına
-d) İç isyana
-e) Uzak ticarete yönelmeye
-a
+Metinde Selçukluların Anadolu’ya düzenlediği akınların Bizans üzerinde oluşturduğu durum hangisi olarak ifade edilmiştir?
+a) Ekonomik zenginlik
+b) Uzak ticarete yönelme
+c) Büyük bir tedirginlik
+d) Kültürel yakınlaşma
+e) İç karışıklıkların sona ermesi
+c
 
-Alparslan’ın beyaz elbise giymesi hangi anlama geliyordu?
-a) Zafer kutlaması
-b) Barış isteği
-c) Bizans’a saygı
-d) Yeni yıl töreni
-e) Ölmeye hazır olduğunu gösterme
+Metne göre Alparslan’ın savaş öncesi beyaz elbiseler giymesi neyi sembolize etmiştir?
+a) Zafer kutlamasını
+b) Barış isteğini
+c) Bizans’a saygıyı
+d) Yeni bir dönemin başlangıcını
+e) Ölmeye hazır olduğunu
 e
 
-Selçuklular savaşta hangi taktiği kullanmıştır?
+Metinde Selçuklu ordusunun uyguladığı savaş taktiğinin adı hangisi olarak geçmektedir?
 a) Hilal taktiği
 b) Savunma hattı
 c) Turan taktiği
 d) Deniz kuşatması
-e) Surların yıkılması
+e) Kale yıkma yöntemi
 c
 
-Bizans ordusunun düzeninin bozulmasında hangisi etkili olmuştur?
-a) Selçukluların geri çekilmesi
-b) Bizans’ın çok güçlü olması
-c) Havanın çok soğuk olması
-d) Bazı müttefik birliklerin kaçması
+Metne göre Bizans ordusunun savaş düzenini kaybetmesinde etkili olan olay hangisidir?
+a) Selçukluların sahte geri çekilmesi
+b) Havanın çok soğuk olması
+c) Bizans ordusunun sayıca az olması
+d) Müttefik birliklerden bazılarının kaçması
 e) Savaşın kısa sürmesi
 d
 
-İmparator Diogenes savaş sonunda ne olmuştur?
-a) Öldürülmüştür
-b) Esir düşmüştür
-c) Kaçmıştır
-d) Selçuklu ordusuna katılmıştır
-e) Anadolu’ya yerleşmiştir
+Metinde savaşın sonunda Bizans İmparatoru IV. Romanos Diogenes için hangi durum belirtilmiştir?
+a) Öldürüldüğü
+b) Esir düştüğü
+c) Kaçtığı
+d) Selçuklu ordusuna katıldığı
+e) Anadolu’ya yerleştiği
 b
 
-Alparslan’ın imparatora merhamet göstermesi neyin yolunu açmıştır?
-a) Barışın sağlanması
-b) Bizans’ın Anadolu’dan çekilmesi
-c) Avrupa’nın fethedilmesi
-d) Yeni başkent kurulması
-e) Savaşın tekrar başlaması
+Metne göre Sultan Alparslan’ın imparatora merhametli davranması hangi sonucun ortaya çıkmasına yol açmıştır?
+a) Bizans’ın barış teklifinin kabul edilmesine
+b) Yeni bir başkentin kurulmasına
+c) Savaşın tekrar başlamasına
+d) Avrupa seferlerinin düzenlenmesine
+e) Bizans ordusunun tamamen yok edilmesine
 a
 
-Malazgirt Zaferi’nin en önemli sonucu nedir?
-a) Göktürklerin güçlenmesi
-b) Bizans’ın yıkılması
+Metinde Malazgirt Zaferi’nden sonra Anadolu ile ilgili hangi durumun gerçekleştiği ifade edilmektedir?
+a) Bizans’ın Anadolu’da tamamen hâkim olması
+b) Haçlı Seferlerinin sona ermesi
 c) Anadolu’nun Türklere açılması
-d) Haçlı Seferlerinin bitmesi
-e) İran’ın fethedilmesi
+d) İran’ın Selçuklular tarafından fethedilmesi
+e) Osmanlı Devleti’nin kurulması
 c
 
-Metne göre Malazgirt Savaşı neden bir dönüm noktasıdır?
-a) Anadolu’nun Türkleşmesine zemin hazırlamıştır
-b) Türk kültürü Anadolu’dan silinmiştir
-c) İlk kez barış anlaşması yapılmıştır
-d) Selçuklular göç etmeyi bırakmıştır
-e) Osmanlı Devleti’nin başkentini belirlemiştir
+Metne göre Malazgirt Savaşı’nın bir dönüm noktası sayılmasının temel nedeni hangisidir?
+a) Anadolu’nun Türklerin yurdu hâline gelmeye başlaması
+b) Türk kültürünün Anadolu’dan silinmesi
+c) İlk kez bir barış anlaşması yapılması
+d) Selçukluların göç etmeyi bırakması
+e) Osmanlı Devleti’nin başkentinin belirlenmesi
 a
-
