@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Hafıza Çalışması (Minimal Sol Panel)</title>
+<style>
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+    min-height:100vh;
+  }
+
+  /* İKİYE BÖL */
+  .wrap{ display:flex; min-height:100vh; }
+
+  .left{
+    width:50vw;
+    padding:18px 22px;
+    background:#ffffff;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .divider{ width:2px; background:#d9d9d9; }
+
+  .right{
+    width:50vw;
+    padding:18px 22px;
+    background:#fafafa;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:12px;
+  }
+
+  /* ✅ Sol panel öğeleri sabit genişlikte kalsın */
+  .field{
+    width:260px;           /* sabit */
+    max-width:260px;
+  }
+
+  h1{ margin:0; font-size:18px; }
+
+  label{ font-size:13px; color:#333; display:block; margin-bottom:6px; }
+
+  select, input[type="number"]{
+    width:260px;           /* sabit */
+    max-width:260px;
+    padding:8px 10px;
+    font-size:14px;
+    border-radius:10px;
+    border:1px solid #d0d0d0;
+    outline:none;
+    background:#fff;
+  }
+
+  .btns{ display:flex; gap:10px; flex-wrap:wrap; }
+  button{
+    padding:10px 14px;
+    border:0;
+    border-radius:12px;
+    font-size:14px;
+    cursor:pointer;
+  }
+  button:disabled{opacity:.55; cursor:not-allowed;}
+  .primary{background:#2f6fed; color:#fff;}
+  .danger{background:#ffefef; color:#8a1f1f;}
+  .ghost{background:#eef2ff; color:#20306b;}
+
+  /* Kelime gösterimi */
+  .showbox{
+    width:260px;           /* sabit */
+    max-width:260px;
+    border:1px solid #e7e7e7;
+    border-radius:14px;
+    background:#fcfcfc;
+    padding:16px;
+    min-height:120px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .shownWord{ font-size:36px; font-weight:700; letter-spacing:.3px; }
+
+  .msg{ min-height:20px; font-weight:bold; }
+  .msg.ok{color:#0a8a2a;}
+  .msg.err{color:#c20f0f;}
+
+  /* SAĞ TARAF INPUTLAR */
+  .inputs{
+    width:min(420px, 100%);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:8px;
+  }
+  .input-line{ display:flex; align-items:center; gap:10px; }
+
+  input[type="text"]{
+    flex:1;
+    padding:10px 12px;
+    border-radius:12px;
+    border:1px solid #d0d0d0;
+    font-size:15px;
+    outline:none;
+    background:#fff;
+  }
+
+  .mark{
+    width:22px;
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+    font-size:18px;
+    visibility:hidden;
+  }
+  .mark.ok{color:#0a8a2a;}
+  .mark.bad{color:#c20f0f;}
+
+  .correct{
+    min-width:120px;
+    font-size:13px;
+    color:#c20f0f;
+    display:none;
+  }
+
+  .rightActions{
+    width:min(420px, 100%);
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top:4px;
+  }
+
+  @media (max-width: 900px){
+    .wrap{flex-direction:column;}
+    .left,.right{width:100vw;}
+    .divider{height:2px; width:100vw;}
+    .field, select, input[type="number"], .showbox{
+      width:100%;
+      max-width:420px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- SOL: Minimal kontroller + kelime gösterimi -->
+    <div class="left">
+      <h1>Hafıza Çalışması</h1>
+
+      <div class="field">
+        <label>Kelime listesi seç:</label>
+        <select id="sourceSelect">
+          <option value="5harf">5 harfliler</option>
+          <option value="6harf">6 harfliler</option>
+          <option value="7harf">7 harfliler</option>
+          <option value="8harf">8 harfliler</option>
+          <option value="9harf">9 harfliler</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Gösterim süresi (saniye):</label>
+        <!-- ✅ saniye çözünürlüğü -->
+        <input type="number" id="durationSec" value="1" min="1" max="10" step="1" />
+      </div>
+
+      <div class="btns">
+        <button class="ghost" id="loadBtn">Kelimeleri Yükle</button>
+        <button class="primary" id="startBtn" disabled>Başlat</button>
+        <button class="danger" id="resetBtn" disabled>Başa Dön</button>
+      </div>
+
+      <div class="msg" id="msg"></div>
+
+      <div class="showbox">
+        <div class="shownWord" id="shownWord">Hazır</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SAĞ: Sadece öğrenci giriş kutuları -->
+    <div class="right">
+      <div class="inputs" id="inputs"></div>
+
+      <div class="rightActions">
+        <button class="primary" id="doneBtn" disabled>Tamam</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const sourceSelect = document.getElementById('sourceSelect');
+  const loadBtn = document.getElementById('loadBtn');
+  const startBtn = document.getElementById('startBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const doneBtn  = document.getElementById('doneBtn');
+
+  const durationSecEl = document.getElementById('durationSec');
+  const shownWord = document.getElementById('shownWord');
+  const msgEl = document.getElementById('msg');
+  const inputsEl = document.getElementById('inputs');
+
+  // GitHub Pages txt çekme
+  const BASE = "https://kronosegitim.github.io/HizliOkuma/Kelimeler/";
+  const SOURCES = {
+    "5harf": BASE + "5harfliler.txt",
+    "6harf": BASE + "6harfliler.txt",
+    "7harf": BASE + "7harfliler.txt",
+    "8harf": BASE + "8harfliler.txt",
+    "9harf": BASE + "9harfliler.txt"
+  };
+
+  let words = [];
+  let sequence = [];
+  let level = 1;      // içerde takip ediyoruz (UI göstermiyoruz)
+  let best = 0;       // gerekirse sonra eklenebilir
+  let showTimer = null;
+  let locked = false; // hata sonrası: sağ taraf kalsın, tekrar Başlat beklenir
+
+  function trLower(s){
+    return (s ?? "").toString().trim().toLocaleLowerCase('tr');
+  }
+
+  function setMsg(text, type=""){
+    msgEl.textContent = text || "";
+    msgEl.className = "msg" + (type ? " " + type : "");
+  }
+
+  function clearTimers(){
+    if (showTimer){ clearTimeout(showTimer); showTimer = null; }
+  }
+
+  function pickRandomWord(){
+    return words[Math.floor(Math.random() * words.length)];
+  }
+
+  async function loadWordsFromServer(){
+    const key = sourceSelect.value;
+    const url = SOURCES[key];
+    if (!url) return alert("Geçersiz seçim.");
+
+    try{
+      loadBtn.disabled = true;
+      setMsg("Kelimeler yükleniyor...", "");
+      const res = await fetch(url + "?_t=" + Date.now());
+      if (!res.ok) throw new Error("Dosya okunamadı: " + res.status);
+      const text = await res.text();
+
+      words = text.split(/\r?\n/).map(w=>w.trim()).filter(Boolean);
+
+      startBtn.disabled = (words.length < 1);
+      resetBtn.disabled = (words.length < 1);
+      setMsg("Kelime listesi yüklendi.", "ok");
+    }catch(err){
+      console.error(err);
+      setMsg("Yükleme hatası: " + err.message, "err");
+      alert("Kelime listesi yüklenirken hata: " + err.message);
+    }finally{
+      loadBtn.disabled = false;
+    }
+  }
+
+  // Sağ tarafta inputları üret
+  function renderInputs(n){
+    inputsEl.innerHTML = "";
+    for (let i=0; i<n; i++){
+      const line = document.createElement('div');
+      line.className = "input-line";
+
+      const inp = document.createElement('input');
+      inp.type = "text";
+      inp.placeholder = `Kelime ${i+1}`;
+      inp.id = "inp" + i;
+      inp.autocomplete = "off";
+      inp.spellcheck = false;
+
+      const mark = document.createElement('span');
+      mark.className = "mark";
+      mark.id = "mark" + i;
+
+      const corr = document.createElement('span');
+      corr.className = "correct";
+      corr.id = "corr" + i;
+
+      line.appendChild(inp);
+      line.appendChild(mark);
+      line.appendChild(corr);
+      inputsEl.appendChild(line);
+
+      inp.addEventListener('keydown', (e)=>{
+        if (e.key !== "Enter") return;
+        e.preventDefault();
+        const inputs = [...inputsEl.querySelectorAll('input[type="text"]')];
+        const idx = inputs.indexOf(inp);
+        if (idx >= 0 && idx < inputs.length - 1) inputs[idx+1].focus();
+        else doneBtn.click();
+      });
+    }
+    const first = document.getElementById("inp0");
+    if (first) first.focus();
+  }
+
+  function hideMarksAndCorrections(){
+    for (let i=0; i<level; i++){
+      const m = document.getElementById("mark"+i);
+      const c = document.getElementById("corr"+i);
+      if (m){
+        m.style.visibility = "hidden";
+        m.textContent = "";
+        m.classList.remove("ok","bad");
+      }
+      if (c){
+        c.style.display = "none";
+        c.textContent = "";
+      }
+    }
+  }
+
+  function showMark(i, ok){
+    const m = document.getElementById("mark"+i);
+    if (!m) return;
+    m.classList.remove("ok","bad");
+    m.classList.add(ok ? "ok" : "bad");
+    m.textContent = ok ? "✓" : "✗";
+    m.style.visibility = "visible";
+  }
+
+  function showCorrectWord(i, word){
+    const c = document.getElementById("corr"+i);
+    if (!c) return;
+    c.textContent = "Doğru: " + word;
+    c.style.display = "inline";
+  }
+
+  // Seviye akışı: sadece yeni kelime göster
+  function showNewWord(){
+    clearTimers();
+    locked = false;
+    doneBtn.disabled = true;
+
+    hideMarksAndCorrections();
+    setMsg("", "");
+
+    const newWord = sequence[level - 1];
+    shownWord.textContent = newWord;
+
+    const sec = Math.max(1, Math.min(10, parseInt(durationSecEl.value,10) || 1));
+    const ms = sec * 1000;
+
+    showTimer = setTimeout(()=>{
+      shownWord.textContent = "";
+      // yeni tur başlıyor: sağ tarafı temizle + inputları üret
+      renderInputs(level);
+      doneBtn.disabled = false;
+    }, ms);
+  }
+
+  // Başlat: her zaman yeni tur başlatır ve sağ tarafı temizler
+  function startRun(){
+    if (words.length < 1) return alert("Önce kelimeleri yükle.");
+
+    clearTimers();
+    setMsg("", "");
+
+    // yeni başlangıç
+    level = 1;
+    sequence = [ pickRandomWord() ];
+
+    shownWord.textContent = "Hazır...";
+    inputsEl.innerHTML = "";
+    doneBtn.disabled = true;
+
+    showNewWord();
+  }
+
+  function resetRun(){
+    clearTimers();
+    level = 1;
+    sequence = [];
+    inputsEl.innerHTML = "";
+    doneBtn.disabled = true;
+    shownWord.textContent = "Hazır";
+    setMsg("Başa dönüldü. Başlat ile yeniden başla.", "");
+    locked = false;
+  }
+
+  function advanceLevel(){
+    // istersen ileride best gösterebiliriz; şimdilik sessiz
+    best = Math.max(best, level);
+    level += 1;
+    sequence.push(pickRandomWord());
+
+    inputsEl.innerHTML = "";
+    doneBtn.disabled = true;
+    showNewWord();
+  }
+
+  function checkAnswers(){
+    if (locked) return;
+
+    hideMarksAndCorrections();
+
+    let allOk = true;
+
+    for (let i=0; i<level; i++){
+      const inp = document.getElementById("inp"+i);
+      const user = trLower(inp ? inp.value : "");
+      const targetRaw = sequence[i];
+      const target = trLower(targetRaw);
+
+      const ok = user !== "" && user === target;
+      showMark(i, ok);
+
+      if (!ok){
+        allOk = false;
+        showCorrectWord(i, targetRaw);
+      }
+    }
+
+    if (allOk){
+      setMsg("Doğru! Seviye yükseliyor...", "ok");
+      doneBtn.disabled = true;
+
+      clearTimers();
+      showTimer = setTimeout(()=>{
+        advanceLevel();
+      }, 1000);
+
+    } else {
+      setMsg("Hata! Yanlış kutunun yanında doğru kelimeyi görüyorsun. Devam etmek için Başlat'a bas.", "err");
+      locked = true;
+      doneBtn.disabled = true;
+      shownWord.textContent = "";
+      // ✅ Kutular ekranda kalır (inputsEl silinmiyor)
+    }
+  }
+
+  // Events
+  loadBtn.addEventListener("click", loadWordsFromServer);
+  startBtn.addEventListener("click", startRun);
+  resetBtn.addEventListener("click", resetRun);
+  doneBtn.addEventListener("click", checkAnswers);
+
+  // init
+  setMsg("Önce kelimeleri yükle, sonra Başlat'a bas.", "");
+</script>
+</body>
+</html>
