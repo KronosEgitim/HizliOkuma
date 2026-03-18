@@ -13,55 +13,55 @@ a) Bursa
 b) İznik
 c) Konya
 d) Kayseri
-e) Erzurum
+e) Selçuk
 c
 
-Metne göre Anadolu Selçuklularının ticarete önem vermesinin nedeni nedir?
-a) Ekonomik kazanç ve şehirlerin gelişimi
-b) Sadece askeri gücü artırmak istemeleri
-c) Yeni başkentler kurmak
-d) Nüfusu artırmak
-e) Savaşlara hazırlanmak
+Anadolu Selçuklularının ticarete önem vermesinin nedeni nedir?
+a) Şehirlerin gelişimi
+b) Askeri gücün arttırılması
+c) Komşuluk ilişkileri
+d) Halkın refahı
+e) Jeopolitik kazanç
 a
 
 Aşağıdakilerden hangisi metinde geçen önemli ticaret yollarından biridir?
-a) İpek Yolu
-b) Kral Yolu
-c) Altın Yolu
-d) Kuzey Kutup Yolu
-e) Kehribar Yolu
+a) Baharat Yolu
+b) Kuzey Marmara Yolu
+c) Mezopotamya
+d) Boğazlar 
+e) Güney Kervan Yolu
 a
 
 Kervansaraylarda tüccarlara sağlanan imkânlardan biri aşağıdakilerden hangisidir?
-a) Vergiden muaf olmak
-b) Sadece yerli tüccarların kalabilmesi
-c) Bedava baharat alma
+a) Vergiden muaf olma
+b) Koruma eşliğinde seyahat
+c) Süresiz konaklama
 d) Sınırsız ticaret izni
-e) Ücretsiz üç gün konaklama
+e) Hayvanlarını dinlenedirme
 e
 
 Selçukluların kültürel alanda gelişmesini sağlayan kurum hangisidir?
 a) Limanlar
 b) Medreseler
-c) Pazar yerleri
-d) Bankalar
-e) Tersaneler
+c) Ticaret yolları
+d) Tiyatrolar
+e) Yabancı okulları
 b
 
-Metne göre Anadolu’nun ticarette önemli bir konuma gelmesinin nedeni nedir?
-a) Çok sayıda maden bulunması
-b) Avrupa’ya yakın olması
+Anadolu’nun ticarette önemli bir konuma gelmesinin nedeni nedir?
+a) Antik medeniyetlerin merkezi olması
+b) Yabancı tüccarlara vergi kolaylığı sağlaması
 c) Doğu–Batı ticaret yollarının kavşağında olması
-d) Geniş ormanlara sahip olması
-e) Tarım ürünlerinin çeşitliliği
+d) Kültürel zenginliğe sahip olması
+e) Farklı inanç ve kültürlere ev sahipliği yapması
 c
 
-Selçukluların ticareti geliştirmek için yaptığı önemli yapı aşağıdakilerden hangisidir?
-a) Köprü
-b) Su kemeri
-c) Saray
+Selçukluların mimari alanda yaptığı önemli yapı aşağıdakilerden hangisi değildir?
+a) Kümbet
+b) Hamam
+c) Han
 d) Kervansaray
-e) Tersane
+e) Cami
 d
 
 Metne göre Selçuklu Devleti’nin zayıflamasında etkili olan güç hangisidir?
@@ -69,21 +69,21 @@ a) Persler
 b) Bizans
 c) Moğollar
 d) Haçlılar
-e) Mısır
+e) Araplar
 c
 
-Aşağıdakilerden hangisi Selçuklu döneminde gelişen sanat ve mimari eserlerden biri değildir?
-a) Kümbet
-b) Han
-c) Cami
-d) Kervansaray
-e) Gökdelen
-e
+Selçuklular hangi dönemde tamamen dağılmıştır?
+a) 12. yüzyıl başları
+b) 12. yüyzıl sonları
+c) 13. yüzyıl başları
+d) 13. yüzyıl sonları
+e) 14. yüzyıl başları
+d
 
 Metne göre Selçukluların bıraktığı miras kimleri etkilemiştir?
 a) Roma İmparatorluğu
-b) Türk beylikleri ve Osmanlı
-c) Avrupa krallıkları
-d) Çin hanedanları
-e) Japon kültürü
-b
+b) Karahanlılar
+c) Gazneliler
+d) Haçlılar
+e) Osmanlı Devleti
+e
