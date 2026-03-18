@@ -15,19 +15,27 @@ Tüm bu iklim farklılıkları, Türkiye’nin zengin bir doğal çeşitliliğe 
 -SORULAR-
 
 Türkiye’nin iklim çeşitliliğini etkileyen temel faktör nedir?
-a) Nüfus yoğunluğu
+a) Etrafı denizlerle çevrili olması
 b) Üç kıtaya yakın konumu
-c) Yeraltı kaynakları
-d) Politik sınırları
-e) Sanayi faaliyetleri
+c) Dağlar ve göllere sahip olması
+d) Bir senede dört mevsim yaşanması
+e) Yazları sıcak, kışları soğuk olması
 b
 
+Ülkemizin farklı bölgelerinde görülen iklimler aşağıdakilerden hangisini belirlemez?
+a) Yerleşim şekillerini
+b) Yaşam biçimini
+c) Kültürel etkinlikleri
+d) Bitki örtüsünü
+e) Tarım ürünlerini
+
+
 Karadeniz ikliminin temel özelliği nedir?
-a) Yazların çok sıcak geçmesi
-b) Çöllerin bulunması
-c) Kışların aşırı soğuk olması
-d) Yağışın sadece yazın olması
-e) Yıl boyunca bol yağış alması
+a) Yazlar sıcak, kışlar soğuk geçer
+b) Yağışlar mevsimliktir
+c) Kışın çok kar yağar
+d) Nem oranı çok yüksektir
+e) Yazlar serin, kışlar serin geçer
 e
 
 Karadeniz Bölgesi’nin doğal bitki örtüsü hangisidir?
@@ -38,20 +46,20 @@ d) Orman
 e) Çalılık
 d
 
-Aşağıdaki ürünlerden hangisi Karadeniz Bölgesi’nde yaygın şekilde yetişir?
-a) Muz
-b) Pamuk
-c) Çay
-d) Zeytin
-e) Turunçgil
-c
+Aşağıdaki ürünlerden hangisi Karadeniz Bölgesi’nde yaygın şekilde yetişmez?
+a) Fındık
+b) Zeytin
+c) Mısır
+d) Çay
+e) Hepsi
+b
 
 Akdeniz ikliminde yaz mevsimi nasıldır?
-a) Sıcak ve kurak
+a) Kurak ve sıcak
 b) Serin ve yağışlı
-c) Soğuk ve karlı
-d) Ilık ve sisli
-e) Fırtınalı
+c) Sıcak ve nemli
+d) Ilık ve serin
+e) Kurak ve güneşli
 a
 
 Akdeniz ikliminin doğal bitki örtüsü hangisidir?
@@ -63,11 +71,11 @@ e) Çayır
 b
 
 Karasal iklimin görüldüğü yerlerde kışlar genellikle nasıldır?
-a) Ilık
-b) Çok yağışlı
+a) Ilıman
+b) Karlı
 c) Soğuk
-d) Aşırı nemli
-e) Donmayan
+d) Yağışlı
+e) Rüzgarlı
 c
 
 Karasal iklimin doğal bitki örtüsü aşağıdakilerden hangisidir?
@@ -75,21 +83,21 @@ a) Maki
 b) Orman
 c) Sazlık
 d) Bozkır
-e) Yağmur ormanı
+e) Koru
 d
 
 Karasal iklim bölgelerinde hangi tarım ürünleri yaygındır?
 a) Muz ve zeytin
 b) Buğday ve arpa
-c) Fındık ve çay
+c) Şeker parcarı ve üzüm
 d) Pamuk ve turunçgil
 e) Kivi ve hurma
 b
 
 İklim farklılıklarının ev yapımına etkisine göre aşağıdakilerden hangisi doğrudur?
-a) Akdeniz’de çatılar karlı havaya göre tasarlanır
+a) Akdeniz’de evler yüksek temel üzerine kurulur
 b) Akdeniz’de evler taş ve kerpiçten yapılır
-c) Karasal bölgelerde evler yazlık gibi geniş balkonludur
+c) Karasal bölgelerde evler geniş balkonludur
 d) Karadeniz’de çatılar eğimli yapılır
-e) Karadeniz’de evler genellikle düz çatılıdır
-a
+e) Karadeniz’de evler genellikle ahşaptır
+d
