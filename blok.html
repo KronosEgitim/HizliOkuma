@@ -98,7 +98,7 @@ body{
 
     <button id="readingDoneBtn">Okuma Bitti</button>
 
-    <!-- ✅ DOĞRU YER -->
+    <!-- ✅ TEK BUTON (duplicate kaldırıldı) -->
     <button id="createQuestionsBtn" style="display:none;">
       Soruları Oluştur
     </button>
@@ -115,7 +115,7 @@ body{
 /* ===== GLOBAL ===== */
 const textDisplay = document.getElementById("textDisplay");
 const readingDoneBtn = document.getElementById("readingDoneBtn");
-const createQuestionsBtn = document.getElementById("createQuestionsBtn");
+const createQuestionsBtn = document.getElementById("createQuestionsBtn"); // ✅ direkt al
 const finishBtn = document.getElementById("finishBtn");
 const questionContainer = document.getElementById("questionContainer");
 
@@ -167,7 +167,8 @@ function showNext(){
 function finishReading(){
   quizPhase = "waitingForQuestions";
 
-  createQuestionsBtn.style.display = "inline-block"; // ✅ ANA NOKTA
+  // ✅ ASIL ÇALIŞAN SATIR
+  createQuestionsBtn.style.display = "inline-block";
 }
 
 /* Manuel bitirme */
