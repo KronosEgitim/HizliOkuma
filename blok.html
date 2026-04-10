@@ -16,12 +16,6 @@ body{
   height:100vh;
 }
 
-<button id="createQuestionsBtn" type="button" style="display:none;margin:0 20px 10px 20px;">
-  Soruları Oluştur
-</button>
-
-const createQuestionsBtn = document.getElementById("createQuestionsBtn");
-
 /* SOL PANEL */
 #settings{
   width:260px;
@@ -161,6 +155,15 @@ const createQuestionsBtn = document.getElementById("createQuestionsBtn");
 
 /* BUTONLAR (OKUMAYI BAŞLAT + OKUMA BİTTİ + TESTİ BİTİR) */
 #readingDoneBtn,
+
+<button id="readingDoneBtn" type="button">Okuma Bitti</button>
+
+<button id="createQuestionsBtn" type="button" style="display:none;margin:0 20px 10px 20px;">
+  Soruları Oluştur
+</button>
+
+<button id="finishBtn" type="button">Testi Bitir</button>
+
 #finishBtn{
   margin:0 20px 10px 20px;
   padding:8px 12px;
@@ -323,6 +326,9 @@ const createQuestionsBtn = document.getElementById("createQuestionsBtn");
 
 <script>
 /* ========= KULLANICI KODU GÜVENLİK KONTROLÜ ========= */
+
+const createQuestionsBtn = document.getElementById("createQuestionsBtn");
+
 (function ensureUserCode(){
   const code = localStorage.getItem("USER_CODE");
   if(!code || !code.trim()){
@@ -1284,7 +1290,7 @@ function showNextWord(){
   if(currentReadMode !== "speed") return;
   if(paused) return;
 
- if(currentIndex >= words.length){
+if(currentIndex >= words.length){
   finalizeSpeedTimer();
 
   hideAllWords();
@@ -1296,7 +1302,6 @@ function showNextWord(){
 
   return;
 }
-
 
   words.forEach(w=>w.className="hiddenWord");
 
